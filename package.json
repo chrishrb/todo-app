@@ -1,4 +1,7 @@
 {
   "private": true,
+  "scripts": {
+    "ci": "yarn install --frozen-lockfile"
+  },
   "workspaces": ["frontend", "backend"]
 }
