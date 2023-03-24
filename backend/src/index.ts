@@ -1,5 +1,5 @@
 import express from 'express';
-import { example } from './routes/example';
+import { userRouter } from './routes/user.route';
  
 // Initialize the express engine
 const app: express.Application = express();
@@ -12,9 +12,9 @@ const apiRoute = "/api/v1"
 app.use(express.json())
 
 // routes
-app.use(`${apiRoute}/example`, example)
+app.use(`${apiRoute}/user`, userRouter)
 
 // Server setup
 app.listen(port, () => {
-    console.log(`REST API running on http://localhost:${port}/${apiRoute}`);
+    console.log(`REST API running on http://localhost:${port}${apiRoute}`);
 });

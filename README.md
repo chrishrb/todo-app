@@ -20,6 +20,6 @@ TODO
 
 * vue: 3.2
 * pinia: 2.0 (vue 3 state management)
-* tailwindcss?
+* tailwindcss
 * express: 4.18
-* pg.js: 8.10
+* prisma: 4.11
