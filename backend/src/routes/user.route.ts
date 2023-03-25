@@ -1,5 +1,5 @@
 import Router from "express-promise-router"
-import { createUser } from "../services/user.service";
+import * as user_service from "../services/user.service";
 import { CreateUserSchema } from "../schemas/user.schema";
 import { validateSafe } from "../exceptions/helpers";
 
@@ -12,7 +12,12 @@ userRouter.route("/")
     userDto.password = req.body.password;
 
     await validateSafe(userDto);
-    const user = await createUser(userDto)
+    const user = await user_service.createUser(userDto)
 
     res.status(201).json(user)
+  })
+
+  .get(async (req, res) => {
+    const users = await user_service.getAllUsers();
+    res.status(200).json(users)
   })

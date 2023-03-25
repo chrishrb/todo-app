@@ -3,7 +3,7 @@ Feature: User
 
   Scenario: Create User
     Given the Content-Type is 'application/json'
-    When I send a POST request to "http://localhost:8000/api/v1/user" with json:
+    When I send a POST request to "http://localhost:8000/api/v1/users" with json:
       """
         {
           "email": "mymail@bla.de",

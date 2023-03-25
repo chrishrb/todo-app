@@ -13,3 +13,8 @@ export async function createUser(userDto: CreateUserSchema) {
 
   return new ReadUserSchema(user.id, user.email);
 }
+
+export async function getAllUsers() {
+  const users = await prisma.user.findMany();
+  return users.map(user => new ReadUserSchema(user.id, user.email))
+}
