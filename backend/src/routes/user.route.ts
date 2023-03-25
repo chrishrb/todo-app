@@ -22,5 +22,5 @@ userRouter.route("/")
     // TODO: handle somehow exceptions
     const user = await createUser(userDto)
 
-    res.status(200).json(user)
+    res.status(201).json(user)
   })

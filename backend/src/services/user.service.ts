@@ -11,5 +11,5 @@ export async function createUser(userDto: CreateUserSchema) {
     }
   });
 
-  return new ReadUserSchema(user.email);
+  return new ReadUserSchema(user.id, user.email);
 }
