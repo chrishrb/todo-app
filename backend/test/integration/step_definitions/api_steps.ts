@@ -1,4 +1,4 @@
-import { before, after, binding, given, then, when } from 'cucumber-tsflow';
+import { beforeAll, binding, given, then, when, afterAll } from 'cucumber-tsflow';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { createServer } from "../../../src/utils/server";
 import { Server } from 'node:http';
@@ -39,7 +39,7 @@ export class ApiSteps {
       this.response = await axios.get(path, { headers: this.headers })
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
+        throw Error(`StatusCode: ${error.response?.status}`)
       }
       throw error
     }
@@ -75,12 +75,12 @@ export class ApiSteps {
   // --------------------------------------------------------------------------
   // BEFORE / AFTER
   // --------------------------------------------------------------------------
-  @before()
+  @beforeAll()
   public startExpressHttpServer(): void {
     this.server = createServer(8000)
   }
 
-  @after()
+  @afterAll()
   public endExpressHttpServer(): void {
     if (this.server == null) {
       return;

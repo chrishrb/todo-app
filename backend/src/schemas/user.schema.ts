@@ -1,30 +1,58 @@
-import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
-export class LoginUserSchema {
+class UserSchema {
+  @IsEmail()
+  email: string;
+
+  constructor(email: string) {
+    this.email = email;
+  }
+}
+
+export class LoginUserSchema extends UserSchema {
+  @IsNotEmpty()
+  password: string;
+
+  constructor(email: string, password: string) {
+    super(email)
+    this.password = password;
+  }
+}
+
+export class CreateUserSchema extends UserSchema {
   @IsEmail()
   email: string;
 
   @IsNotEmpty()
   password: string;
+
+  constructor(email: string, password: string) {
+    super(email)
+    this.password = password;
+  }
 }
 
-export class CreateUserSchema {
+export class UpdateUserSchema extends UserSchema {
+  @IsOptional()
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsNotEmpty()
   password: string;
+
+  constructor(email: string, password: string) {
+    super(email)
+    this.password = password;
+  }
 }
 
-export class ReadUserSchema {
+export class ReadUserSchema extends UserSchema {
   @IsNumber()
   id: number;
 
-  @IsEmail()
-  email: string;
-
   constructor(id: number, email: string) {
+    super(email)
     this.id = id;
-    this.email = email;
   }
 }
