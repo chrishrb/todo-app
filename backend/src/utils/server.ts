@@ -1,6 +1,7 @@
 import express from 'express';
 import { userRouter } from '../routes/user.route';
 import { Server } from 'node:http';
+import { errorHandlingMiddleware } from '../exceptions/error.middleware';
 
 export function createServer(port: number): Server {
   // Initialize the express engine
@@ -8,11 +9,10 @@ export function createServer(port: number): Server {
 
   const apiRoute = "/api/v1"
 
-  // middlewares
+  // middlewares - ordering is important
   app.use(express.json())
-
-  // routes
   app.use(`${apiRoute}/user`, userRouter)
+  app.use(errorHandlingMiddleware)
 
   // Server setup
   const server = app.listen(port, () => {

@@ -1,5 +1,13 @@
 import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 
+export class LoginUserSchema {
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
+
 export class CreateUserSchema {
   @IsEmail()
   email: string;
