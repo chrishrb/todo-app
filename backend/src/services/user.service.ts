@@ -5,7 +5,12 @@ import { getStringAsNumberSafe } from "../utils/validate_id";
 
 const prisma = new PrismaClient()
 
-export async function createUser(userDto: CreateUserSchema) {
+/**
+ * Create User
+ *
+ * @param userDto
+ */
+export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSchema> {
   const user = await prisma.user.create({
     data: {
       email: userDto.email,
@@ -16,7 +21,12 @@ export async function createUser(userDto: CreateUserSchema) {
   return new ReadUserSchema(user.id, user.email);
 }
 
-export async function getUser(userId: string) {
+/**
+ * Read User
+ *
+ * @param userId
+ */
+export async function readUser(userId: string): Promise<ReadUserSchema> {
   var userIdAsNumber;
   try {
     userIdAsNumber = getStringAsNumberSafe(userId)
@@ -37,7 +47,13 @@ export async function getUser(userId: string) {
   return new ReadUserSchema(user.id, user.email);
 }
 
-export async function updateUser(userId: string, userDto: UpdateUserSchema) {
+/**
+ * Update User
+ *
+ * @param userId
+ * @param userDto
+ */
+export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
   var userIdAsNumber;
   try {
     userIdAsNumber = getStringAsNumberSafe(userId)
@@ -58,7 +74,13 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema) {
   return new ReadUserSchema(user.id, user.email);
 }
 
-export async function getAllUsers() {
+/**
+ * Read all users
+ *
+ * @param userId
+ * @param userDto
+ */
+export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
   return users.map(user => new ReadUserSchema(user.id, user.email))
 }

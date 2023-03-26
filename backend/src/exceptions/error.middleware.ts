@@ -3,6 +3,7 @@ import { NotFoundError } from "./errors/not-found-error"
 import { ValidationError } from "./errors/validation-error"
 import { BadRequestError } from "./errors/bad-request-error";
 import { Prisma } from "@prisma/client";
+import { ForbiddenError, UnauthorizedError } from "./errors/login-error";
 
 export function errorHandlingMiddleware(err: any, req: any, res: any, next: any) {
   const middlewareErrors = [
@@ -10,6 +11,8 @@ export function errorHandlingMiddleware(err: any, req: any, res: any, next: any)
     NotFoundError,
     ValidationError,
     BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
   ];
 
   console.log("Error Handling Middleware: ", err.constructor.name);

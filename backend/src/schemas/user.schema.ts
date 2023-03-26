@@ -9,16 +9,6 @@ class UserSchema {
   }
 }
 
-export class LoginUserSchema extends UserSchema {
-  @IsNotEmpty()
-  password: string;
-
-  constructor(email: string, password: string) {
-    super(email)
-    this.password = password;
-  }
-}
-
 export class CreateUserSchema extends UserSchema {
   @IsEmail()
   email: string;

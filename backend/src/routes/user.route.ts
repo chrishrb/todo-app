@@ -1,5 +1,5 @@
 import Router from "express-promise-router"
-import * as user_service from "../services/user.service";
+import * as userService from "../services/user.service";
 import { CreateUserSchema, UpdateUserSchema } from "../schemas/user.schema";
 import { validateSafe } from "../exceptions/helpers";
 
@@ -10,27 +10,27 @@ userRouter.route("/")
     const userDto = new CreateUserSchema(req.body.email, req.body.password);
 
     await validateSafe(userDto);
-    const user = await user_service.createUser(userDto)
+    const user = await userService.createUser(userDto)
 
     res.status(201).json(user)
   })
 
   .get(async (req, res) => {
-    const users = await user_service.getAllUsers();
+    const users = await userService.readAllUsers();
     res.status(200).json(users)
   })
 ;
 
 userRouter.route("/:userId")
   .get(async (req, res) => {
-    const user = await user_service.getUser(req.params.userId);
+    const user = await userService.readUser(req.params.userId);
     res.status(200).json(user)
   })
   .put(async (req, res) => {
     const userDto = new UpdateUserSchema(req.body.email, req.body.password);
 
     await validateSafe(userDto);
-    const user = await user_service.updateUser(req.params.userId, userDto);
+    const user = await userService.updateUser(req.params.userId, userDto);
 
     res.status(200).json(user)
   })
