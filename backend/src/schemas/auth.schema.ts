@@ -1,4 +1,6 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
+import { JwtPayload } from "jsonwebtoken";
+import { ForbiddenError } from "../exceptions/errors/login-error";
 
 export class LoginSchema {
   @IsEmail()
@@ -22,11 +24,26 @@ export class AuthLoginSchema {
   }
 }
 
-export class JwtVerifySchema {
-  @IsNotEmpty()
-  access_token: string;
+export class JwtPayloadSchema {
+  userId: number;
+  email: string;
 
-  constructor(token: string) {
-    this.access_token = token;
+  constructor(userId: number, email: string) {
+    this.userId = userId;
+    this.email = email;
+  }
+
+  toPlainObj(): { userId: number, email: string } {
+    return Object.assign({}, this);
+  }
+
+  static fromPlainObj(obj: string | JwtPayload) {
+    if (typeof obj == 'string') {
+      throw new ForbiddenError();
+    }
+    if (obj.email == null || obj.userId == null) {
+      throw new ForbiddenError();
+    }
+    return new JwtPayloadSchema(obj.userId, obj.email);
   }
 }

@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { ForbiddenError } from "../exceptions/errors/login-error";
 import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
-import { LoginSchema, AuthLoginSchema, JwtVerifySchema } from "../schemas/auth.schema";
+import { LoginSchema, AuthLoginSchema, JwtPayloadSchema } from "../schemas/auth.schema";
+import { Response, Request, NextFunction } from "express";
 
 const prisma = new PrismaClient()
 
@@ -27,26 +28,38 @@ export async function login(userDto: LoginSchema): Promise<AuthLoginSchema> {
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
-  const token = jsonwebtoken.sign({ userId: user.id, email: user.email }, process.env.AUTH_SECRET_KEY, { expiresIn: "1h"})
+  const payload = new JwtPayloadSchema(user.id, user.email);
+  const token = jsonwebtoken.sign(payload.toPlainObj(), process.env.AUTH_SECRET_KEY, { expiresIn: "1h"})
   return new AuthLoginSchema(token);
 }
 
 /*
- * Verify JWT
+ * Verify JWT middleware
+ * Saves an JwtPayloadSchema object in the "res.locals.user" variable
  *
  * @param userId
  * @param userDto
  */
-export async function verify(jwt: JwtVerifySchema): Promise<JwtVerifySchema> {
+export function verify(req: Request, res: Response, next: NextFunction): void {
   if (!process.env.AUTH_SECRET_KEY) {
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
-  try {
-    jsonwebtoken.verify(jwt.access_token, process.env.AUTH_SECRET_KEY);
-  } catch {
+  const bearerHeader = req.headers['authorization']
+  if (bearerHeader == null || typeof bearerHeader !== 'string') {
+    throw new ForbiddenError();
+  }
+  const [type, token] = bearerHeader.split(" ");
+
+  if (type !== 'Bearer') {
     throw new ForbiddenError();
   }
 
-  return jwt;
+  try {
+    const decoded = jsonwebtoken.verify(token, process.env.AUTH_SECRET_KEY);
+    res.locals.user = JwtPayloadSchema.fromPlainObj(decoded);
+    next()
+  } catch {
+    throw new ForbiddenError();
+  }
 }

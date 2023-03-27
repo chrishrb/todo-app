@@ -2,8 +2,6 @@ import Router from "express-promise-router"
 import * as authService from "../services/auth.service";
 import { CreateUserSchema } from "../schemas/user.schema";
 import { validateSafe } from "../exceptions/helpers";
-import { ValidationError } from "../exceptions/errors/validation-error";
-import { JwtVerifySchema } from "../schemas/auth.schema";
 
 export const authRouter = Router()
 
@@ -18,14 +16,8 @@ authRouter.route("/login")
   })
 
 authRouter.route("/verify")
-  .get(async (req, res) => {
-    const access_token = req.query.access_token
-    if (access_token == null || typeof access_token != 'string') {
-      throw new ValidationError("No access_token in request found.")
-    }
-    const jwt = new JwtVerifySchema(access_token);
-    await validateSafe(jwt);
-
-    await authService.verify(jwt)
-    res.status(200).json(jwt)
+  .get(authService.verify, async (req, res) => {
+    res.status(200).json(res.locals.user)
   })
+
+// TODO: add refresh endpoint
