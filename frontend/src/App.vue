@@ -4,20 +4,14 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <div class="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
+    <p class="text-3xl text-gray-700 font-bold mb-5">
+      Wilkommen!
+    </p>
+    <p class="text-gray-500 text-lg">
+      Kann man Fortschritt im Bogenschießen eigentlich messen?
+    </p>
+ </div>
 </template>
 
 <style scoped>
