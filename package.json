@@ -3,5 +3,11 @@
   "scripts": {
     "ci": "yarn install --frozen-lockfile"
   },
-  "workspaces": ["frontend", "backend"]
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  }
 }
