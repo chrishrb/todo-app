@@ -12,6 +12,11 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "strictPropertyInitialization": false,
+    "paths": {
+      "*": [
+        "./test/integration/types/*"
+      ]
+    }
   },
   "exclude": [
     "build",

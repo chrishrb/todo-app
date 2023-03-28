@@ -25,15 +25,17 @@ export class AuthLoginSchema {
 }
 
 export class JwtPayloadSchema {
-  userId: number;
+  userId: string;
   email: string;
+  isAdmin: boolean;
 
-  constructor(userId: number, email: string) {
+  constructor(userId: string, email: string, isAdmin: boolean) {
     this.userId = userId;
     this.email = email;
+    this.isAdmin = isAdmin;
   }
 
-  toPlainObj(): { userId: number, email: string } {
+  toPlainObj(): { userId: string, email: string } {
     return Object.assign({}, this);
   }
 
@@ -41,9 +43,9 @@ export class JwtPayloadSchema {
     if (typeof obj == 'string') {
       throw new ForbiddenError();
     }
-    if (obj.email == null || obj.userId == null) {
+    if (obj.email == null || obj.userId == null || obj.isAdmin == null) {
       throw new ForbiddenError();
     }
-    return new JwtPayloadSchema(obj.userId, obj.email);
+    return new JwtPayloadSchema(obj.userId, obj.email, obj.isAdmin);
   }
 }

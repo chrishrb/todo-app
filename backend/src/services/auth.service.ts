@@ -28,7 +28,7 @@ export async function login(userDto: LoginSchema): Promise<AuthLoginSchema> {
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
-  const payload = new JwtPayloadSchema(user.id, user.email);
+  const payload = new JwtPayloadSchema(user.id, user.email, user.isAdmin);
   const token = jsonwebtoken.sign(payload.toPlainObj(), process.env.AUTH_SECRET_KEY, { expiresIn: "1h"})
   return new AuthLoginSchema(token);
 }

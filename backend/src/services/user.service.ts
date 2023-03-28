@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
-import { getStringAsNumberSafe } from "../utils/validate_id";
 
 const prisma = new PrismaClient()
 
@@ -15,10 +14,12 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     data: {
       email: userDto.email,
       password: userDto.password,
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
     }
   });
 
-  return new ReadUserSchema(user.id, user.email);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
 }
 
 /**
@@ -27,16 +28,9 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
  * @param userId
  */
 export async function readUser(userId: string): Promise<ReadUserSchema> {
-  var userIdAsNumber;
-  try {
-    userIdAsNumber = getStringAsNumberSafe(userId)
-  } catch {
-    throw new NotFoundError(`User with id ${userId} not found.`)
-  }
-
   const user = await prisma.user.findUnique({
     where: {
-      id: userIdAsNumber,
+      id: userId,
     }
   });
 
@@ -44,7 +38,7 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
     throw new NotFoundError(`User with id ${userId} not found.`)
   }
 
-  return new ReadUserSchema(user.id, user.email);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
 }
 
 /**
@@ -54,16 +48,9 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
  * @param userDto
  */
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
-  var userIdAsNumber;
-  try {
-    userIdAsNumber = getStringAsNumberSafe(userId)
-  } catch {
-    throw new NotFoundError(`User with id ${userId} not found.`)
-  }
-
   const user = await prisma.user.update({
     where: {
-      id: userIdAsNumber,
+      id: userId,
     },
     data: {
       email: userDto.email,
@@ -71,7 +58,7 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
     }
   });
 
-  return new ReadUserSchema(user.id, user.email);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
 }
 
 /**
@@ -82,5 +69,5 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
  */
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
-  return users.map(user => new ReadUserSchema(user.id, user.email))
+  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName))
 }
