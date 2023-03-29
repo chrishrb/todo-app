@@ -1,17 +1,17 @@
 <template>
   <div id="home">
-    <Login/>
+    <AppLogin/>
   </div>
 </template>
 
 <script lang="ts">
-import Login from "@/components/Login.vue";
+import AppLogin from "@/components/AppLogin.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: 'App',
   components: {
-    Login,
+    AppLogin,
   }
 });
 </script>

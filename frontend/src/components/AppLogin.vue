@@ -25,7 +25,6 @@
 import { defineComponent } from 'vue';
 import { useAuthStore } from "@/stores/auth"
 import router from '@/router';
-import { getToken } from '@/common/jwt.service';
 
 export default defineComponent({
   name: "login-component",

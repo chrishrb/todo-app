@@ -8,7 +8,7 @@
 
       <div 
         v-else 
-        v-for="user in info"
+        v-for="user in info" :key="user['id']"
       >
         {{ user }}
       </div>
@@ -35,7 +35,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    baseApi.get('/users', { headers: {"Authorization": `Bearer ${this.authStore.token}`}})
+    baseApi.get('/users')
       .then(response => {
         this.info = response.data
       })
@@ -45,7 +45,6 @@ export default defineComponent({
       })
       .then(() => this.loading = false);
   }
-
 });
 </script>
 
