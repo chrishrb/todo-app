@@ -24,6 +24,21 @@ Feature: User
         ]
       """
 
+  Scenario: Get infos of current user
+    Given I am a normal user
+    And I am authenticated
+    When I send a GET request to "http://localhost:8000/api/v1/users/me"
+    Then the response code should be 200
+    And the response body should be json:
+      """
+        {
+          "id": uuid(4),
+          "email": "john.doe@example.com",
+          "firstName": "John",
+          "lastName": "Doe"
+        }
+      """
+
   Scenario: Create User
     Given the Content-Type is 'application/json'
     When I send a POST request to "http://localhost:8000/api/v1/users" with json:

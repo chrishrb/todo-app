@@ -18,11 +18,19 @@ userRouter.route("/")
   })
 
   .get(authService.verify, async (req, res) => {
-    if (res.locals.user.isAdmin === false) {
+    if (res.locals.user?.isAdmin === false) {
       throw new UnauthorizedError();
     }
     const users = await userService.readAllUsers();
     res.status(200).json(users)
+  })
+;
+
+userRouter.route("/me")
+  .get(authService.verify, async (req, res) => {
+    const userId = res.locals.user?.userId;
+    const user = await userService.readUser(userId);
+    res.status(200).json(user);
   })
 ;
 
