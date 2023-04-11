@@ -1,21 +1,20 @@
 <template>
   <div id="app">
-    <AppHeader/>
-    <router-view></router-view>
-    <AppFooter/>
+    <!-- <AppSidebar/> -->
+    <!-- <div class="p-4 ml-80"> -->
+      <router-view></router-view>
+    <!-- </div> -->
   </div>
 </template>
 
 <script lang="ts">
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue"
+import AppSidebar from "@/components/common/AppSidebar.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: 'App',
   components: {
-    AppHeader,
-    AppFooter,
+    AppSidebar,
   }
 });
 </script>
