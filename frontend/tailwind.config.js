@@ -7,7 +7,13 @@ module.exports = {
     "./src/views/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        hs_orange: '#F49600',
+        hs_pink: '#F00045',
+        hs_grey: '#7b7669'
+      },
+    },
   },
   plugins: [],
 }
