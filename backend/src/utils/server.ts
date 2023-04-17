@@ -9,6 +9,7 @@ import { swaggerOptions } from './swagger';
 import { logger } from './logger';
 import { InternalError } from '../exceptions/errors/internal-error';
 import cookieParser from 'cookie-parser';
+import { taskRouter } from '../routes/task.route';
 
 export function createServer(port: number): Server {
   console.log(`
@@ -33,6 +34,7 @@ export function createServer(port: number): Server {
   app.use(cookieParser())
   app.use(`${apiRoute}/users`, userRouter)
   app.use(`${apiRoute}/auth`, authRouter)
+  app.use(`${apiRoute}/tasks`, taskRouter)
   app.use(errorHandlingMiddleware)
   app.use(notFoundMiddleware)
 
