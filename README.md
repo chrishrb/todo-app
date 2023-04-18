@@ -8,6 +8,9 @@ yarn ci
 
 ## Getting started
 
+start postgresql database with ``docker compose up -d`` in root directory
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/todo?schema=public"
+
 TODO
 
 ## Decisions 
@@ -23,3 +26,4 @@ TODO
 * tailwindcss
 * express: 4.18
 * prisma: 4.11
+* postgresql: 15.2
