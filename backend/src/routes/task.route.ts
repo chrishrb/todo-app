@@ -41,3 +41,8 @@ taskRouter.route("/:taskId")
     res.status(204).json(task);
   })
 
+taskRouter.route("/:taskId/toggle")
+  .put(async (req, res) => {
+    const task = await taskService.toggleTask(req.body.taskId);
+    res.status(200).json(task);
+  })
