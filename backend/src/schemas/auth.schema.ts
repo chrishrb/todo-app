@@ -2,6 +2,13 @@ import { IsEmail, IsNotEmpty } from "class-validator";
 import { JwtPayload } from "jsonwebtoken";
 import { ForbiddenError } from "../exceptions/errors/login-error";
 
+/**
+ * LoginSchema
+ *
+ * @typedef {object} LoginSchema
+ * @property {string} email.required - Email
+ * @property {string} password - Password
+ */
 export class LoginSchema {
   @IsEmail()
   email: string;
@@ -15,15 +22,30 @@ export class LoginSchema {
   }
 }
 
+/**
+ * AuthLoginSchema
+ *
+ * @typedef {object} AuthLoginSchema
+ * @property {string} tokenType - Type of token
+ * @property {string} accessToken - Access token
+ */
 export class AuthLoginSchema {
-  token_type: string = "Bearer";
-  access_token: string;
+  tokenType: string = "Bearer";
+  accessToken: string;
 
   constructor(token: string) {
-    this.access_token = token;
+    this.accessToken = token;
   }
 }
 
+/**
+ * JwtPayloadSchema
+ *
+ * @typedef {object} JwtPayloadSchema
+ * @property {string} userId - UserId
+ * @property {string} email - Email
+ * @property {boolean} isAdmin - IsAdmin
+ */
 export class JwtPayloadSchema {
   userId: string;
   email: string;
