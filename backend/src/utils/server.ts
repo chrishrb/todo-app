@@ -4,10 +4,20 @@ import { Server } from 'node:http';
 import { errorHandlingMiddleware } from '../exceptions/error.middleware';
 import { notFoundMiddleware } from '../exceptions/not-found.middleware';
 import { authRouter } from '../routes/auth.route';
+import { logger } from './logger';
 
 export function createServer(port: number): Server {
+  console.log(`
+████████╗ ██████╗ ██████╗  ██████╗ 
+╚══██╔══╝██╔═══██╗██╔══██╗██╔═══██╗
+   ██║   ██║   ██║██║  ██║██║   ██║
+   ██║   ██║   ██║██║  ██║██║   ██║
+   ██║   ╚██████╔╝██████╔╝╚██████╔╝
+   ╚═╝    ╚═════╝ ╚═════╝  ╚═════╝ 
+`)
   // Initialize the express engine
   const app = express();
+  const startLogger = logger.getSubLogger({hideLogPositionForProduction: true})
 
   const apiRoute = "/api/v1"
 
@@ -20,7 +30,7 @@ export function createServer(port: number): Server {
 
   // Server setup
   const server = app.listen(port, () => {
-    console.log(`REST API running on http://localhost:${port}${apiRoute}`);
+    startLogger.info(`REST API running on http://localhost:${port}${apiRoute}`);
   });
 
   return server

@@ -4,6 +4,7 @@ import { ValidationError } from "./errors/validation-error"
 import { BadRequestError } from "./errors/bad-request-error";
 import { Prisma } from "@prisma/client";
 import { ForbiddenError, UnauthorizedError } from "./errors/login-error";
+import { logger } from "../utils/logger";
 
 export function errorHandlingMiddleware(err: any, req: any, res: any, next: any) {
   const middlewareErrors = [
@@ -15,7 +16,7 @@ export function errorHandlingMiddleware(err: any, req: any, res: any, next: any)
     ForbiddenError,
   ];
 
-  console.error("Error Handling Middleware: ", err.constructor.name, err);
+  logger.error("Error Handling Middleware: ", err.constructor.name, err);
 
   if (middlewareErrors.some((middlewareError) => err instanceof middlewareError)) {
     res.status(err.errorCode).send(err.print())
