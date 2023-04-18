@@ -83,5 +83,28 @@ export async function deleteTask(taskId: number): Promise<ReadTaskSchema> {
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.title, task.description, task.dueDate, task.isChecked);
+}
+
+export async function toggleTask(taskId: number): Promise<ReadTaskSchema> {
+  const taskThen = await prisma.task.findUnique({
+    where: {
+      id: taskId,
+    }
+  });
+
+  if(taskThen === null) {
+    throw new NotFoundError(`Task with id: ${taskId} not found.`)
+  }
+
+  const taskNow = await prisma.task.update({
+    where: {
+      id: taskId,
+    },
+    data: {
+      isChecked: !taskThen?.isChecked
+    }
+  })
+
+  return new ReadTaskSchema(taskNow.title, taskNow.description, taskNow.dueDate, taskNow.isChecked);
 }
