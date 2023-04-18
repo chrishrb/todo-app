@@ -19,7 +19,7 @@ export async function crateTask(taskDto: CreateTaskSchema): Promise<ReadTaskSche
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.title, task.description, task.dueDate, task.isChecked);
 }
 
 /**
@@ -40,7 +40,7 @@ export async function updateTask(taskId: number, taskDto: UpdateTaskSchema) {
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.title, task.description, task.dueDate, task.isChecked);
 }
 
 /**
@@ -59,7 +59,7 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
     throw new NotFoundError(`Task with id: ${taskId} not found.`)
   }
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked)
+  return new ReadTaskSchema(task.title, task.description, task.dueDate, task.isChecked)
 }
 
 /**
@@ -68,7 +68,7 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
  */
 export async function readAllTasks(): Promise<ReadTaskSchema[]> {
   const tasks = await prisma.task.findMany();
-  return tasks.map(task => new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked));
+  return tasks.map(task => new ReadTaskSchema(task.title, task.description, task.dueDate, task.isChecked));
 }
 
 /**

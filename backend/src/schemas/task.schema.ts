@@ -54,9 +54,8 @@ export class ReadTaskSchema extends TaskSchema {
   @IsNumber()
   id: number;
 
-  constructor(id: number, title: string, description: string, dueDate: Date, isChecked: boolean) {
+  constructor(title: string, description: string, dueDate: Date, isChecked: boolean) {
     super();
-    this.id = id;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
