@@ -68,5 +68,20 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
  */
 export async function readAllTasks(): Promise<ReadTaskSchema[]> {
   const tasks = await prisma.task.findMany();
-  return tasks.map(task => new ReadTaskSchema(task.id));
+  return tasks.map(task => new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked));
+}
+
+/**
+ * Delete Task
+ *
+ * @param taskId
+ */
+export async function deleteTask(taskId: number): Promise<ReadTaskSchema> {
+  const task = await prisma.task.delete({
+    where: {
+      id: taskId,
+    }
+  });
+
+  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
 }
