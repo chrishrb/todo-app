@@ -17,6 +17,15 @@ class UserSchema {
   }
 }
 
+/**
+ * CreateUserSchema
+ *
+ * @typedef {object} CreateUserSchema
+ * @property {string} email.required - Email
+ * @property {string} firstName.required - First Name
+ * @property {string} lastName.required - Last Name
+ * @property {string} password.required - Pasword
+ */
 export class CreateUserSchema extends UserSchema {
   @IsEmail()
   email: string;
@@ -30,6 +39,15 @@ export class CreateUserSchema extends UserSchema {
   }
 }
 
+/**
+ * UpdateUserSchema
+ *
+ * @typedef {object} UpdateUserSchema
+ * @property {string} email.required - Email
+ * @property {string} firstName - First Name
+ * @property {string} lastName - Last Name
+ * @property {string} password - Password
+ */
 export class UpdateUserSchema extends UserSchema {
   @IsOptional()
   @IsEmail()
@@ -45,6 +63,15 @@ export class UpdateUserSchema extends UserSchema {
   }
 }
 
+/**
+ * ReadUserSchema
+ *
+ * @typedef {object} ReadUserSchema
+ * @property {string} id - Id
+ * @property {string} email - Email
+ * @property {string} firstName - First Name
+ * @property {string} lastName - Last Name
+ */
 export class ReadUserSchema extends UserSchema {
   @IsNumber()
   id: string;

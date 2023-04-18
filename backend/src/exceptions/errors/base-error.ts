@@ -1,3 +1,11 @@
+/**
+ * BaseError
+ *
+ * @typedef {object} BaseError
+ * @property {number} errorCode - ErrorCode
+ * @property {string} errorMessage - ErrorMessage
+ * @property {object} details - Details
+ */
 export abstract class BaseError extends Error {
   public errorCode: number;
   public errorMessage: string;
