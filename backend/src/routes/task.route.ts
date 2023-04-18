@@ -32,4 +32,12 @@ taskRouter.route("/:taskId")
 
     res.status(200).json(task);
   })
+  .delete(async (req, res) => {
+    const task = await taskService.deleteTask(req.body.taskId);
+
+    if(req.body.taskId === task.id) {
+      res.status(202).json(task);
+    }
+    res.status(204).json(task);
+  })
 
