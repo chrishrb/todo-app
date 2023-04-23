@@ -1,29 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import * as user_service from '../src/services/user.service'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const root = await prisma.user.upsert({
-    where: { email: 'root@example.com' },
-    update: {},
-    create: {
-      email: 'root@example.com',
-      password: 'root',
-      firstName: 'Root',
-      lastName: '',
-      isAdmin: true,
-    },
-  })
-  const john = await prisma.user.upsert({
-    where: { email: 'john.doe@example.com' },
-    update: {},
-    create: {
-      email: 'john.doe@example.com',
-      password: 'johni',
-      firstName: 'John',
-      lastName: 'Doe',
-    },
-  })
+  const root = await user_service.createUser({ email: 'root@example.com', password: 'root', firstName: 'Root', lastName: '' })
+  await user_service.setAsAdmin(root.id);
+
+  const john = await user_service.createUser({ email: 'john.doe@example.com', password: 'johni', firstName: 'John', lastName: 'Doe' })
   console.log({ root, john })
 }
 main()
