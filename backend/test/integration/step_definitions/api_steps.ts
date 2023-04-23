@@ -6,15 +6,6 @@ import chai, { expect } from 'chai';
 import chaiJsonPattern from 'chai-json-pattern';
 import { LoginSchema } from '../../../src/schemas/auth.schema';
 
-// weird type declarations..
-declare global {
-  namespace Chai {
-    interface Assertion {
-      matchPattern(expected: any): void;
-    }
-  }
-}
-
 chai.use(chaiJsonPattern);
 
 @binding()

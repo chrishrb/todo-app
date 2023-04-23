@@ -32,6 +32,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "^9.0.1",
     "@types/bcrypt": "^5.0.0",
+    "@types/chai-json-pattern": "^1.1.0",
     "@types/cucumber": "^7.0.0",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.1",
