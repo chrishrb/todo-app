@@ -24,6 +24,12 @@ Feature: User
         ]
       """
 
+  Scenario: Get all users (no-admin)
+    Given I am a normal user
+    And I am authenticated
+    When I send a GET request to "http://localhost:8000/api/v1/users"
+    Then the response code should be 401
+
   Scenario: Get infos of current user
     Given I am a normal user
     And I am authenticated
@@ -38,6 +44,10 @@ Feature: User
           "lastName": "Doe"
         }
       """
+
+  Scenario: Get infos of current user (not logged in)
+    When I send a GET request to "http://localhost:8000/api/v1/users/me"
+    Then the response code should be 403
 
   Scenario: Create User
     Given the Content-Type is 'application/json'

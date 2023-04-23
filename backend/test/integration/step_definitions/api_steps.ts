@@ -46,7 +46,7 @@ export class ApiSteps {
   public async imAuthenticated(): Promise<void> {
     try {
       const response = await axios.post("http://localhost:8000/api/v1/auth/login", JSON.stringify(this.user), { headers: { 'Content-Type': 'application/json' } })
-      this.headers['Authorization'] = `Bearer ${response.data.access_token}`
+      this.headers['Authorization'] = `Bearer ${response.data.accessToken}`
     } catch (error) {
       if (error instanceof AxiosError) {
         throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
@@ -64,9 +64,10 @@ export class ApiSteps {
       this.response = await axios.post(path, body, { headers: this.headers })
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
+        this.response = error.response!
+      } else {
+        throw error;
       }
-      throw error
     }
   }
 
@@ -76,9 +77,10 @@ export class ApiSteps {
       this.response = await axios.get(path, { headers: this.headers })
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw Error(`StatusCode: ${error.response?.status}`)
+        this.response = error.response!
+      } else {
+        throw error;
       }
-      throw error
     }
   }
 
