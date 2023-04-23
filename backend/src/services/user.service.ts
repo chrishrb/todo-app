@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient()
 
@@ -10,12 +11,27 @@ const prisma = new PrismaClient()
  * @param userDto
  */
 export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSchema> {
+  const hashedPassword = await bcrypt.hash(userDto.password, 10)
+
   const user = await prisma.user.create({
     data: {
       email: userDto.email,
-      password: userDto.password,
+      password: hashedPassword,
       firstName: userDto.firstName,
       lastName: userDto.lastName,
+    }
+  });
+
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
+}
+
+export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      isAdmin: true,
     }
   });
 

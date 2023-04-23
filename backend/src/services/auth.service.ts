@@ -4,6 +4,7 @@ import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, AuthLoginSchema, JwtPayloadSchema } from "../schemas/auth.schema";
 import { Response, Request, NextFunction } from "express";
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient()
 
@@ -20,8 +21,13 @@ export async function login(userDto: LoginSchema): Promise<AuthLoginSchema> {
     }
   });
 
-  if (!user || user.password !== userDto.password) {
-    throw new ForbiddenError();
+  if (!user) {
+    throw new ForbiddenError("Email not found.");
+  }
+
+  const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
+  if (!isCorrectPassword) {
+    throw new ForbiddenError("Incorrect password.");
   }
 
   if (!process.env.AUTH_SECRET_KEY) {
