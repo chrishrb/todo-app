@@ -1,26 +1,26 @@
 import { defineStore } from 'pinia'
 import baseApi from '@/common/base-api.service';
-import { deleteToken, getToken, saveToken } from '@/common/jwt.service';
 
-export const useAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore({
+  id: "auth",
   state: () => ({
-    token: getToken(),
+    jwt: null,
   }),
   actions: {
-    async login(email: string, password: string): Promise<void> {
-      return baseApi.post("/auth/login", { "email": email, "password": password })
-        .then((response) => {
-          saveToken(response.data.access_token);
-          this.token = getToken()
-        })
-        .catch((error) => {
-          deleteToken();
-          console.log(error);
-          throw Error("Auth error");
-        })
+    async login(email: string, password: string) {
+      try {
+        const response = await baseApi.post("/auth/login", { email, password })
+        this.jwt = response.data
+        return true
+      } catch (error) {
+        console.error(error)
+        return false
+      }
     },
   },
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isLoggedIn(): boolean {
+      return !!this.jwt
+    }
   }
-});
+})
