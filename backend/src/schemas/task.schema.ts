@@ -2,10 +2,7 @@ import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "c
 
 class TaskSchema {
 
-  @IsNumber()
-  id: number
-
-  @IsNotEmpty()
+  @IsString()
   title: string;
 
   @IsBoolean()
@@ -49,13 +46,13 @@ export class CreateTaskSchema extends TaskSchema {
  */
 export class UpdateTaskSchema extends TaskSchema {
   @IsOptional()
-  @IsNotEmpty()
   title: string;
 
   @IsOptional()
   description: string;
 
   @IsOptional()
+  @IsDate()
   dueDate: Date;
   
   constructor(title: string, description: string, dueDate: Date) {
