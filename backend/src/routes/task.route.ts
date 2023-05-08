@@ -17,7 +17,7 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .post(async (req, res) => {
-    const taskDto = new CreateTaskSchema(req.body.title, req.body.description, req.body.dueDate);
+    const taskDto = new CreateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate));
 
     await validateSafe(taskDto);
     const task = await taskService.crateTask(taskDto);
@@ -53,7 +53,7 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(async (req, res) => {
-    const task = await taskService.readTask(req.body.taskId);
+    const task = await taskService.readTask(parseInt(req.params.taskId));
     res.status(200).json(task);
   })
   /**

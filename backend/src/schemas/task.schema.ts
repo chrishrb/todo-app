@@ -17,8 +17,11 @@ class TaskSchema {
   @IsDate()
   dueDate: Date;
 
-  constructor() {
+  constructor(title: string, description: string, dueDate: Date) {
     this.isChecked = false;
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
   }
 }
 
@@ -32,10 +35,7 @@ class TaskSchema {
  */
 export class CreateTaskSchema extends TaskSchema {
   constructor(title: string, description: string, dueDate: Date) {
-    super();
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
+    super(title, description, dueDate);
   }
 }
 
@@ -59,10 +59,7 @@ export class UpdateTaskSchema extends TaskSchema {
   dueDate: Date;
   
   constructor(title: string, description: string, dueDate: Date) {
-    super()
-    this.title = title
-    this.description = description; 
-    this.dueDate = dueDate;
+    super(title, description, dueDate);
   }
 }
 
@@ -79,12 +76,9 @@ export class ReadTaskSchema extends TaskSchema {
   @IsNumber()
   id: number;
 
-  constructor(title: string, description: string, dueDate: Date, isChecked: boolean) {
-    super();
-    this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
+  constructor(userId: number, title: string, description: string, dueDate: Date, isChecked: boolean) {
+    super(title, description, dueDate);
     this.isChecked = isChecked;
-
+    this.id = userId;
   }
 }
