@@ -6,6 +6,16 @@ import { validateSafe } from "../exceptions/helpers";
 export const taskRouter = Router()
 
 taskRouter.route("/")
+  /**
+   * POST /api/v1/tasks
+   * @tags Tasks - Task endpoint
+   * @summary Create a new Task
+   * @security BearerAuth
+   * @param {CreateTaskSchema} request.body.required - task - application/json
+   * @return {ReadTaskSchema} 200 - success response
+   * @return {BaseError} 400 - Validation error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .post(async (req, res) => {
     const taskDto = new CreateTaskSchema(req.body.title, req.body.description, req.body.dueDate);
 
@@ -14,16 +24,51 @@ taskRouter.route("/")
 
     res.status(200).json(task);
   })
+  /**
+   * GET /api/v1/tasks
+   * @tags Tasks - Task endpoint
+   * @summary Get all tasks
+   * @security BearerAuth
+   * @return {array<ReadTaskSchema>} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .get(async (_, res) => {
     const tasks = taskService.readAllTasks();
     res.status(200).json(tasks);
   })
 
 taskRouter.route("/:taskId")
+  /**
+   * GET /api/v1/tasks/{taskId}
+   * @tags Tasks - Task endpoint
+   * @summary Get specific task
+   * @security BearerAuth
+   * @param {number} taskId.path - Task ID
+   * @return {ReadTaskSchema} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 404 - NotFound error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .get(async (req, res) => {
     const task = await taskService.readTask(req.body.taskId);
     res.status(200).json(task);
   })
+  /**
+   * PUT /api/v1/tasks/{taskId}
+   * @tags Tasks - Task endpoint
+   * @summary Update a task
+   * @security BearerAuth
+   * @param {number} taskId.path - Task ID
+   * @return {ReadTaskSchema} 200 - success response
+   * @return {BaseError} 400 - Bad Request
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 404 - NotFound error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .put(async (req, res) => {
     const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate);
 
@@ -32,6 +77,19 @@ taskRouter.route("/:taskId")
 
     res.status(200).json(task);
   })
+  /**
+   * DELETE /api/v1/tasks/{taskId}
+   * @tags Tasks - Task endpoint
+   * @summary Update a task
+   * @security BearerAuth
+   * @param {number} taskId.path - Task ID
+   * @return {ReadTaskSchema} 200 - success response
+   * @return {BaseError} 400 - Bad Request
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 404 - NotFound error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .delete(async (req, res) => {
     const task = await taskService.deleteTask(req.body.taskId);
 
@@ -42,6 +100,19 @@ taskRouter.route("/:taskId")
   })
 
 taskRouter.route("/:taskId/toggle")
+  /**
+   * PUT /api/v1/tasks/{taskId}/toggle
+   * @tags Tasks - Task endpoint
+   * @summary Toggle the isChecked field
+   * @security BearerAuth
+   * @param {number} taskId.path - Task ID
+   * @return {ReadTaskSchema} 200 - success response
+   * @return {BaseError} 400 - Bad Request
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 404 - NotFound error
+   * @return {BaseError} 500 - Internal Server error
+   */
   .put(async (req, res) => {
     const task = await taskService.toggleTask(req.body.taskId);
     res.status(200).json(task);

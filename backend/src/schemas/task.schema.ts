@@ -22,6 +22,14 @@ class TaskSchema {
   }
 }
 
+/**
+ * CreateTaskSchema
+ *
+ * @typedef {object} CreateTaskSchema
+ * @property {string} title.required - Title
+ * @property {string} description - Description
+ * @property {string} duedate - Due date
+ */
 export class CreateTaskSchema extends TaskSchema {
   constructor(title: string, description: string, dueDate: Date) {
     super();
@@ -31,6 +39,14 @@ export class CreateTaskSchema extends TaskSchema {
   }
 }
 
+/**
+ * UpdateTaskSchema
+ *
+ * @typedef {object} UpdateTaskSchema
+ * @property {string} title - Title
+ * @property {string} description - Description
+ * @property {string} duedate - Due date
+ */
 export class UpdateTaskSchema extends TaskSchema {
   @IsOptional()
   @IsNotEmpty()
@@ -50,6 +66,15 @@ export class UpdateTaskSchema extends TaskSchema {
   }
 }
 
+/**
+ * ReadTaskSchema
+ *
+ * @typedef {object} ReadTaskSchema
+ * @property {number} id - ID
+ * @property {string} title - Title
+ * @property {string} description - Description
+ * @property {string} dueDate - Due date
+ */
 export class ReadTaskSchema extends TaskSchema {
   @IsNumber()
   id: number;
