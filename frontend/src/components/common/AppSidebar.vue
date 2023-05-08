@@ -64,7 +64,7 @@
           </a>
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600"
             href="javascript:;" @click="logout">
-            <Cog8ToothIcon class="w-5 h-5" />
+            <ArrowLeftOnRectangleIcon class="w-5 h-5" />
             Logout
           </a>
         </li>
@@ -87,7 +87,7 @@
 <script lang="ts" setup>
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
-import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon } from "@heroicons/vue/24/outline"
+import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
 import router from "@/router";
 
 const authStore = useAuthStore();
