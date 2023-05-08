@@ -1,10 +1,7 @@
 <template>
-  <div id="app">
-    <!-- <AppSidebar/> -->
-    <!-- <div class="p-4 ml-80"> -->
+    <div class="p-4 ml-80">
       <router-view></router-view>
-    <!-- </div> -->
-  </div>
+    </div>
 </template>
 
 <script lang="ts">

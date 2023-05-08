@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/LoginView.vue'
 import { useAuthStore } from "@/stores/auth"
 
 
@@ -8,27 +9,34 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: () => {
+        const authStore = useAuthStore()
+        return authStore.isLoggedIn ? '/home' : '/login'
+      }
     },
     {
-      path: '/users',
-      name: 'users',
-      component: () => import('../views/UsersView.vue'),
-    }
+      path: '/home',
+      name: 'home',
+      component: HomeView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
   ]
 })
 
-router.beforeResolve(async (to: any, from: any, next: any) => {
+router.beforeResolve(async (to, from, next) => {
   const authStore = useAuthStore()
-
-  if (!authStore.isAuthenticated && to.name !== 'home') {
-    next({ name: 'home' })
-    return false;
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    next({ name: 'login' })
+  } else {
+    next()
   }
-
-  next();
-});
+})
 
 export default router
-

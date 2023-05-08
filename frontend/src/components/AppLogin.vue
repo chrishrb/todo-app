@@ -21,6 +21,7 @@
   </main>
 </template>
 
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAuthStore } from "@/stores/auth"
@@ -42,8 +43,9 @@ export default defineComponent({
   methods: {
     async login() {
       await this.authStore.login(this.email, this.password);
-      router.push({ name: "users" })
+      router.push('/home')
     }
   }
 });
 </script>
+
