@@ -1,6 +1,8 @@
 <template>
   <AppSidebar/>
-  <AppTask/>
+  <div  class="p-4 ml-80">
+    <AppTask/>
+  </div>
 </template>
 
 <script lang="ts" setup>
