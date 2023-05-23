@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import baseApi from '@/common/base-api.service';
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore({
+  id: "user",
   state: () => ({
     profile: null,
   }),
@@ -17,6 +18,14 @@ export const useUserStore = defineStore('user', {
           throw Error("User profile error");
         })
     },
+    async createUser(firstName: string, lastName: string, email: string, password: string) {
+      try {
+        const response = await baseApi.post("/users", { email, password, firstName, lastName })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   },
   getters: {
     getProfile: (state) => state.profile,
