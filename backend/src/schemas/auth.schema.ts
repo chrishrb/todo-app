@@ -81,10 +81,10 @@ export class JwtPayloadSchema {
     if (typeof obj == 'string') {
       throw new ForbiddenError();
     }
-    if (!obj.type || obj.type !== type) {
+    if (obj.type == null || obj.type !== type) {
       throw new ForbiddenError();
     }
-    if (!obj.userId || !obj.isAdmin) {
+    if (obj.userId == null || obj.isAdmin == null) {
       throw new ForbiddenError();
     }
     return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);
