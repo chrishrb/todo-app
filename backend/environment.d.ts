@@ -2,6 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       AUTH_SECRET_KEY: string;
+      NODE_ENV: string;
     }
   }
 }

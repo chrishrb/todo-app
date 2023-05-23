@@ -21,6 +21,18 @@ export class LoginSchema {
     this.password = password;
   }
 }
+/**
+ * TokenSchema
+ */
+export class TokenSchema {
+  accessToken: string;
+  refreshToken: string
+
+  constructor(accessToken: string, refreshToken: string) {
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
+}
 
 /**
  * AuthLoginSchema
@@ -38,6 +50,10 @@ export class AuthLoginSchema {
   }
 }
 
+export enum JwtType {
+  ACCESS_TOKEN = "accessToken",
+  REFRESH_TOKEN = "refreshToken"
+}
 /**
  * JwtPayloadSchema
  *
@@ -47,27 +63,30 @@ export class AuthLoginSchema {
  * @property {boolean} isAdmin - IsAdmin
  */
 export class JwtPayloadSchema {
+  type: JwtType;
   userId: string;
-  email: string;
   isAdmin: boolean;
 
-  constructor(userId: string, email: string, isAdmin: boolean) {
+  constructor(type: JwtType, userId: string, isAdmin: boolean) {
+    this.type = type
     this.userId = userId;
-    this.email = email;
     this.isAdmin = isAdmin;
   }
 
-  toPlainObj(): { userId: string, email: string } {
+  toPlainObj(): { type: string, userId: string, isAdmin: boolean } {
     return Object.assign({}, this);
   }
 
-  static fromPlainObj(obj: string | JwtPayload) {
+  static fromPlainObj(type: JwtType, obj: string | JwtPayload) {
     if (typeof obj == 'string') {
       throw new ForbiddenError();
     }
-    if (obj.email == null || obj.userId == null || obj.isAdmin == null) {
+    if (!obj.type || obj.type !== type) {
       throw new ForbiddenError();
     }
-    return new JwtPayloadSchema(obj.userId, obj.email, obj.isAdmin);
+    if (!obj.userId || !obj.isAdmin) {
+      throw new ForbiddenError();
+    }
+    return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);
   }
 }
