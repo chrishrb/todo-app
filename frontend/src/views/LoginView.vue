@@ -1,8 +1,8 @@
 <template>
     <AppLogin/>
-  </template>
+</template>
   
-  <script lang="ts" setup>
-  import AppLogin from '@/components/AppLogin.vue'
-  </script>
+<script lang="ts" setup>
+import AppLogin from '@/components/AppLogin.vue'
+</script>
   
