@@ -66,8 +66,22 @@ Feature: Authentication
     And the response body should be json:
       """
         {
+          "type": "accessToken",
           "userId": uuid(4),
-          "email": "john.doe@example.com",
           "isAdmin": false
+        }
+      """
+
+  Scenario: Refresh access token
+    Given I am a normal user
+    And I am authenticated
+    Given the Content-Type is 'application/json'
+    When I send a GET request to "http://localhost:8000/api/v1/auth/refresh"
+    Then the response code should be 200
+    And the response body should be json:
+      """
+        {
+          "tokenType": "Bearer",
+          "accessToken": String
         }
       """
