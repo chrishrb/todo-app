@@ -47,7 +47,7 @@ Feature: User
 
   Scenario: Get infos of current user (not logged in)
     When I send a GET request to "http://localhost:8000/api/v1/users/me"
-    Then the response code should be 403
+    Then the response code should be 401
 
   Scenario: Create User
     Given the Content-Type is 'application/json'

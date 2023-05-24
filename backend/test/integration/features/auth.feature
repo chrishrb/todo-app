@@ -28,12 +28,12 @@ Feature: Authentication
           "password": "root"
         }
       """
-    Then the response code should be 403
+    Then the response code should be 401
     And the response body should be json:
       """
         {
-          "errorCode": 403,
-          "errorMessage": "Forbidden",
+          "errorCode": 401,
+          "errorMessage": "Unauthorized",
           "details": "Email not found."
         }
       """
@@ -47,12 +47,12 @@ Feature: Authentication
           "password": "wrong_password"
         }
       """
-    Then the response code should be 403
+    Then the response code should be 401
     And the response body should be json:
       """
         {
-          "errorCode": 403,
-          "errorMessage": "Forbidden",
+          "errorCode": 401,
+          "errorMessage": "Unauthorized",
           "details": "Incorrect password."
         }
       """

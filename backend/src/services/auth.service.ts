@@ -1,16 +1,39 @@
 import { PrismaClient } from "@prisma/client";
-import { ForbiddenError } from "../exceptions/errors/login-error";
+import { ForbiddenError, UnauthorizedError } from "../exceptions/errors/login-error";
 import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/auth.schema";
 import { Response, Request, NextFunction } from "express";
 import * as bcrypt from 'bcrypt';
 import { config } from "../utils/config";
+import { createClient } from 'redis';
+import dayjs from 'dayjs';
+import ms from 'ms'
 
 const prisma = new PrismaClient()
+const redis = createClient();
+
+async function saveTokenToBlacklist(token: string, expiresIn: string) {
+  await redis.connect();
+  await redis.set(`blacklist_${token}`, 'true')
+  await redis.expireAt(`blacklist_${token}`, dayjs().add(ms(expiresIn), 'milliseconds').add(1, 'hour').toDate())
+  await redis.disconnect()
+}
+
+async function isTokenOnBlacklist(token: string): Promise<boolean> {
+  await redis.connect();
+
+  const value = await redis.get(`blacklist_${token}`)
+  await redis.disconnect()
+
+  if (value) {
+    return true;
+  }
+  return false;
+}
 
 function signToken(payload: object, expiresIn: string | number) {
-  return jsonwebtoken.sign(payload, process.env.AUTH_SECRET_KEY!, { expiresIn: expiresIn})
+  return jsonwebtoken.sign(payload, process.env.AUTH_SECRET_KEY!, { expiresIn: expiresIn })
 }
 
 function verifyToken(type: JwtType, token: string) {
@@ -18,9 +41,10 @@ function verifyToken(type: JwtType, token: string) {
     const decoded = jsonwebtoken.verify(token, process.env.AUTH_SECRET_KEY!);
     return JwtPayloadSchema.fromPlainObj(type, decoded);
   } catch {
-    throw new ForbiddenError();
+    throw new UnauthorizedError();
   }
 }
+
 /*
  * Login user with email and password
  *
@@ -34,12 +58,12 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
   });
 
   if (!user) {
-    throw new ForbiddenError("Email not found.");
+    throw new UnauthorizedError("Email not found.");
   }
 
   const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
   if (!isCorrectPassword) {
-    throw new ForbiddenError("Incorrect password.");
+    throw new UnauthorizedError("Incorrect password.");
   }
 
   const accessTokenPayload = new JwtPayloadSchema(JwtType.ACCESS_TOKEN, user.id, user.isAdmin);
@@ -59,8 +83,8 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
  * @param next
  */
 export async function refresh(refreshToken?: string): Promise<TokenSchema> {
-  if (!refreshToken) {
-    throw new ForbiddenError("No refresh token");
+  if (!refreshToken || await isTokenOnBlacklist(refreshToken)) {
+    throw new UnauthorizedError("No refresh token or not valid anymore.");
   }
   const decodedRefreshToken = verifyToken(JwtType.REFRESH_TOKEN, refreshToken);
 
@@ -73,12 +97,19 @@ export async function refresh(refreshToken?: string): Promise<TokenSchema> {
 /*
  * Logout
  *
- * @param req
- * @param res
- * @param next
+ * @param refreshToken
+ * @param accessToken
  */
-export function logout(): void {
-  throw new InternalError("Not implemented yet.")
+export async function logout(accessToken?: string, refreshToken?: string): Promise<void> {
+  if (refreshToken) {
+    await saveTokenToBlacklist(refreshToken, config.refreshTokenExpiryTime);
+  }
+
+  if (!accessToken || typeof accessToken !== 'string' || await isTokenOnBlacklist(accessToken)) {
+    throw new UnauthorizedError("Invalid authorization token provided.")
+  }
+
+  await saveTokenToBlacklist(accessToken, config.accessTokenExpiryTime);
 }
 
 /*
@@ -89,19 +120,19 @@ export function logout(): void {
  * @param res
  * @param next
  */
-export function verify(req: Request, res: Response, next: NextFunction): void {
+export async function verify(req: Request, res: Response, next: NextFunction): Promise<void> {
   if (!process.env.AUTH_SECRET_KEY) {
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
   const bearerHeader = req.headers['authorization']
-  if (bearerHeader == null || typeof bearerHeader !== 'string') {
-    throw new ForbiddenError();
+  if (!bearerHeader || typeof bearerHeader !== 'string' || await isTokenOnBlacklist(bearerHeader)) {
+    throw new UnauthorizedError();
   }
   const [type, token] = bearerHeader.split(" ");
 
   if (type !== 'Bearer') {
-    throw new ForbiddenError();
+    throw new UnauthorizedError();
   }
 
   res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)

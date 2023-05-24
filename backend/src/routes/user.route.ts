@@ -51,7 +51,7 @@ userRouter.route("/")
  * @security BearerAuth
  * @summary Get current logged in user
  * @return {ReadUserSchema} 200 - success response
- * @return {BaseError} 403 - Forbidden error
+ * @return {BaseError} 401 - Unauthorized error
  * @return {BaseError} 500 - Internal Server error
  */
 userRouter.route("/me")
