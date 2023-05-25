@@ -9,15 +9,14 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email: string, password: string) {
-      try {
         const response = await baseApi.post("/auth/login", { email, password })
-        this.jwt = response.data
-        localStorage.setItem('jwt', JSON.stringify(response.data))
-        return true
-      } catch (error) {
-        console.error(error)
-        return false
-      }
+        if (response.status === 200){
+          this.jwt = response.data
+          localStorage.setItem('jwt', JSON.stringify(response.data))
+          return true
+        } else {
+          throw new Error(JSON.parse(response.request.response).details)
+        }
     },
     logout(){
       localStorage.removeItem('jwt')

@@ -35,6 +35,7 @@
                         <component :is="showPassword ? 'EyeSlashIcon' : 'EyeIcon'" class="w-5 h-5" />
                       </button>
                     </div>
+                    <p v-if="error" class="text-xs text-red-600 mt-2" id="login-error">{{ error }}</p>
                   </div>
                 </div>
                   <div class="flex">
@@ -73,6 +74,7 @@ export default defineComponent({
       email: "root@example.com",
       password: "root",
       showPassword: false,
+      error: null,
     }
   },
   computed: {
@@ -87,8 +89,13 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      await this.authStore.login(this.email, this.password);
-      router.push('/home')
+      try {
+        await this.authStore.login(this.email, this.password);
+        router.push('/home')
+      }
+      catch (error: any) {
+        this.error = error.message
+      }
     },
     toggleShow() {
       this.showPassword = !this.showPassword;
