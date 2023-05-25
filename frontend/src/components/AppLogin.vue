@@ -6,14 +6,7 @@
         <div class="p-4 sm:p-7">
           <div class="text-center">
             <h1 class="block text-2xl font-bold text-gray-800">Sign in</h1>
-            <p class="mt-2 text-sm text-gray-600">
-              Don't have an account yet?
-              <a class="text-blue-600 decoration-2 hover:underline font-medium" href="../examples/html/signup.html">
-                Sign up here
-              </a>
-            </p>
           </div>
-
           <div class="mt-5">
 
             <!-- Form -->
@@ -44,9 +37,13 @@
                     </div>
                   </div>
                 </div>
-                <!-- End Form Group -->
-                <button type="submit" class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">Login</button>
-              </div>
+                  <div class="flex">
+                    <router-link to="/register" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
+                      <button type="button">Register</button>
+                    </router-link>
+                    <button type="submit" class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">Login</button>
+                  </div>
+                </div>
             </form>
             <!-- End Form -->
           </div>

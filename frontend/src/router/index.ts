@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import RegistrationView from '../views/RegistrationView.vue'
+import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
 
 
@@ -27,6 +29,23 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegistrationView,
+    },
+    {
+      path: '/registerSuccess',
+      name: 'registerSuccess',
+      component: RegistrationSuccessView,
+      beforeEnter: (to, from, next) => {
+        if (from && from.name === 'register') {
+          next()
+        } else {
+          next({ name: 'login' })
+        }
+      },
+    }
   ]
 })
 
