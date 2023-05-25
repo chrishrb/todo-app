@@ -1,24 +1,22 @@
 import { defineStore } from 'pinia'
 import baseApi from '@/common/base-api.service';
 
-
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
-    jwt: localStorage.getItem('jwt') || null,  
+    jwt: localStorage.getItem('jwt') || null,
   }),
   actions: {
     async login(email: string, password: string) {
-        const response = await baseApi.post("/auth/login", { email, password })
-        if (response.status === 200){
+      return baseApi.post("/auth/login", { email, password })
+        .then((response) => {
           this.jwt = response.data
           localStorage.setItem('jwt', JSON.stringify(response.data))
-          return true
-        } else {
-          throw new Error(JSON.parse(response.request.response).details)
-        }
+        }).catch(e => {
+          throw new Error(e.response.data.details)
+        })
     },
-    logout(){
+    logout() {
       localStorage.removeItem('jwt')
       this.jwt = null
     }
