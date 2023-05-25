@@ -85,3 +85,11 @@ Feature: Authentication
           "accessToken": String
         }
       """
+
+  Scenario: Logout user
+    Given I am a normal user
+    And I am authenticated
+    Given the Content-Type is 'application/json'
+    When I send a GET request to "http://localhost:8000/api/v1/auth/logout"
+    Then the response code should be 200
+    And the user is logged out
