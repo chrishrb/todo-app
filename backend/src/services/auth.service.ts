@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ForbiddenError, UnauthorizedError } from "../exceptions/errors/login-error";
+import { UnauthorizedError } from "../exceptions/errors/login-error";
 import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/auth.schema";
@@ -22,7 +22,6 @@ async function saveTokenToBlacklist(token: string, expiresIn: string) {
 
 async function isTokenOnBlacklist(token: string): Promise<boolean> {
   await redis.connect();
-
   const value = await redis.get(`blacklist_${token}`)
   await redis.disconnect()
 
@@ -43,6 +42,18 @@ function verifyToken(type: JwtType, token: string) {
   } catch {
     throw new UnauthorizedError();
   }
+}
+
+function getAccessTokenFromHeader(bearerHeader?: string) {
+  if (!bearerHeader || typeof bearerHeader !== 'string') {
+    throw new UnauthorizedError();
+  }
+  const [type, token] = bearerHeader.split(" ");
+
+  if (type !== 'Bearer') {
+    throw new UnauthorizedError();
+  }
+  return token;
 }
 
 /*
@@ -100,16 +111,16 @@ export async function refresh(refreshToken?: string): Promise<TokenSchema> {
  * @param refreshToken
  * @param accessToken
  */
-export async function logout(accessToken?: string, refreshToken?: string): Promise<void> {
-  if (refreshToken) {
-    await saveTokenToBlacklist(refreshToken, config.refreshTokenExpiryTime);
+export async function logout(accessTokenHeader?: string, refreshTokenHeader?: string): Promise<void> {
+  if (refreshTokenHeader) {
+    await saveTokenToBlacklist(refreshTokenHeader, config.refreshTokenExpiryTime);
   }
 
-  if (!accessToken || typeof accessToken !== 'string' || await isTokenOnBlacklist(accessToken)) {
-    throw new UnauthorizedError("Invalid authorization token provided.")
+  const token = getAccessTokenFromHeader(accessTokenHeader)
+  if (await isTokenOnBlacklist(token)) {
+    throw new UnauthorizedError("Invalid token")
   }
-
-  await saveTokenToBlacklist(accessToken, config.accessTokenExpiryTime);
+  await saveTokenToBlacklist(token, config.accessTokenExpiryTime);
 }
 
 /*
@@ -125,13 +136,8 @@ export async function verify(req: Request, res: Response, next: NextFunction): P
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
-  const bearerHeader = req.headers['authorization']
-  if (!bearerHeader || typeof bearerHeader !== 'string' || await isTokenOnBlacklist(bearerHeader)) {
-    throw new UnauthorizedError();
-  }
-  const [type, token] = bearerHeader.split(" ");
-
-  if (type !== 'Bearer') {
+  const token = getAccessTokenFromHeader(req.headers['authorization'])
+  if (await isTokenOnBlacklist(token)) {
     throw new UnauthorizedError();
   }
 
