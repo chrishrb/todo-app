@@ -10,23 +10,29 @@ const prisma = new PrismaClient();
  * @param taskDto
  */
 export async function crateTask(taskDto: CreateTaskSchema): Promise<ReadTaskSchema> {
+
+  console.log("createtask", taskDto)
+  // taskDto.dueDate = new Date()
+  // console.log("new date", taskDto)
+
   const task = await prisma.task.create({
     data: {
       title: taskDto.title,
       description: taskDto.description,
       dueDate: taskDto.dueDate,
+      user: { connect: { id: taskDto.userId}},
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
 }
 
 /**
  * Update Task
  *
- * @param title, isChecked, description, dueDate
+ * @param taskId, taskDto
  */
-export async function updateTask(taskId: number, taskDto: UpdateTaskSchema) {
+export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
   const task = await prisma.task.update({
     where: {
       id: taskId,
@@ -39,15 +45,15 @@ export async function updateTask(taskId: number, taskDto: UpdateTaskSchema) {
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
 }
 
 /**
  * Read Task
  *
- * @param id
+ * @param taskId
  */
-export async function readTask(taskId: number): Promise<ReadTaskSchema> {
+export async function readTask(taskId: string): Promise<ReadTaskSchema> {
   const task = await prisma.task.findUnique({
     where: {
       id: taskId,
@@ -58,7 +64,7 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
     throw new NotFoundError(`Task with id: ${taskId} not found.`)
   }
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked)
+  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
 }
 
 /**
@@ -67,7 +73,7 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
  */
 export async function readAllTasks(): Promise<ReadTaskSchema[]> {
   const tasks = await prisma.task.findMany();
-  return tasks.map(task => new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked));
+  return tasks.map(task => new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate));
 }
 
 /**
@@ -75,17 +81,17 @@ export async function readAllTasks(): Promise<ReadTaskSchema[]> {
  *
  * @param taskId
  */
-export async function deleteTask(taskId: number): Promise<ReadTaskSchema> {
+export async function deleteTask(taskId: string): Promise<ReadTaskSchema> {
   const task = await prisma.task.delete({
     where: {
       id: taskId,
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.description, task.dueDate, task.isChecked);
+  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
 }
 
-export async function toggleTask(taskId: number): Promise<ReadTaskSchema> {
+export async function toggleTask(taskId: string): Promise<ReadTaskSchema> {
   const taskThen = await prisma.task.findUnique({
     where: {
       id: taskId,
@@ -105,5 +111,5 @@ export async function toggleTask(taskId: number): Promise<ReadTaskSchema> {
     }
   })
 
-  return new ReadTaskSchema(taskId, taskNow.title, taskNow.description, taskNow.dueDate, taskNow.isChecked);
+  return new ReadTaskSchema(taskNow.id, taskNow.title, taskNow.isChecked, taskNow.userId, taskNow.description, taskNow.dueDate);
 }
