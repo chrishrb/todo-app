@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
  *
  * @param taskDto
  */
-export async function crateTask(taskDto: CreateTaskSchema): Promise<ReadTaskSchema> {
+export async function createTask(taskDto: CreateTaskSchema): Promise<ReadTaskSchema> {
 
   console.log("createtask", taskDto)
   // taskDto.dueDate = new Date()
@@ -24,7 +24,8 @@ export async function crateTask(taskDto: CreateTaskSchema): Promise<ReadTaskSche
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
+  console.log("TASK: ", task)
+  return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
 /**
@@ -45,7 +46,7 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
+  return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
 /**
@@ -64,7 +65,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
     throw new NotFoundError(`Task with id: ${taskId} not found.`)
   }
 
-  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
+  return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
 /**
@@ -73,7 +74,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
  */
 export async function readAllTasks(): Promise<ReadTaskSchema[]> {
   const tasks = await prisma.task.findMany();
-  return tasks.map(task => new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate));
+  return tasks.map(task => new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked));
 }
 
 /**
@@ -88,7 +89,7 @@ export async function deleteTask(taskId: string): Promise<ReadTaskSchema> {
     }
   });
 
-  return new ReadTaskSchema(task.id, task.title, task.isChecked, task.userId, task.description, task.dueDate);
+  return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
 export async function toggleTask(taskId: string): Promise<ReadTaskSchema> {
@@ -111,5 +112,5 @@ export async function toggleTask(taskId: string): Promise<ReadTaskSchema> {
     }
   })
 
-  return new ReadTaskSchema(taskNow.id, taskNow.title, taskNow.isChecked, taskNow.userId, taskNow.description, taskNow.dueDate);
+  return new ReadTaskSchema(taskNow.id, taskNow.userId, taskNow.title, taskNow.description, taskNow.dueDate, taskNow.isChecked);
 }
