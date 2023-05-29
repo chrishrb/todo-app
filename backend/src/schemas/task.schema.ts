@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 class TaskSchema {
 
@@ -6,20 +6,12 @@ class TaskSchema {
   title: string;
 
   @IsBoolean()
-  isChecked: boolean
+  isChecked?: boolean
 
-  @IsString()
-  description: string;
-  
-  @IsDate()
-  dueDate: Date;
-
-  constructor(title: string, description: string, dueDate: Date) {
-    this.isChecked = false;
+  constructor(title: string) {
     this.title = title;
-    this.description = description;
-    this.dueDate = dueDate;
-  }
+    this.isChecked = false;
+ }
 }
 
 /**
@@ -31,8 +23,26 @@ class TaskSchema {
  * @property {string} duedate - Due date
  */
 export class CreateTaskSchema extends TaskSchema {
-  constructor(title: string, description: string, dueDate: Date) {
-    super(title, description, dueDate);
+
+  @IsNotEmpty()
+  @IsString()
+  title: string;
+
+  @IsOptional()
+  @IsString()
+  description: string | null; 
+
+  @IsOptional()
+  dueDate: Date | null;
+
+  @IsUUID(4)
+  userId: string;
+
+  constructor(title: string, userId: string, description: string | null, dueDate: Date | null) {
+    super(title)
+    this.userId = userId,
+    this.description = description,
+    this.dueDate = dueDate
   }
 }
 
@@ -43,20 +53,24 @@ export class CreateTaskSchema extends TaskSchema {
  * @property {string} title - Title
  * @property {string} description - Description
  * @property {string} duedate - Due date
+ * @property {boolean} isChecked - Is completed?
  */
 export class UpdateTaskSchema extends TaskSchema {
-  @IsOptional()
-  title: string;
 
-  @IsOptional()
-  description: string;
+  @IsString()
+  description: string | null;
 
-  @IsOptional()
   @IsDate()
-  dueDate: Date;
+  dueDate: Date | null;
+
+  @IsBoolean()
+  isChecked: boolean;
   
-  constructor(title: string, description: string, dueDate: Date) {
-    super(title, description, dueDate);
+  constructor(title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+    super(title);
+    this. description = description;
+    this.dueDate = dueDate;
+    this.isChecked = isChecked;
   }
 }
 
@@ -70,12 +84,29 @@ export class UpdateTaskSchema extends TaskSchema {
  * @property {string} dueDate - Due date
  */
 export class ReadTaskSchema extends TaskSchema {
-  @IsNumber()
-  id: number;
 
-  constructor(userId: number, title: string, description: string, dueDate: Date, isChecked: boolean) {
-    super(title, description, dueDate);
+  @IsUUID(4)
+  taskId: string;
+
+  @IsUUID(4)
+  userId: string;
+
+  @IsOptional()
+  description: string | null;
+
+  @IsOptional()
+  @IsDate()
+  dueDate: Date | null;
+
+  @IsBoolean()
+  isChecked: boolean;
+
+  constructor(taskId: string, userId: string, title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+    super(title);
+    this.taskId = taskId;
+    this.userId = userId;
+    this.description = description;
+    this.dueDate = dueDate,
     this.isChecked = isChecked;
-    this.id = userId;
   }
 }
