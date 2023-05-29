@@ -17,17 +17,17 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .post(async (req, res) => {
-    const taskDto = new CreateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate));
+    const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, new Date(req.body.dueDate));
 
     await validateSafe(taskDto);
-    const task = await taskService.crateTask(taskDto);
+    const task = await taskService.createTask(taskDto);
 
     res.status(200).json(task);
   })
   /**
    * GET /api/v1/tasks
    * @tags Tasks - Task endpoint
-   * @summary Get all tasks
+   * @summary Get all Tasks
    * @security BearerAuth
    * @return {array<ReadTaskSchema>} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
@@ -35,7 +35,7 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(async (_, res) => {
-    const tasks = taskService.readAllTasks();
+    const tasks = await taskService.readAllTasks();
     res.status(200).json(tasks);
   })
 
@@ -45,7 +45,7 @@ taskRouter.route("/:taskId")
    * @tags Tasks - Task endpoint
    * @summary Get specific task
    * @security BearerAuth
-   * @param {number} taskId.path - Task ID
+   * @param {string} taskId.path - Task ID
    * @return {ReadTaskSchema} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 403 - Forbidden error
@@ -53,15 +53,16 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(async (req, res) => {
-    const task = await taskService.readTask(parseInt(req.params.taskId));
+    const task = await taskService.readTask(req.params.taskId);
     res.status(200).json(task);
   })
   /**
    * PUT /api/v1/tasks/{taskId}
    * @tags Tasks - Task endpoint
-   * @summary Update a task
+   * @summary Update a Task
    * @security BearerAuth
-   * @param {number} taskId.path - Task ID
+   * @param {string} taskId.path - Task ID
+   * @param {UpdateTaskSchema} request.body.required - Update Task schema
    * @return {ReadTaskSchema} 200 - success response
    * @return {BaseError} 400 - Bad Request
    * @return {BaseError} 401 - Unauthorized error
@@ -70,19 +71,19 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .put(async (req, res) => {
-    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate);
+    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate), req.body.isChecked);
 
     await validateSafe(taskDto);
-    const task = await taskService.updateTask(req.body.taskId, taskDto);
+    const task = await taskService.updateTask(req.params.taskId, taskDto);
 
     res.status(200).json(task);
   })
   /**
    * DELETE /api/v1/tasks/{taskId}
    * @tags Tasks - Task endpoint
-   * @summary Update a task
+   * @summary Delete a Task
    * @security BearerAuth
-   * @param {number} taskId.path - Task ID
+   * @param {string} taskId.path - Task ID
    * @return {ReadTaskSchema} 200 - success response
    * @return {BaseError} 400 - Bad Request
    * @return {BaseError} 401 - Unauthorized error
@@ -93,7 +94,7 @@ taskRouter.route("/:taskId")
   .delete(async (req, res) => {
     const task = await taskService.deleteTask(req.body.taskId);
 
-    if(req.body.taskId === task.id) {
+    if(req.body.taskId === task.taskId) {
       res.status(202).json(task);
     }
     res.status(204).json(task);
@@ -105,7 +106,7 @@ taskRouter.route("/:taskId/toggle")
    * @tags Tasks - Task endpoint
    * @summary Toggle the isChecked field
    * @security BearerAuth
-   * @param {number} taskId.path - Task ID
+   * @param {string} taskId.path - Task ID
    * @return {ReadTaskSchema} 200 - success response
    * @return {BaseError} 400 - Bad Request
    * @return {BaseError} 401 - Unauthorized error
