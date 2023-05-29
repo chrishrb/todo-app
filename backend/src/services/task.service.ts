@@ -11,18 +11,27 @@ const prisma = new PrismaClient();
  */
 export async function createTask(taskDto: CreateTaskSchema): Promise<ReadTaskSchema> {
 
-  console.log("createtask", taskDto)
+  // console.log("createtask", taskDto)
   // taskDto.dueDate = new Date()
   // console.log("new date", taskDto)
 
+  // const task = await prisma.task.create({
+  //   data: {
+  //     title: taskDto.title,
+  //     description: taskDto.description,
+  //     dueDate: taskDto.dueDate,
+  //     user: { connect: { id: taskDto.userId}},
+  //   }
+  // });
+
   const task = await prisma.task.create({
     data: {
-      title: taskDto.title,
-      description: taskDto.description,
-      dueDate: taskDto.dueDate,
-      user: { connect: { id: taskDto.userId}},
+      title: "test",
+      description: "test desc",
+      dueDate: new Date(),
+      user: { connect: { id: "ec1ceca3-8e9d-4b69-ac2b-8daf05d54cf2"  }}
     }
-  });
+  })
 
   console.log("TASK: ", task)
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
