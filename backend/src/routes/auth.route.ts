@@ -2,7 +2,8 @@ import Router from "express-promise-router"
 import * as authService from "../services/auth.service";
 import dayjs from 'dayjs';
 import { validateSafe } from "../exceptions/helpers";
-import { AuthLoginSchema, AuthLogoutSchema, LoginSchema } from "../schemas/auth.schema";
+import asyncHandler from 'express-async-handler'
+import { AuthLoginSchema, LoginSchema } from "../schemas/auth.schema";
 import { config } from "../utils/config";
 import ms from 'ms'
 
@@ -16,7 +17,7 @@ authRouter.route("/login")
    * @param {LoginSchema} request.body.required - userLogin - application/json
    * @return {AuthLoginSchema} 200 - success response
    */
-  .post(async (req, res) => {
+  .post(asyncHandler(async (req, res) => {
     const userDto = new LoginSchema(req.body.email, req.body.password);
 
     await validateSafe(userDto);
@@ -29,8 +30,9 @@ authRouter.route("/login")
     });
 
     res.status(200).json(new AuthLoginSchema(accessToken));
-  })
+  }))
 
+authRouter.route("/verify")
   /**
    * GET /api/v1/auth/verify
    * @tags Auth - Bearer authentication
@@ -40,10 +42,9 @@ authRouter.route("/login")
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
-authRouter.route("/verify")
-  .get(authService.verify, async (req, res) => {
+  .get(authService.verify, asyncHandler(async (req, res) => {
     res.status(200).json(res.locals.user)
-  })
+  }))
 
 authRouter.route("/refresh")
   /**
@@ -54,7 +55,7 @@ authRouter.route("/refresh")
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
-  .get(async (req, res) => {
+  .get(asyncHandler(async (req, res) => {
     const token = req.cookies.refresh_token
 
     const {refreshToken, accessToken} = await authService.refresh(token)
@@ -66,7 +67,7 @@ authRouter.route("/refresh")
     });
 
     res.status(200).json(new AuthLoginSchema(accessToken));
-  })
+  }))
 
 authRouter.route("/logout")
   /**
@@ -74,15 +75,15 @@ authRouter.route("/logout")
    * @tags Auth - Bearer authentication
    * @security BearerAuth
    * @summary Logout user
-   * @return {AuthLogoutSchema} 200 - success response
+   * @return 204 - success response
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
-  .get(async (req, res) => {
+  .get(asyncHandler(async (req, res) => {
     const refreshToken = req.cookies.refresh_token
     const accessToken = req.headers['authorization']
 
     await authService.logout(accessToken, refreshToken);
 
-    res.status(200).json(new AuthLogoutSchema())
-  })
+    res.status(204)
+  }))

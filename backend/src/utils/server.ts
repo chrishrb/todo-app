@@ -10,6 +10,7 @@ import { logger } from './logger';
 import { InternalError } from '../exceptions/errors/internal-error';
 import cookieParser from 'cookie-parser';
 import { taskRouter } from '../routes/task.route';
+import { meRouter } from '../routes/me.route';
 
 export function createServer(port: number): Server {
   console.log(`
@@ -33,8 +34,9 @@ export function createServer(port: number): Server {
   app.use(express.json())
   app.use(cookieParser())
   app.use(`${apiRoute}/users`, userRouter)
-  app.use(`${apiRoute}/auth`, authRouter)
   app.use(`${apiRoute}/tasks`, taskRouter)
+  app.use(`${apiRoute}/me`, meRouter)
+  app.use(`${apiRoute}/auth`, authRouter)
   app.use(errorHandlingMiddleware)
   app.use(notFoundMiddleware)
 

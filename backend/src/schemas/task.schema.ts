@@ -32,11 +32,36 @@ export class CreateTaskSchema extends TaskSchema {
   description: string | null; 
 
   @IsOptional()
+  @IsDate()
   dueDate: Date | null;
 
   constructor(title: string, userId: string, description: string | null, dueDate: Date | null) {
     super(title)
     this.userId = userId;
+    this.description = description;
+    this.dueDate = dueDate;
+  }
+}
+
+/**
+ * CreateTaskMeSchema
+ *
+ * @typedef {object} CreateTaskMeSchema
+ * @property {string} title.required - Title
+ * @property {string} description - Description
+ * @property {string} dueDate - Due date - date-time
+ */
+export class CreateTaskMeSchema extends TaskSchema {
+  @IsOptional()
+  @IsString()
+  description: string | null; 
+
+  @IsOptional()
+  @IsDate()
+  dueDate: Date | null;
+
+  constructor(title: string, description: string | null, dueDate: Date | null) {
+    super(title)
     this.description = description;
     this.dueDate = dueDate;
   }
