@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 
 class TaskSchema {
   @IsNotEmpty()
@@ -77,13 +77,15 @@ export class CreateTaskMeSchema extends TaskSchema {
  * @property {boolean} isChecked - Is completed?
  */
 export class UpdateTaskSchema extends TaskSchema {
-
+  @IsOptional()
   @IsString()
   description: string | null;
 
+  @IsOptional()
   @IsDate()
   dueDate: Date | null;
 
+  @IsOptional()
   @IsBoolean()
   isChecked: boolean;
   
@@ -99,7 +101,7 @@ export class UpdateTaskSchema extends TaskSchema {
  * ReadTaskSchema
  *
  * @typedef {object} ReadTaskSchema
- * @property {number} id - ID
+ * @property {string} id - ID
  * @property {string} userId - UserId
  * @property {string} title - Title
  * @property {string} description - Description
@@ -107,25 +109,15 @@ export class UpdateTaskSchema extends TaskSchema {
  * @property {boolean} isChecked - Is Checked
  */
 export class ReadTaskSchema extends TaskSchema {
-  @IsNumber()
-  taskId: number;
-
-  @IsUUID(4)
+  id: string;
   userId: string;
-
-  @IsOptional()
   description: string | null;
-
-  @IsOptional()
-  @IsDate()
   dueDate: Date | null;
-
-  @IsBoolean()
   isChecked: boolean;
 
-  constructor(taskId: number, userId: string, title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+  constructor(id: string, userId: string, title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
     super(title);
-    this.taskId = taskId;
+    this.id = id;
     this.userId = userId;
     this.description = description;
     this.dueDate = dueDate,

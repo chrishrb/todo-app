@@ -3,9 +3,19 @@ import * as authService from "../services/auth.service";
 import * as taskService from "../services/task.service"
 import { CreateTaskSchema, UpdateTaskSchema } from "../schemas/task.schema";
 import { validateSafe } from "../exceptions/helpers";
-import { NotFoundError } from "../exceptions/errors/not-found-error";
 import asyncHandler from 'express-async-handler'
 import { ForbiddenError } from "../exceptions/errors/login-error";
+import { JwtPayloadSchema } from "../schemas/auth.schema";
+
+function isUserPermitted(user?: JwtPayloadSchema, taskUserId?: string): boolean {
+  if (!user) {
+    return false;
+  }
+  if (user.userId === taskUserId || user.isAdmin === true) {
+    return true;
+  }
+  return false;
+}
 
 export const taskRouter = Router()
 
@@ -44,7 +54,7 @@ taskRouter.route("/")
     }
     const tasks = await taskService.readAllTasks();
     res.status(200).json(tasks);
-  }))
+  }));
 
 taskRouter.route("/:taskId")
   /**
@@ -60,12 +70,10 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
-    const taskId = req.params.taskId;
-    if (isNaN(+taskId)) {
-      throw new NotFoundError(`${taskId} not found.`)
+    const task = await taskService.readTask(req.params.taskId);
+    if (!isUserPermitted(res.locals.user, task.userId)) {
+      throw new ForbiddenError();
     }
-    // TODO: only user that is connected to task or admin
-    const task = await taskService.readTask(+taskId);
     res.status(200).json(task);
   }))
   /**
@@ -83,16 +91,14 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .put(authService.verify, asyncHandler(async (req, res) => {
-    const taskId = req.params.taskId;
-    if (isNaN(+taskId)) {
-      throw new NotFoundError(`${taskId} not found.`)
+    const readTask = await taskService.readTask(req.params.taskId);
+    if (!isUserPermitted(res.locals.user, readTask.userId)) {
+      throw new ForbiddenError();
     }
-    // TODO: only user that is connected to task or admin
 
     const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate), req.body.isChecked);
-
     await validateSafe(taskDto);
-    const task = await taskService.updateTask(+taskId, taskDto);
+    const task = await taskService.updateTask(req.params.taskId, taskDto);
 
     res.status(200).json(task);
   }))
@@ -110,13 +116,14 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 500 - Internal Server error
    */
   .delete(authService.verify, asyncHandler(async (req, res) => {
-    const taskId = req.params.taskId;
-    // TODO: only user that is connected to task or admin
+    const readTask = await taskService.readTask(req.params.taskId);
+    if (!isUserPermitted(res.locals.user, readTask.userId)) {
+      throw new ForbiddenError();
+    }
 
-    await taskService.deleteTask(+taskId);
-
+    await taskService.deleteTask(req.params.taskId);
     res.status(204).send();
-  }))
+  }));
 
 taskRouter.route("/:taskId/toggle")
   /**
@@ -133,7 +140,11 @@ taskRouter.route("/:taskId/toggle")
    * @return {BaseError} 500 - Internal Server error
    */
   .put(authService.verify, asyncHandler(async (req, res) => {
-    // TODO: only user that is connected to task or admin
-    const task = await taskService.toggleTask(req.body.taskId);
+    const readTask = await taskService.readTask(req.params.taskId);
+    if (!isUserPermitted(res.locals.user, readTask.userId)) {
+      throw new ForbiddenError();
+    }
+
+    const task = await taskService.toggleTask(req.body.taskId, readTask.isChecked);
     res.status(200).json(task);
-  }))
+  }));

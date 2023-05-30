@@ -21,7 +21,7 @@ export async function createTask(userId: string, taskDto: CreateTaskSchema | Cre
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
-export async function updateTask(taskId: number, taskDto: UpdateTaskSchema) {
+export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
   const task = await prisma.task.update({
     where: {
       id: taskId,
@@ -37,7 +37,7 @@ export async function updateTask(taskId: number, taskDto: UpdateTaskSchema) {
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
 }
 
-export async function readTask(taskId: number): Promise<ReadTaskSchema> {
+export async function readTask(taskId: string): Promise<ReadTaskSchema> {
   const task = await prisma.task.findUnique({
     where: {
       id: taskId,
@@ -45,7 +45,7 @@ export async function readTask(taskId: number): Promise<ReadTaskSchema> {
   });
 
   if (task == null) {
-    throw new NotFoundError(`Task with id: ${taskId} not found.`)
+    throw new NotFoundError(`Task with id ${taskId} not found.`)
   }
 
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked);
@@ -66,35 +66,21 @@ export async function readAllTasksByUser(userId: string): Promise<ReadTaskSchema
   return tasks.map(task => new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked));
 }
 
-export async function deleteTask(taskId?: number | string): Promise<void> {
-  if(taskId == null || isNaN(+taskId)) {
-    throw new NotFoundError(`Task with id: ${taskId} not found.`)
-  }
-
+export async function deleteTask(taskId: string): Promise<void> {
   await prisma.task.delete({
-    where: {
-      id: +taskId,
-    }
-  });
-}
-
-export async function toggleTask(taskId: number): Promise<ReadTaskSchema> {
-  const taskThen = await prisma.task.findUnique({
     where: {
       id: taskId,
     }
   });
+}
 
-  if(taskThen === null) {
-    throw new NotFoundError(`Task with id: ${taskId} not found.`)
-  }
-
+export async function toggleTask(taskId: string, currentIsChecked: boolean): Promise<ReadTaskSchema> {
   const taskNow = await prisma.task.update({
     where: {
       id: taskId,
     },
     data: {
-      isChecked: !taskThen?.isChecked
+      isChecked: !currentIsChecked,
     }
   })
 

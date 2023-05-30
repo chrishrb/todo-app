@@ -85,7 +85,6 @@ export class UpdateUserSchema {
  * @property {string} lastName - Last Name
  */
 export class ReadUserSchema extends UserSchema {
-  @IsUUID()
   id: string;
 
   constructor(id: string, email: string, firstName: string, lastName: string) {
