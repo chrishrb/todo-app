@@ -137,10 +137,14 @@ export function verify(req: Request, res: Response, next: NextFunction): void {
   }
 
   const token = getAccessTokenFromHeader(req.headers['authorization'])
-  isTokenOnBlacklist(token).then(() => {
-    res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
-    next();
+  isTokenOnBlacklist(token).then((onBlacklist) => {
+    if (onBlacklist) {
+      next(new UnauthorizedError())
+    } else {
+      res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
+      next();
+    }
   }).catch(() => {
-    next(new UnauthorizedError())
+    next(new InternalError())
   })
 }
