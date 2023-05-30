@@ -41,6 +41,8 @@ export class ApiSteps {
       if (response.headers['set-cookie']) {
         this.headers['Cookie'] = response.headers['set-cookie']
       }
+      // Workaround: tokens are the same if you create them too fast, so we wait a short period
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       if (error instanceof AxiosError) {
         throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
@@ -96,6 +98,21 @@ export class ApiSteps {
       throw Error("No response. Did you send a request?");
     }
     expect(this.response.data).to.matchPattern(body)
+  }
+
+  @then(/the user is logged out/)
+  public async theUserIsLoggedOut() {
+    axios.get("http://localhost:8000/api/v1/auth/verify", { headers: this.headers })
+      .then(() => {
+        throw Error("User is still logged in")
+      })
+      .catch((error) => {
+        if (error instanceof AxiosError) {
+          expect(error.response?.status).to.be.equal(401);
+        } else {
+          throw error
+        }
+      })
   }
 
   @then(/print response/)

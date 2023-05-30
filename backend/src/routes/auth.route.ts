@@ -2,7 +2,9 @@ import Router from "express-promise-router"
 import * as authService from "../services/auth.service";
 import dayjs from 'dayjs';
 import { validateSafe } from "../exceptions/helpers";
-import { AuthLoginSchema, LoginSchema } from "../schemas/auth.schema";
+import { AuthLoginSchema, AuthLogoutSchema, LoginSchema } from "../schemas/auth.schema";
+import { config } from "../utils/config";
+import ms from 'ms'
 
 export const authRouter = Router()
 
@@ -23,7 +25,7 @@ authRouter.route("/login")
     res.cookie("refresh_token", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      expires: dayjs().add(5, 'M').toDate(),
+      expires: dayjs().add(ms(config.refreshTokenExpiryTime), 'milliseconds').toDate(),
     });
 
     res.status(200).json(new AuthLoginSchema(accessToken));
@@ -36,7 +38,6 @@ authRouter.route("/login")
    * @summary Verify logged in user
    * @return {JwtPayloadSchema} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
-   * @return {BaseError} 403 - Forbidden error
    * @return {BaseError} 500 - Internal Server error
    */
 authRouter.route("/verify")
@@ -48,9 +49,9 @@ authRouter.route("/refresh")
   /**
    * GET /api/v1/auth/refresh
    * @tags Auth - Bearer authentication
-   * @summary Refresh token after expiration of your accessToken
+   * @summary Refresh token after expiration of your access token
    * @return {JwtPayloadSchema} 200 - success response
-   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
   .get(async (req, res) => {
@@ -65,4 +66,23 @@ authRouter.route("/refresh")
     });
 
     res.status(200).json(new AuthLoginSchema(accessToken));
+  })
+
+authRouter.route("/logout")
+  /**
+   * GET /api/v1/auth/logout
+   * @tags Auth - Bearer authentication
+   * @security BearerAuth
+   * @summary Logout user
+   * @return {AuthLogoutSchema} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 500 - Internal Server error
+   */
+  .get(async (req, res) => {
+    const refreshToken = req.cookies.refresh_token
+    const accessToken = req.headers['authorization']
+
+    await authService.logout(accessToken, refreshToken);
+
+    res.status(200).json(new AuthLogoutSchema())
   })

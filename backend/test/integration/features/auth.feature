@@ -28,12 +28,12 @@ Feature: Authentication
           "password": "root"
         }
       """
-    Then the response code should be 403
+    Then the response code should be 401
     And the response body should be json:
       """
         {
-          "errorCode": 403,
-          "errorMessage": "Forbidden",
+          "errorCode": 401,
+          "errorMessage": "Unauthorized",
           "details": "Email not found."
         }
       """
@@ -47,12 +47,12 @@ Feature: Authentication
           "password": "wrong_password"
         }
       """
-    Then the response code should be 403
+    Then the response code should be 401
     And the response body should be json:
       """
         {
-          "errorCode": 403,
-          "errorMessage": "Forbidden",
+          "errorCode": 401,
+          "errorMessage": "Unauthorized",
           "details": "Incorrect password."
         }
       """
@@ -85,3 +85,11 @@ Feature: Authentication
           "accessToken": String
         }
       """
+
+  Scenario: Logout user
+    Given I am a normal user
+    And I am authenticated
+    Given the Content-Type is 'application/json'
+    When I send a GET request to "http://localhost:8000/api/v1/auth/logout"
+    Then the response code should be 200
+    And the user is logged out

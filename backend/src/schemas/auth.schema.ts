@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
 import { JwtPayload } from "jsonwebtoken";
-import { ForbiddenError } from "../exceptions/errors/login-error";
+import { ForbiddenError, UnauthorizedError } from "../exceptions/errors/login-error";
 
 /**
  * LoginSchema
@@ -50,6 +50,16 @@ export class AuthLoginSchema {
   }
 }
 
+/**
+ * AuthLogoutSchema
+ *
+ * @typedef {object} AuthLogoutSchema
+ * @property {string} response - Information about user logout
+ */
+export class AuthLogoutSchema {
+  response: string = "User logged out.";
+}
+
 export enum JwtType {
   ACCESS_TOKEN = "accessToken",
   REFRESH_TOKEN = "refreshToken"
@@ -79,13 +89,13 @@ export class JwtPayloadSchema {
 
   static fromPlainObj(type: JwtType, obj: string | JwtPayload) {
     if (typeof obj == 'string') {
-      throw new ForbiddenError();
+      throw new UnauthorizedError();
     }
     if (obj.type == null || obj.type !== type) {
-      throw new ForbiddenError();
+      throw new UnauthorizedError();
     }
     if (obj.userId == null || obj.isAdmin == null) {
-      throw new ForbiddenError();
+      throw new UnauthorizedError();
     }
     return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);
   }
