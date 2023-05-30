@@ -1,7 +1,8 @@
 import Router from "express-promise-router"
 import * as authService from "../services/auth.service";
+import dayjs from 'dayjs';
 import { validateSafe } from "../exceptions/helpers";
-import { LoginSchema } from "../schemas/auth.schema";
+import { AuthLoginSchema, LoginSchema } from "../schemas/auth.schema";
 
 export const authRouter = Router()
 
@@ -17,9 +18,15 @@ authRouter.route("/login")
     const userDto = new LoginSchema(req.body.email, req.body.password);
 
     await validateSafe(userDto);
-    const jwt = await authService.login(userDto)
+    const {accessToken, refreshToken} = await authService.login(userDto)
 
-    res.status(200).json(jwt)
+    res.cookie("refresh_token", refreshToken, {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      expires: dayjs().add(5, 'M').toDate(),
+    });
+
+    res.status(200).json(new AuthLoginSchema(accessToken));
   })
 
   /**
@@ -37,4 +44,25 @@ authRouter.route("/verify")
     res.status(200).json(res.locals.user)
   })
 
-// TODO: add refresh endpoint
+authRouter.route("/refresh")
+  /**
+   * GET /api/v1/auth/refresh
+   * @tags Auth - Bearer authentication
+   * @summary Refresh token after expiration of your accessToken
+   * @return {JwtPayloadSchema} 200 - success response
+   * @return {BaseError} 403 - Forbidden error
+   * @return {BaseError} 500 - Internal Server error
+   */
+  .get(async (req, res) => {
+    const token = req.cookies.refresh_token
+
+    const {refreshToken, accessToken} = await authService.refresh(token)
+
+    res.cookie("refresh_token", refreshToken, {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      expires: dayjs().add(60, 'd').toDate(),
+    });
+
+    res.status(200).json(new AuthLoginSchema(accessToken));
+  })

@@ -11,7 +11,7 @@ chai.use(chaiJsonPattern);
 @binding()
 export class ApiSteps {
   private server: Server;
-  private headers: { [key: string]: string; } = {};
+  private headers: { [key: string]: string | string[]; } = {};
   private response: AxiosResponse | null;
   private user: LoginSchema | null;
 
@@ -38,6 +38,9 @@ export class ApiSteps {
     try {
       const response = await axios.post("http://localhost:8000/api/v1/auth/login", JSON.stringify(this.user), { headers: { 'Content-Type': 'application/json' } })
       this.headers['Authorization'] = `Bearer ${response.data.accessToken}`
+      if (response.headers['set-cookie']) {
+        this.headers['Cookie'] = response.headers['set-cookie']
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
