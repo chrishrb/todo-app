@@ -5,6 +5,7 @@ import { CreateTaskSchema, UpdateTaskSchema } from "../schemas/task.schema";
 import { validateSafe } from "../exceptions/helpers";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
 import asyncHandler from 'express-async-handler'
+import { ForbiddenError } from "../exceptions/errors/login-error";
 
 export const taskRouter = Router()
 
@@ -38,6 +39,9 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(authService.verify, asyncHandler(async (_, res) => {
+    if (res.locals.user?.isAdmin === false) {
+      throw new ForbiddenError();
+    }
     const tasks = await taskService.readAllTasks();
     res.status(200).json(tasks);
   }))
@@ -60,6 +64,7 @@ taskRouter.route("/:taskId")
     if (isNaN(+taskId)) {
       throw new NotFoundError(`${taskId} not found.`)
     }
+    // TODO: only user that is connected to task or admin
     const task = await taskService.readTask(+taskId);
     res.status(200).json(task);
   }))
@@ -82,6 +87,7 @@ taskRouter.route("/:taskId")
     if (isNaN(+taskId)) {
       throw new NotFoundError(`${taskId} not found.`)
     }
+    // TODO: only user that is connected to task or admin
 
     const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate), req.body.isChecked);
 
@@ -105,13 +111,11 @@ taskRouter.route("/:taskId")
    */
   .delete(authService.verify, asyncHandler(async (req, res) => {
     const taskId = req.params.taskId;
-    if (isNaN(+taskId)) {
-      throw new NotFoundError(`${taskId} not found.`)
-    }
+    // TODO: only user that is connected to task or admin
 
     await taskService.deleteTask(+taskId);
 
-    res.status(204);
+    res.status(204).send();
   }))
 
 taskRouter.route("/:taskId/toggle")
@@ -129,6 +133,7 @@ taskRouter.route("/:taskId/toggle")
    * @return {BaseError} 500 - Internal Server error
    */
   .put(authService.verify, asyncHandler(async (req, res) => {
+    // TODO: only user that is connected to task or admin
     const task = await taskService.toggleTask(req.body.taskId);
     res.status(200).json(task);
   }))

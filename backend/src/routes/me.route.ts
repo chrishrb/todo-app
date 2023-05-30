@@ -38,6 +38,7 @@ meRouter.route("/tasks")
    * @return {BaseError} 500 - Internal Server error
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
+    // TODO: Add more filter, e.g. ?isChecked=true
     const userId = res.locals.user?.userId;
     const tasks = await taskService.readAllTasksByUser(userId);
     res.status(200).json(tasks);

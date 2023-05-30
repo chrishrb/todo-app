@@ -70,6 +70,8 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
     },
     data: {
       email: userDto.email,
+      firstName: userDto.firstName,
+      lastName: userDto.lastName,
       password: userDto.password,
     }
   });
@@ -86,4 +88,22 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
   return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName))
+}
+
+export async function deleteUser(userId?: string): Promise<void> {
+  const deleteTasks = prisma.task.deleteMany({
+    where: {
+      userId: userId,
+    }
+  })
+
+  const delUser = prisma.user.delete({
+    where: {
+      id: userId,
+    },
+  });
+
+  await prisma.$transaction([deleteTasks, delUser]).catch(() => {
+    throw new NotFoundError(`User with id ${userId} not found.`)
+  })
 }

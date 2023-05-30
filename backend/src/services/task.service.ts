@@ -66,10 +66,14 @@ export async function readAllTasksByUser(userId: string): Promise<ReadTaskSchema
   return tasks.map(task => new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate, task.isChecked));
 }
 
-export async function deleteTask(taskId: number): Promise<void> {
+export async function deleteTask(taskId?: number | string): Promise<void> {
+  if(taskId == null || isNaN(+taskId)) {
+    throw new NotFoundError(`Task with id: ${taskId} not found.`)
+  }
+
   await prisma.task.delete({
     where: {
-      id: taskId,
+      id: +taskId,
     }
   });
 }
