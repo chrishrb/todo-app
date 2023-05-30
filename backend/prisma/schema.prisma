@@ -21,7 +21,7 @@ model User {
 }
 
 model Task {
-  id          String    @id @default(uuid())
+  id          Int    @id @default(autoincrement())
   title       String
   isChecked   Boolean   @default(false)
   description String?

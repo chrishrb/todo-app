@@ -1,7 +1,9 @@
 import Router from "express-promise-router";
+import * as authService from "../services/auth.service";
 import * as taskService from "../services/task.service"
 import { CreateTaskSchema, UpdateTaskSchema } from "../schemas/task.schema";
 import { validateSafe } from "../exceptions/helpers";
+import { NotFoundError } from "../exceptions/errors/not-found-error";
 
 export const taskRouter = Router()
 
@@ -16,11 +18,11 @@ taskRouter.route("/")
    * @return {BaseError} 400 - Validation error
    * @return {BaseError} 500 - Internal Server error
    */
-  .post(async (req, res) => {
+  .post(authService.verify, async (req, res) => {
     const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, new Date(req.body.dueDate));
-
     await validateSafe(taskDto);
-    const task = await taskService.createTask(taskDto);
+
+    const task = await taskService.createTask(taskDto.userId, taskDto);
 
     res.status(200).json(task);
   })
@@ -34,7 +36,7 @@ taskRouter.route("/")
    * @return {BaseError} 403 - Forbidden error
    * @return {BaseError} 500 - Internal Server error
    */
-  .get(async (_, res) => {
+  .get(authService.verify, async (_, res) => {
     const tasks = await taskService.readAllTasks();
     res.status(200).json(tasks);
   })
@@ -52,8 +54,12 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 404 - NotFound error
    * @return {BaseError} 500 - Internal Server error
    */
-  .get(async (req, res) => {
-    const task = await taskService.readTask(req.params.taskId);
+  .get(authService.verify, async (req, res) => {
+    const taskId = req.params.taskId;
+    if (isNaN(+taskId)) {
+      throw new NotFoundError(`${taskId} not found.`)
+    }
+    const task = await taskService.readTask(+taskId);
     res.status(200).json(task);
   })
   /**
@@ -70,11 +76,16 @@ taskRouter.route("/:taskId")
    * @return {BaseError} 404 - NotFound error
    * @return {BaseError} 500 - Internal Server error
    */
-  .put(async (req, res) => {
+  .put(authService.verify, async (req, res) => {
+    const taskId = req.params.taskId;
+    if (isNaN(+taskId)) {
+      throw new NotFoundError(`${taskId} not found.`)
+    }
+
     const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, new Date(req.body.dueDate), req.body.isChecked);
 
     await validateSafe(taskDto);
-    const task = await taskService.updateTask(req.params.taskId, taskDto);
+    const task = await taskService.updateTask(+taskId, taskDto);
 
     res.status(200).json(task);
   })
@@ -84,20 +95,22 @@ taskRouter.route("/:taskId")
    * @summary Delete a Task
    * @security BearerAuth
    * @param {string} taskId.path - Task ID
-   * @return {ReadTaskSchema} 200 - success response
+   * @return 204 - success response
    * @return {BaseError} 400 - Bad Request
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 403 - Forbidden error
    * @return {BaseError} 404 - NotFound error
    * @return {BaseError} 500 - Internal Server error
    */
-  .delete(async (req, res) => {
-    const task = await taskService.deleteTask(req.body.taskId);
-
-    if(req.body.taskId === task.taskId) {
-      res.status(202).json(task);
+  .delete(authService.verify, async (req, res) => {
+    const taskId = req.params.taskId;
+    if (isNaN(+taskId)) {
+      throw new NotFoundError(`${taskId} not found.`)
     }
-    res.status(204).json(task);
+
+    await taskService.deleteTask(+taskId);
+
+    res.status(204);
   })
 
 taskRouter.route("/:taskId/toggle")
@@ -114,7 +127,7 @@ taskRouter.route("/:taskId/toggle")
    * @return {BaseError} 404 - NotFound error
    * @return {BaseError} 500 - Internal Server error
    */
-  .put(async (req, res) => {
+  .put(authService.verify, async (req, res) => {
     const task = await taskService.toggleTask(req.body.taskId);
     res.status(200).json(task);
   })
