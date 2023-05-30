@@ -50,16 +50,6 @@ export class AuthLoginSchema {
   }
 }
 
-/**
- * AuthLogoutSchema
- *
- * @typedef {object} AuthLogoutSchema
- * @property {string} response - Information about user logout
- */
-export class AuthLogoutSchema {
-  response: string = "User logged out.";
-}
-
 export enum JwtType {
   ACCESS_TOKEN = "accessToken",
   REFRESH_TOKEN = "refreshToken"

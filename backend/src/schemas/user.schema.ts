@@ -1,13 +1,15 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 class UserSchema {
   @IsEmail()
   email: string;
 
   @IsNotEmpty()
+  @IsString()
   firstName: string;
 
   @IsNotEmpty()
+  @IsString()
   lastName: string;
 
   constructor(email: string, firstName: string, lastName: string) {
@@ -43,12 +45,12 @@ export class CreateUserSchema extends UserSchema {
  * UpdateUserSchema
  *
  * @typedef {object} UpdateUserSchema
- * @property {string} email.required - Email
+ * @property {string} email - Email
  * @property {string} firstName - First Name
  * @property {string} lastName - Last Name
  * @property {string} password - Password
  */
-export class UpdateUserSchema extends UserSchema {
+export class UpdateUserSchema {
   @IsOptional()
   @IsEmail()
   email: string;
@@ -57,9 +59,19 @@ export class UpdateUserSchema extends UserSchema {
   @IsNotEmpty()
   password: string;
 
+  @IsOptional()
+  @IsString()
+  firstName: string;
+
+  @IsOptional()
+  @IsString()
+  lastName: string;
+
   constructor(email: string, password: string, firstName: string, lastName: string) {
-    super(email, firstName, lastName);
+    this.email = email;
     this.password = password;
+    this.firstName = firstName;
+    this.lastName = lastName;
   }
 }
 
@@ -73,7 +85,6 @@ export class UpdateUserSchema extends UserSchema {
  * @property {string} lastName - Last Name
  */
 export class ReadUserSchema extends UserSchema {
-  @IsNumber()
   id: string;
 
   constructor(id: string, email: string, firstName: string, lastName: string) {

@@ -28,12 +28,12 @@ Feature: User
     Given I am a normal user
     And I am authenticated
     When I send a GET request to "http://localhost:8000/api/v1/users"
-    Then the response code should be 401
+    Then the response code should be 403
 
   Scenario: Get infos of current user
     Given I am a normal user
     And I am authenticated
-    When I send a GET request to "http://localhost:8000/api/v1/users/me"
+    When I send a GET request to "http://localhost:8000/api/v1/me"
     Then the response code should be 200
     And the response body should be json:
       """
@@ -46,7 +46,7 @@ Feature: User
       """
 
   Scenario: Get infos of current user (not logged in)
-    When I send a GET request to "http://localhost:8000/api/v1/users/me"
+    When I send a GET request to "http://localhost:8000/api/v1/me"
     Then the response code should be 401
 
   Scenario: Create User

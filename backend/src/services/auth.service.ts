@@ -131,16 +131,20 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
  * @param res
  * @param next
  */
-export async function verify(req: Request, res: Response, next: NextFunction): Promise<void> {
+export function verify(req: Request, res: Response, next: NextFunction): void {
   if (!process.env.AUTH_SECRET_KEY) {
     throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
   }
 
   const token = getAccessTokenFromHeader(req.headers['authorization'])
-  if (await isTokenOnBlacklist(token)) {
-    throw new UnauthorizedError();
-  }
-
-  res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
-  next();
+  isTokenOnBlacklist(token).then((onBlacklist) => {
+    if (onBlacklist) {
+      next(new UnauthorizedError())
+    } else {
+      res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
+      next();
+    }
+  }).catch(() => {
+    next(new InternalError())
+  })
 }

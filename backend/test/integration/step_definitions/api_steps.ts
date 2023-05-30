@@ -102,7 +102,7 @@ export class ApiSteps {
 
   @then(/the user is logged out/)
   public async theUserIsLoggedOut() {
-    axios.get("http://localhost:8000/api/v1/auth/verify", { headers: this.headers })
+    return axios.get("http://localhost:8000/api/v1/auth/verify", { headers: this.headers })
       .then(() => {
         throw Error("User is still logged in")
       })

@@ -16,7 +16,7 @@ export function errorHandlingMiddleware(err: any, req: any, res: any, next: any)
     ForbiddenError,
   ];
 
-  logger.error("Error Handling Middleware: ", err.constructor.name, err);
+  logger.debug("Error Handling Middleware: ", err.constructor.name);
 
   if (middlewareErrors.some((middlewareError) => err instanceof middlewareError)) {
     res.status(err.errorCode).send(err.print())

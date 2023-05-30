@@ -1,7 +1,7 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateIf } from "class-validator";
 
 class TaskSchema {
-
+  @IsNotEmpty()
   @IsString()
   title: string;
 
@@ -19,30 +19,51 @@ class TaskSchema {
  *
  * @typedef {object} CreateTaskSchema
  * @property {string} title.required - Title
+ * @property {string} userId.required - UserId
  * @property {string} description - Description
- * @property {string} duedate - Due date
+ * @property {string} dueDate - Due date - date-time
  */
 export class CreateTaskSchema extends TaskSchema {
-
-  @IsNotEmpty()
-  @IsString()
-  title: string;
+  @IsUUID(4)
+  userId: string;
 
   @IsOptional()
   @IsString()
   description: string | null; 
 
   @IsOptional()
-  dueDate: Date | null;
+  @IsDate()
+  dueDate: string | null;
 
-  @IsUUID(4)
-  userId: string;
-
-  constructor(title: string, userId: string, description: string | null, dueDate: Date | null) {
+  constructor(title: string, userId: string, description: string | null, dueDate: string | null) {
     super(title)
-    this.userId = userId,
-    this.description = description,
-    this.dueDate = dueDate
+    this.userId = userId;
+    this.description = description;
+    this.dueDate = dueDate;
+  }
+}
+
+/**
+ * CreateTaskMeSchema
+ *
+ * @typedef {object} CreateTaskMeSchema
+ * @property {string} title.required - Title
+ * @property {string} description - Description
+ * @property {string} dueDate - Due date - date-time
+ */
+export class CreateTaskMeSchema extends TaskSchema {
+  @IsOptional()
+  @IsString()
+  description: string | null; 
+
+  @IsOptional()
+  @IsDateString()
+  dueDate: string | null;
+
+  constructor(title: string, description: string | null, dueDate: string) {
+    super(title)
+    this.description = description;
+    this.dueDate = dueDate;
   }
 }
 
@@ -52,23 +73,25 @@ export class CreateTaskSchema extends TaskSchema {
  * @typedef {object} UpdateTaskSchema
  * @property {string} title - Title
  * @property {string} description - Description
- * @property {string} duedate - Due date
+ * @property {string} dueDate - Due date - date-time
  * @property {boolean} isChecked - Is completed?
  */
 export class UpdateTaskSchema extends TaskSchema {
-
+  @IsOptional()
   @IsString()
   description: string | null;
 
+  @IsOptional()
   @IsDate()
-  dueDate: Date | null;
+  dueDate: string | null;
 
+  @IsOptional()
   @IsBoolean()
   isChecked: boolean;
   
-  constructor(title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+  constructor(title: string, description: string | null, dueDate: string | null, isChecked: boolean) {
     super(title);
-    this. description = description;
+    this.description = description;
     this.dueDate = dueDate;
     this.isChecked = isChecked;
   }
@@ -78,32 +101,23 @@ export class UpdateTaskSchema extends TaskSchema {
  * ReadTaskSchema
  *
  * @typedef {object} ReadTaskSchema
- * @property {number} id - ID
+ * @property {string} id - ID
+ * @property {string} userId - UserId
  * @property {string} title - Title
  * @property {string} description - Description
- * @property {string} dueDate - Due date
+ * @property {string} dueDate - Due date - date-time
+ * @property {boolean} isChecked - Is Checked
  */
 export class ReadTaskSchema extends TaskSchema {
-
-  @IsUUID(4)
-  taskId: string;
-
-  @IsUUID(4)
+  id: string;
   userId: string;
-
-  @IsOptional()
   description: string | null;
-
-  @IsOptional()
-  @IsDate()
-  dueDate: Date | null;
-
-  @IsBoolean()
+  dueDate: string | null | undefined;
   isChecked: boolean;
 
-  constructor(taskId: string, userId: string, title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+  constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean) {
     super(title);
-    this.taskId = taskId;
+    this.id = id;
     this.userId = userId;
     this.description = description;
     this.dueDate = dueDate,
