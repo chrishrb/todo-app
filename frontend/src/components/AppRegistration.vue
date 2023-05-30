@@ -29,6 +29,7 @@
                       <div class="relative">
                         <input type="email" id="email" name="email" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" required aria-describedby="email-error" v-model="email">
                       </div>
+                      <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
                     </div>
                     <!-- End Form Group -->
     
@@ -97,6 +98,7 @@
           confirmedPassword: "",
           showPassword: false,
           passwordsMatch: true,
+          error: "",
         }
       },
       computed: {
@@ -114,8 +116,13 @@
           this.password === this.confirmedPassword ? this.createUser() : this.passwordsMatch = false
         },
         async createUser() {
-          await this.userStore.createUser(this.firstName, this.lastName, this.email, this.password);
-          router.push('/registerSuccess')
+          this.userStore.createUser(this.firstName, this.lastName, this.email, this.password).then(() => {
+            this.error = "";
+            router.push('/registerSuccess')
+          }).catch(() => {
+            this.error = "This E-Mail is already registered.";
+            console.error(this.error)
+          });
         },
         toggleShow() {
           this.showPassword = !this.showPassword;
