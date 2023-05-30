@@ -85,5 +85,5 @@ authRouter.route("/logout")
 
     await authService.logout(accessToken, refreshToken);
 
-    res.status(204)
+    res.status(204).send()
   }))

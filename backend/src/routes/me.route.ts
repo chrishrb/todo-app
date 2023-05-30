@@ -57,7 +57,7 @@ meRouter.route("/tasks")
   .post(authService.verify, asyncHandler(async (req, res) => {
     const userId = res.locals.user?.userId;
 
-    const taskDto = new CreateTaskMeSchema(req.body.title, req.body.description, new Date(req.body.dueDate));
+    const taskDto = new CreateTaskMeSchema(req.body.title, req.body.description, req.body.dueDate);
     await validateSafe(taskDto);
     const task = await taskService.createTask(userId, taskDto);
 

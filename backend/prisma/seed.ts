@@ -11,9 +11,9 @@ async function main() {
   const john = await user_service.createUser({ email: 'john.doe@example.com', password: 'johni', firstName: 'John', lastName: 'Doe' })
   console.log({ root, john })
 
-  const task1 = await task_service.createTask(root.id, {title: "Learn typescript", description: "You need typescript in your future, so learn it now", dueDate: new Date()})
-  const task2 = await task_service.createTask(john.id, {title: "Study project for full stack", description: "Finish project", dueDate: new Date(2023, 6, 9, 12, 0)})
-  const task3 = await task_service.createTask(john.id, {title: "Presentation for full stack", description: null, dueDate: new Date(2023, 6, 10)})
+  const task1 = await task_service.createTask(root.id, {title: "Learn typescript", description: "You need typescript in your future, so learn it now", dueDate: null})
+  const task2 = await task_service.createTask(john.id, {title: "Study project for full stack", description: "Finish project", dueDate: new Date(2023, 6, 9, 12, 0).toISOString()})
+  const task3 = await task_service.createTask(john.id, {title: "Presentation for full stack", description: null, dueDate: new Date(2023, 6, 10).toISOString()})
   console.log({task1, task2, task3})
 }
 main()

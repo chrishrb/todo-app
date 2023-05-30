@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateIf } from "class-validator";
 
 class TaskSchema {
   @IsNotEmpty()
@@ -33,9 +33,9 @@ export class CreateTaskSchema extends TaskSchema {
 
   @IsOptional()
   @IsDate()
-  dueDate: Date | null;
+  dueDate: string | null;
 
-  constructor(title: string, userId: string, description: string | null, dueDate: Date | null) {
+  constructor(title: string, userId: string, description: string | null, dueDate: string | null) {
     super(title)
     this.userId = userId;
     this.description = description;
@@ -57,10 +57,10 @@ export class CreateTaskMeSchema extends TaskSchema {
   description: string | null; 
 
   @IsOptional()
-  @IsDate()
-  dueDate: Date | null;
+  @IsDateString()
+  dueDate: string | null;
 
-  constructor(title: string, description: string | null, dueDate: Date | null) {
+  constructor(title: string, description: string | null, dueDate: string) {
     super(title)
     this.description = description;
     this.dueDate = dueDate;
@@ -73,7 +73,7 @@ export class CreateTaskMeSchema extends TaskSchema {
  * @typedef {object} UpdateTaskSchema
  * @property {string} title - Title
  * @property {string} description - Description
- * @property {string} dueDate - Due date
+ * @property {string} dueDate - Due date - date-time
  * @property {boolean} isChecked - Is completed?
  */
 export class UpdateTaskSchema extends TaskSchema {
@@ -83,13 +83,13 @@ export class UpdateTaskSchema extends TaskSchema {
 
   @IsOptional()
   @IsDate()
-  dueDate: Date | null;
+  dueDate: string | null;
 
   @IsOptional()
   @IsBoolean()
   isChecked: boolean;
   
-  constructor(title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+  constructor(title: string, description: string | null, dueDate: string | null, isChecked: boolean) {
     super(title);
     this.description = description;
     this.dueDate = dueDate;
@@ -105,17 +105,17 @@ export class UpdateTaskSchema extends TaskSchema {
  * @property {string} userId - UserId
  * @property {string} title - Title
  * @property {string} description - Description
- * @property {string} dueDate - Due date
+ * @property {string} dueDate - Due date - date-time
  * @property {boolean} isChecked - Is Checked
  */
 export class ReadTaskSchema extends TaskSchema {
   id: string;
   userId: string;
   description: string | null;
-  dueDate: Date | null;
+  dueDate: string | null | undefined;
   isChecked: boolean;
 
-  constructor(id: string, userId: string, title: string, description: string | null, dueDate: Date | null, isChecked: boolean) {
+  constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean) {
     super(title);
     this.id = id;
     this.userId = userId;
