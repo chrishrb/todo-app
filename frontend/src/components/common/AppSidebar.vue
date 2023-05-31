@@ -88,12 +88,10 @@
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
-import router from "@/router";
 
 const authStore = useAuthStore();
 
 const logout = () => {
   authStore.logout();
-  router.push('/login')
 };
 </script>
