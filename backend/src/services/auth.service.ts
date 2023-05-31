@@ -144,7 +144,7 @@ export function verify(req: Request, res: Response, next: NextFunction): void {
       res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
       next();
     }
-  }).catch(() => {
-    next(new InternalError())
+  }).catch(e => {
+    next(e)
   })
 }

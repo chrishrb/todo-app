@@ -127,7 +127,7 @@ taskRouter.route("/:taskId")
 
 taskRouter.route("/:taskId/toggle")
   /**
-   * PUT /api/v1/tasks/{taskId}/toggle
+   * PATCH /api/v1/tasks/{taskId}/toggle
    * @tags Tasks - Task endpoint
    * @summary Toggle the isChecked field
    * @security BearerAuth
@@ -139,12 +139,12 @@ taskRouter.route("/:taskId/toggle")
    * @return {BaseError} 404 - NotFound error
    * @return {BaseError} 500 - Internal Server error
    */
-  .put(authService.verify, asyncHandler(async (req, res) => {
+  .patch(authService.verify, asyncHandler(async (req, res) => {
     const readTask = await taskService.readTask(req.params.taskId);
     if (!isUserPermitted(res.locals.user, readTask.userId)) {
       throw new ForbiddenError();
     }
 
-    const task = await taskService.toggleTask(req.body.taskId, readTask.isChecked);
+    const task = await taskService.toggleTask(req.params.taskId, readTask.isChecked);
     res.status(200).json(task);
   }));
