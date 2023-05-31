@@ -19,12 +19,10 @@ export const useUserStore = defineStore({
         })
     },
     async createUser(firstName: string, lastName: string, email: string, password: string) {
-      try {
-        const response = await baseApi.post("/users", { email, password, firstName, lastName })
-        console.log(response)
-      } catch (error) {
-        console.log(error)
-      }
+      return baseApi.post("/users", { email, password, firstName, lastName })
+      .catch(e => {
+        throw new Error(e.response.data.details)
+      })
     }
   },
   getters: {

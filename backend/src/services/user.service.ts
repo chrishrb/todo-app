@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
+import { ConflictError } from "../exceptions/errors/registration-error";
 
 const prisma = new PrismaClient()
 
@@ -11,6 +12,15 @@ const prisma = new PrismaClient()
  * @param userDto
  */
 export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSchema> {
+  const existingUser = await prisma.user.findUnique({
+    where: {
+      email: userDto.email,
+    }
+  });
+  if (existingUser) {
+    throw new ConflictError("Email already registered.");
+  }
+  
   const hashedPassword = await bcrypt.hash(userDto.password, 10)
 
   const user = await prisma.user.create({
@@ -21,7 +31,7 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
       lastName: userDto.lastName,
     }
   });
-
+  
   return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
 }
 
