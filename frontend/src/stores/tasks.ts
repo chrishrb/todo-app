@@ -1,29 +1,49 @@
 import { defineStore } from "pinia";
+import baseApi from '@/common/base-api.service';
+import { useAuthStore } from "./auth";
+import type { Task } from "@/schemas/task.schema";
 
-export type Task = {
-  name: string;
-  checked: boolean;
-};
+async function init() {
+  const authStore = useAuthStore()
 
-function init() {
-  const task1: Task = {name: "Task 1", checked: false};
-  const task2: Task = {name: "Task 2", checked: true};
-  return [task1, task2]
+  const tasks = await baseApi.get("me/tasks");
+  console.log("TASKS: ", tasks)
+
+  return authStore.isLoggedIn ? tasks : null;
 }
 
-export const useTaskStore = defineStore('task', {
+type RootState = {
+  tasks: Task[];
+}
+
+export const useTaskStore = defineStore({
+  id: "task",
   state: () => ({
-    tasks: init(),
-  }),
+    tasks: [],
+  } as RootState),
+  getters: {
+    getTasks: (state) => state.tasks,
+  },
   actions: {
-    add(task: Task) {
-      this.tasks.push(task);
+    async getMine() {
+     baseApi.get("me/tasks")
+      .then((res) => {
+          this.tasks = res.data;
+      })
+      .catch((e) => {
+          console.log(e)
+          throw(e)
+      })
     },
+    // add(task: Task) {
+    //   // this.tasks.push(task);
+    // },
     toggleChecked(id: any) {
       if (!this.tasks.at(id)) {
         return;
       }
-      this.tasks.at(id)!.checked = !this.tasks.at(id)!.checked;
+      this.tasks.at(id)!.isChecked = !this.tasks.at(id)!.isChecked;
     }
   }
 });
+
