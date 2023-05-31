@@ -102,8 +102,8 @@ export default defineComponent({
       this.authStore.login(this.email, this.password).then(() => {
         this.error = "";
         router.push('/home');
-      }).catch(() => {
-        this.error = "Incorrect username or password.";
+      }).catch((e) => {
+        this.error = e;
       })
     },
     toggleShow() {
