@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
-import { ForbiddenError } from "../exceptions/errors/login-error";
+import { ConflictError } from "../exceptions/errors/registration-error";
 
 const prisma = new PrismaClient()
 
@@ -18,7 +18,7 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }
   });
   if (existingUser) {
-    throw new ForbiddenError("Email already registered.");
+    throw new ConflictError("Email already registered.");
   }
   
   const hashedPassword = await bcrypt.hash(userDto.password, 10)
