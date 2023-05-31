@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
+import { getTokenString } from "./helpers/jwt";
 
 const axiosInstance = axios.create({
   baseURL: "/api/v1",
@@ -10,16 +11,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (req) => {
-    
-    const st = localStorage.getItem("jwt")
-    const js = JSON.parse(st || '{}');
+    const authStore = useAuthStore()
 
-    const {tokenType, accessToken} = js
-
-    console.log(req.headers)
-    req.headers.setAuthorization(`${tokenType} ${accessToken}`)
-    console.log(req.headers)
-
+    if (authStore.jwt) {
+      req.headers.setAuthorization(authStore.jwt)
+    }
     return req;
   }
 )
