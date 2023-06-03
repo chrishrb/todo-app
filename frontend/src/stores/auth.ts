@@ -12,7 +12,7 @@ export const useAuthStore = defineStore({
       return baseApi.post("/auth/login", { email, password })
         .then((response) => {
           this.jwt = response.data.accessToken
-          localStorage.setItem('jwt', JSON.stringify(response.data.accessToken))
+          localStorage.setItem('jwt', response.data.accessToken)
         }).catch(e => {
           throw new Error(e.response.data.details)
         })
