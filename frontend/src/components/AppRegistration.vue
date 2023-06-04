@@ -82,7 +82,7 @@
     
     
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useUserStore } from "@/stores/user"
 import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
@@ -90,58 +90,84 @@ import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 
 export default defineComponent({
   name: "registration-component",
-  setup() {
-    const userStore = useUserStore();
-    return { userStore };
-  },
-  data() {
-    return {
-      firstName: "",
-      lastName: "",  
-      email: "",
-      password: "",
-      confirmedPassword: "",
-      showPassword: false,
-      passwordsMatch: true,
-      error: "",
-      firstNameEmpty: false,
-      lastNameEmpty:false,
-      emailEmpty: false,
-      passwordEmpty: false,
-      passwordConfirmEmpty: false,
-    }
-  },
   components: {
     AppLogo,
     EyeIcon,
     EyeSlashIcon
   },
-  methods: {
-    register(){
-      this.firstNameEmpty = this.firstName === "";
-      this.lastNameEmpty = this.lastName === "";
-      this.passwordsMatch = this.password === this.confirmedPassword;
-      this.emailEmpty = this.email === "";
-      this.passwordEmpty = this.password === "";
-      this.passwordConfirmEmpty = this.confirmedPassword === "";
+  setup() {
+    const userStore = useUserStore();
 
-      if (!this.firstNameEmpty && !this.lastNameEmpty && this.passwordsMatch && !this.emailEmpty && !this.passwordEmpty && !this.passwordConfirmEmpty) {
-        this.createUser();
+    const firstName = ref("");
+    const lastName = ref("");
+    const email = ref("");
+    const password = ref("");
+    const confirmedPassword = ref("");
+    const showPassword = ref(false);
+    const passwordsMatch = ref(true);
+    const error = ref("");
+    const firstNameEmpty = ref(false);
+    const lastNameEmpty = ref(false);
+    const emailEmpty = ref(false);
+    const passwordEmpty = ref(false);
+    const passwordConfirmEmpty = ref(false);
+
+    const toggleShow = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    const register = () => {
+      firstNameEmpty.value = firstName.value === "";
+      lastNameEmpty.value = lastName.value === "";
+      passwordsMatch.value = password.value === confirmedPassword.value;
+      emailEmpty.value = email.value === "";
+      passwordEmpty.value = password.value === "";
+      passwordConfirmEmpty.value = confirmedPassword.value === "";
+
+      if (
+        !firstNameEmpty.value &&
+        !lastNameEmpty.value &&
+        passwordsMatch.value &&
+        !emailEmpty.value &&
+        !passwordEmpty.value &&
+        !passwordConfirmEmpty.value
+      ) {
+        createUser();
       }
-    },
-    async createUser() {
-      this.userStore.createUser(this.firstName, this.lastName, this.email, this.password).then(() => {
-        this.error = "";
-        router.push('/registerSuccess')
-      }).catch((e) => {
-        this.error = e;
-      });
-    },
-    toggleShow() {
-      this.showPassword = !this.showPassword;
-    }
-  }
+    };
+
+    const createUser = async () => {
+      try {
+        await userStore.createUser(
+          firstName.value,
+          lastName.value,
+          email.value,
+          password.value
+        );
+        error.value = "";
+        router.push('/registerSuccess');
+      } catch (e: any) {
+        error.value = e;
+      }
+    };
+
+    return {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmedPassword,
+      showPassword,
+      passwordsMatch,
+      error,
+      firstNameEmpty,
+      lastNameEmpty,
+      emailEmpty,
+      passwordEmpty,
+      passwordConfirmEmpty,
+      toggleShow,
+      register,
+    };
+  },
 });
 </script>
-    
-    

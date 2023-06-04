@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
@@ -94,20 +94,6 @@ import router from '@/router';
 
 export default defineComponent({
   name: "app-sidebar",
-  setup() {
-    const authStore = useAuthStore();
-    const userStore = useUserStore();
-    userStore.getMe()
-    return { 
-      authStore,
-      userStore 
-      };
-  },
-  computed: {
-    profile() {
-      return this.userStore.getProfile;
-    },
-  },
   components: {
     AppLogo,
     QueueListIcon,
@@ -117,13 +103,27 @@ export default defineComponent({
     Cog8ToothIcon,
     ArrowLeftOnRectangleIcon,
   },
-  methods: {
-    async logout() {
-      this.authStore.logout()
-    },
-    settings() {
+  setup() {
+    const authStore = useAuthStore();
+    const userStore = useUserStore();
+
+    userStore.getMe()
+
+    const profile = computed(() => userStore.getProfile);
+
+    const logout = () => {
+      authStore.logout()
+    };
+
+    const settings = () => {
       router.push('/settings')
-    }
-  }
+    };
+
+    return {
+      profile,
+      logout,
+      settings
+    };
+  },
 });
 </script>

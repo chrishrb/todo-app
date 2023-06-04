@@ -66,47 +66,45 @@
 
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 
 export default defineComponent({
   name: "login-component",
-  setup() {
-    const authStore = useAuthStore();
-    const userStore = useUserStore();
-    return { authStore, userStore };
-  },
-  data() {
-    return {
-      // TODO: remove
-      email: "root@example.com",
-      password: "root",
-      showPassword: false,
-      error: "",
-    }
-  },
   components: {
     AppLogo,
     EyeIcon,
     EyeSlashIcon
   },
-  methods: {
-    async login() {
-      this.authStore.login(this.email, this.password).then(() => {
-        this.error = "";
+  setup() {
+    const authStore = useAuthStore();
+    const userStore = useUserStore();
+    const email = ref("root@example.com");
+    const password = ref("root");
+    const showPassword = ref(false);
+    const error = ref("");
+    const router = useRouter();
+
+    const login = async () => {
+      try {
+        await authStore.login(email.value, password.value);
+        error.value = "";
         router.push('/home');
-      }).catch((e) => {
-        this.error = e;
-      })
-    },
-    toggleShow() {
-      this.showPassword = !this.showPassword;
-    }
-  }
+      } catch (e: any) {
+        error.value = e;
+      }
+    };
+
+    const toggleShow = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    return { email, password, showPassword, error, login, toggleShow };
+  },
 });
 </script>
 
