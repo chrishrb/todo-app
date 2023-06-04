@@ -1,4 +1,16 @@
-# ToDo List
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="#">
+    <img src="docs/images/logo.png" alt="Logo" height="80">
+  </a>
+
+  <h3 align="center">ToDo List</h3>
+
+  <p align="center">
+    An awesome way to track your todos
+  </p>
+</div>
 
 ## Install
 
