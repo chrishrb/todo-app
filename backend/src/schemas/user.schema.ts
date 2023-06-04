@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 class UserSchema {
   @IsEmail()
@@ -83,12 +83,15 @@ export class UpdateUserSchema {
  * @property {string} email - Email
  * @property {string} firstName - First Name
  * @property {string} lastName - Last Name
+ * @property {boolean} isAdmin - IsAdmin
  */
 export class ReadUserSchema extends UserSchema {
   id: string;
+  isAdmin: boolean;
 
-  constructor(id: string, email: string, firstName: string, lastName: string) {
+  constructor(id: string, email: string, firstName: string, lastName: string, isAdmin: boolean) {
     super(email, firstName, lastName);
     this.id = id;
+    this.isAdmin = isAdmin;
   }
 }

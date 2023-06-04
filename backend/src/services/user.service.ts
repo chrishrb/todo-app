@@ -6,11 +6,6 @@ import { ConflictError } from "../exceptions/errors/registration-error";
 
 const prisma = new PrismaClient()
 
-/**
- * Create User
- *
- * @param userDto
- */
 export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSchema> {
   const existingUser = await prisma.user.findUnique({
     where: {
@@ -32,7 +27,7 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }
   });
   
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
 }
 
 export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
@@ -45,14 +40,9 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     }
   });
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
 }
 
-/**
- * Read User
- *
- * @param userId
- */
 export async function readUser(userId: string): Promise<ReadUserSchema> {
   const user = await prisma.user.findUnique({
     where: {
@@ -64,15 +54,9 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
     throw new NotFoundError(`User with id ${userId} not found.`)
   }
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
 }
 
-/**
- * Update User
- *
- * @param userId
- * @param userDto
- */
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
   const user = await prisma.user.update({
     where: {
@@ -86,18 +70,12 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
     }
   });
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
 }
 
-/**
- * Read all users
- *
- * @param userId
- * @param userDto
- */
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
-  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName))
+  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin))
 }
 
 export async function deleteUser(userId?: string): Promise<void> {
