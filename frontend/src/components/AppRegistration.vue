@@ -81,72 +81,67 @@
     </template>
     
     
-    <script lang="ts">
-    import { defineComponent } from 'vue';
-    import { useUserStore } from "@/stores/user"
-    import router from '@/router';
-    import AppLogo from "@/components/common/AppLogo.vue";
-    import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
-    
-    export default defineComponent({
-      name: "registration-component",
-      setup() {
-        const userStore = useUserStore();
-        return { userStore };
-      },
-      data() {
-        return {
-          firstName: "",
-          lastName: "",  
-          email: "",
-          password: "",
-          confirmedPassword: "",
-          showPassword: false,
-          passwordsMatch: true,
-          error: "",
-          firstNameEmpty: false,
-          lastNameEmpty:false,
-          emailEmpty: false,
-          passwordEmpty: false,
-          passwordConfirmEmpty: false,
-        }
-      },
-      computed: {
-        buttonLabel() {
-          return (this.showPassword) ? "Hide" : "Show";
-        }
-      },
-      components: {
-        AppLogo,
-        EyeIcon,
-        EyeSlashIcon
-      },
-      methods: {
-        register(){
-          this.firstNameEmpty = this.firstName === "";
-          this.lastNameEmpty = this.lastName === "";
-          this.passwordsMatch = this.password === this.confirmedPassword;
-          this.emailEmpty = this.email === "";
-          this.passwordEmpty = this.password === "";
-          this.passwordConfirmEmpty = this.confirmedPassword === "";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { useUserStore } from "@/stores/user"
+import router from '@/router';
+import AppLogo from "@/components/common/AppLogo.vue";
+import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 
-          if (!this.firstNameEmpty && !this.lastNameEmpty && this.passwordsMatch && !this.emailEmpty && !this.passwordEmpty && !this.passwordConfirmEmpty) {
-            this.createUser();
-          }
-        },
-        async createUser() {
-          this.userStore.createUser(this.firstName, this.lastName, this.email, this.password).then(() => {
-            this.error = "";
-            router.push('/registerSuccess')
-          }).catch((e) => {
-            this.error = e;
-          });
-        },
-        toggleShow() {
-          this.showPassword = !this.showPassword;
-        }
+export default defineComponent({
+  name: "registration-component",
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
+  data() {
+    return {
+      firstName: "",
+      lastName: "",  
+      email: "",
+      password: "",
+      confirmedPassword: "",
+      showPassword: false,
+      passwordsMatch: true,
+      error: "",
+      firstNameEmpty: false,
+      lastNameEmpty:false,
+      emailEmpty: false,
+      passwordEmpty: false,
+      passwordConfirmEmpty: false,
+    }
+  },
+  components: {
+    AppLogo,
+    EyeIcon,
+    EyeSlashIcon
+  },
+  methods: {
+    register(){
+      this.firstNameEmpty = this.firstName === "";
+      this.lastNameEmpty = this.lastName === "";
+      this.passwordsMatch = this.password === this.confirmedPassword;
+      this.emailEmpty = this.email === "";
+      this.passwordEmpty = this.password === "";
+      this.passwordConfirmEmpty = this.confirmedPassword === "";
+
+      if (!this.firstNameEmpty && !this.lastNameEmpty && this.passwordsMatch && !this.emailEmpty && !this.passwordEmpty && !this.passwordConfirmEmpty) {
+        this.createUser();
       }
-    });
-    </script>
+    },
+    async createUser() {
+      this.userStore.createUser(this.firstName, this.lastName, this.email, this.password).then(() => {
+        this.error = "";
+        router.push('/registerSuccess')
+      }).catch((e) => {
+        this.error = e;
+      });
+    },
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    }
+  }
+});
+</script>
     
     

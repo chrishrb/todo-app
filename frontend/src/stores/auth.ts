@@ -6,6 +6,7 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     jwt: localStorage.getItem('jwt') || null,
+
   }),
   actions: {
     async login(email: string, password: string) {
