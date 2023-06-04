@@ -12,8 +12,8 @@ yarn ci
   ```bash
   yarn ci
   ```
-* Start `backend` (see [README](backend/REAMDE.md))
-* Start `frontend` (see [README](frontend/REAMDE.md))
+* Start `backend` (see [README](backend/README.md))
+* Start `frontend` (see [README](frontend/README.md))
 
 ## Decisions 
 
