@@ -1,26 +1,12 @@
 import { defineStore } from "pinia";
 import baseApi from '@/common/base-api.service';
-import { useAuthStore } from "./auth";
-import type { Task } from "@/schemas/task.schema";
-
-async function init() {
-  const authStore = useAuthStore()
-
-  const tasks = await baseApi.get("me/tasks");
-  console.log("TASKS: ", tasks)
-
-  return authStore.isLoggedIn ? tasks : null;
-}
-
-type RootState = {
-  tasks: Task[];
-}
+import type { TaskSchema } from "@/schemas/task.schema";
 
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    tasks: [],
-  } as RootState),
+    tasks: undefined as TaskSchema[] | undefined
+  }),
   getters: {
     getTasks: (state) => state.tasks,
   },
@@ -35,14 +21,22 @@ export const useTaskStore = defineStore({
           throw(e)
       })
     },
-    // add(task: Task) {
-    //   // this.tasks.push(task);
-    // },
-    toggleChecked(id: any) {
-      if (!this.tasks.at(id)) {
+    async toggleChecked(id: any) {
+
+      const task = this.tasks!.find(e => e.id === id);
+
+      if (!task) {
+        console.log("task not found: ", task) 
         return;
       }
-      this.tasks.at(id)!.isChecked = !this.tasks.at(id)!.isChecked;
+
+      baseApi.patch(`/tasks/${id}/toggle`)
+        .then((res) => {
+          task.isChecked = res.data.isChecked
+        })
+        .catch((e) => {
+          throw(e)
+        })
     }
   }
 });
