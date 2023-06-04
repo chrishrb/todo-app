@@ -1,0 +1,21 @@
+FROM node:lts-alpine as builder
+WORKDIR /app
+
+# Install dependencies
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn ci
+
+# Build application
+COPY ./ ./
+RUN yarn build
+
+FROM node:lts-alpine as production
+WORKDIR /app
+
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/build .
+COPY --from=builder /app/node_modules .
+
+EXPOSE 3000
+CMD ["npm", "run", "start"]

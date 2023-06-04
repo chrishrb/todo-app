@@ -20,10 +20,6 @@ yarn ci
 
 ## Getting started
 
-* Install all packages
-  ```bash
-  yarn ci
-  ```
 * Start `backend` (see [README](backend/README.md))
 * Start `frontend` (see [README](frontend/README.md))
 

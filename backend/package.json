@@ -8,6 +8,7 @@
     "build": "npx tsc",
     "start": "node build/src/index.js",
     "dev": "nodemon src/index.ts",
+    "ci": "yarn install --frozen-lockfile",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:integration": "dotenv -e .env.test -- prisma migrate reset -f && dotenv -e .env.test -- cucumber-js -p default"
   },
