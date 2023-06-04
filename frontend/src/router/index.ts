@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegistrationView from '../views/RegistrationView.vue'
+import SettingsView from '../views/SettingsView.vue'
 import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
 
@@ -45,6 +46,14 @@ const router = createRouter({
           next({ name: 'login' })
         }
       },
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: SettingsView,
+      meta: {
+        requiresAuth: true,
+      }
     }
   ]
 })
