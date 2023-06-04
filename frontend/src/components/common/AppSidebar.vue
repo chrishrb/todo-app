@@ -74,9 +74,9 @@
           <img class="inline-block flex-shrink-0 h-[3.875rem] w-[3.875rem] rounded-full"
             src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
             alt="Image Description" />
-          <div class="ml-3">
-            <h3 class="font-semibold text-gray-800">Maria Wanner</h3>
-            <p class="text-sm font-medium text-gray-400">maria@gmail.com</p>
+          <div v-if="profile" class="ml-3">
+            <h3 class="font-semibold text-gray-800">{{ profile.firstName }} {{ profile.lastName }}</h3>
+            <p class="text-sm font-medium text-gray-400">{{ profile.email }}</p>
           </div>
         </div>
       </div>
@@ -84,14 +84,42 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
-import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
+import { useUserStore } from '@/stores/user';
+import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
 
-const authStore = useAuthStore();
-
-const logout = () => {
-  authStore.logout();
-};
+export default defineComponent({
+  name: "app-sidebar",
+  setup() {
+    const authStore = useAuthStore();
+    const userStore = useUserStore();
+    userStore.getMe()
+    return { 
+      authStore,
+      userStore 
+      };
+  },
+  computed: {
+    profile() {
+      return this.userStore.getProfile;
+    },
+  },
+  components: {
+    AppLogo,
+    QueueListIcon,
+    ChevronUpIcon,
+    ChevronDownIcon,
+    CalendarDaysIcon,
+    Cog8ToothIcon,
+    ArrowLeftOnRectangleIcon,
+  },
+  methods: {
+    async logout() {
+      this.authStore.logout()
+    },
+  }
+});
 </script>

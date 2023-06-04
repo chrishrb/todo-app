@@ -68,6 +68,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from '@/stores/user';
 import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
@@ -76,7 +77,8 @@ export default defineComponent({
   name: "login-component",
   setup() {
     const authStore = useAuthStore();
-    return { authStore };
+    const userStore = useUserStore();
+    return { authStore, userStore };
   },
   data() {
     return {
@@ -85,11 +87,6 @@ export default defineComponent({
       password: "root",
       showPassword: false,
       error: "",
-    }
-  },
-  computed: {
-    buttonLabel() {
-      return (this.showPassword) ? "Hide" : "Show";
     }
   },
   components: {
