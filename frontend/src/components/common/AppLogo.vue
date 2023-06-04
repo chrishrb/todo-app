@@ -13,9 +13,11 @@
           </router-link>
         </td>
         <td>
-          <p class="text-4xl text-primary-600 font-bold mb-1">
-            todo
-          </p>
+          <router-link to="/home">
+            <p class="text-4xl text-primary-600 font-bold mb-1">
+              todo
+            </p>
+          </router-link>
         </td>
       </tr>
     </table>
