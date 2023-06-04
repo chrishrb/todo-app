@@ -1,5 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
+import { getTokenString } from "./helpers/jwt";
 
 const axiosInstance = axios.create({
   baseURL: "/api/v1",
