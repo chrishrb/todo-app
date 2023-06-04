@@ -1,8 +1,8 @@
-export interface Task {
+export type TaskSchema = {
   id: string,
   title: string,
   userId: string,
   description: string | null,
-  dueDate: Date,
+  dueDate: string | undefined | null,
   isChecked: boolean
 }
