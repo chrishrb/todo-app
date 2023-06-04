@@ -1,6 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
-import { getTokenString } from "./helpers/jwt";
 
 const axiosInstance = axios.create({
   baseURL: "/api/v1",
@@ -13,7 +12,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (req) => {
     const authStore = useAuthStore();
-
     if (authStore.jwt) {
       req.headers['Authorization'] = `Bearer ${authStore.jwt}`;
     }
