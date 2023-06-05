@@ -28,21 +28,13 @@ axiosInstance.interceptors.response.use(
   },
   async (err) => {
     const authStore = useAuthStore();
-    if (err.response.status === 401 && !err.config._retry) {
-      err.config._retry = true;
-      try {
-        await authStore.refresh();
-        err.config.headers.Authorization = `Bearer ${authStore.jwt}`;
-        return axiosInstance(err.config);
-      } catch (refreshError) {
-        authStore.logout();
-        return Promise.reject(refreshError);
-      }
+    if (err.response.status === 401) {
+      await authStore.refresh()
+      return axiosInstance.request(err.config);
     } else {
-      return Promise.reject(err);
+      return Promise.reject(err)
     }
   }
 );
-
 
 export default axiosInstance;
