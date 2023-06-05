@@ -1,4 +1,6 @@
-FROM node:lts-alpine as builder
+# INFO: As of https://github.com/yanyiwu/nodejieba/issues/187 there 
+# are issues with M1 Macs and node:lts-alpine so we use this image instead
+FROM node:16-bullseye-slim as builder
 WORKDIR /app
 
 # Install dependencies
@@ -11,7 +13,7 @@ RUN yarn ci
 COPY . .
 RUN yarn build
 
-FROM node:lts-alpine as production
+FROM node:16-bullseye-slim as production
 WORKDIR /app
 
 COPY --from=builder /app/prisma /app/prisma
