@@ -57,7 +57,7 @@
     <div class="sticky top-[100vh]">
       <ul class="space-y-1.5 pb-2 pl-5 pr-5">
         <li>
-          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" @click="settings">
+          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" href="/settings">
             <Cog8ToothIcon class="w-5 h-5" />
             Settings
           </a>
@@ -84,46 +84,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { computed } from 'vue';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
 import router from '@/router';
 
-export default defineComponent({
-  name: "app-sidebar",
-  setup() {
-    const authStore = useAuthStore();
-    const userStore = useUserStore();
-    userStore.getMe()
-    return { 
-      authStore,
-      userStore 
-      };
-  },
-  computed: {
-    profile() {
-      return this.userStore.getProfile;
-    },
-  },
-  components: {
-    AppLogo,
-    QueueListIcon,
-    ChevronUpIcon,
-    ChevronDownIcon,
-    CalendarDaysIcon,
-    Cog8ToothIcon,
-    ArrowLeftOnRectangleIcon,
-  },
-  methods: {
-    async logout() {
-      this.authStore.logout()
-    },
-    settings() {
-      router.push('/settings')
-    }
-  }
-});
+const authStore = useAuthStore();
+const userStore = useUserStore();
+
+userStore.getMe()
+
+const profile = computed(() => userStore.getProfile);
+
+const logout = () => {
+  authStore.logout()
+};
+
 </script>
