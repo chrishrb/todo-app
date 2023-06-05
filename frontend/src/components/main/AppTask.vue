@@ -13,18 +13,35 @@
 
     <!-- Task list -->
     <div class="flex flex-col flex-grow">
-      <div v-show="task" class="flex bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400">
+      <div v-show="task" class="flex flex-col items-start bg-white border shadow-sm rounded-xl p-4 m-2 hover:border-gray-400">
 
-        <!-- <button id="newTask" -->
-        <!--   class="flex-none w-5 h-5 rounded-full border border-primary-500 cursor-pointer hover:border-primary-800 flex" -->
-        <!-- /> -->
+        <div class="flex items-start">
+          <button id="addDetails"
+            @click="showDetails"
+          >
+            <ChevronRightIcon
+              class="w-5 h-5 transition"
+              v-bind:style="{transform: `rotate(${deg}deg)`}"/>
+          </button>
 
-        <input type="title" id="title" name="title"
-          ref="titleInput"
-          class="ml-3 py-1 px-2 block w-full border-none border-transparent focus:border-transparent focus:ring-0"
-          v-on:keypress.enter="newTask"
-          v-model="titleNew"
-        >
+          <input type="title" id="title" name="title"
+            placeholder="Titel"
+            class="ml-3 py-1 px-2 block w-full border-none border-transparent focus:border-transparent focus:ring-0"
+            ref="titleInput"
+            v-on:keypress.enter="newTask"
+            v-model="titleData"
+          >
+        </div>
+
+        <div v-show="details" class="flex flex-grow justify-between pt-4">
+          <VueDatePicker v-model="dueDate" text-input inline-with-input auto-apply />
+          <input type="description" id="description" name="description"
+            class="py-1 px-2 block w-full border-gray-300 rounded-md"
+            placeholder="Beschreibung"
+            ref="descriptionInput"
+            v-model="descriptionData"
+          >
+        </div>
 
       </div>
       <div v-for="(item, key) in store.tasks">
@@ -47,23 +64,43 @@
 <script lang="ts" setup>
 import { useTaskStore } from '@/stores/tasks';
 import { nextTick, onMounted } from 'vue';
-import { PlusIcon } from '@heroicons/vue/24/outline';
+import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/outline';
 import { ref } from 'vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const store = useTaskStore();
 
+// Show switches
 const task = ref(false);
-const titleNew = ref("");
-const titleInput = ref()
+const details = ref(false);
+
+const titleData = ref();
+const titleInput = ref();
+const deg = ref(0)
+const dueDate = ref()
+const descriptionData = ref();
 
 onMounted(() => {
   store.getMine()
 })
 
 const newTask = () => {
-  store.addTask(titleNew.value, undefined, undefined)
-  titleNew.value = ""; 
+  store.addTask(titleData.value, descriptionData.value, dueDate.value)
+  titleData.value = undefined; 
+  descriptionData.value = undefined;
+  dueDate.value = undefined;
   task.value = false;
+}
+
+const showDetails = () => {
+  if (deg.value === 0) {
+    deg.value = 90;
+  } else {
+    deg.value = 0;
+  }
+
+  details.value = !details.value;
 }
 
 async function showNewTask() {
