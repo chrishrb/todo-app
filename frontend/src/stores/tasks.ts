@@ -1,29 +1,51 @@
 import { defineStore } from "pinia";
+import baseApi from '@/common/base-api.service';
+import type { TaskSchema } from "@/schemas/task.schema";
 
-export type Task = {
-  name: string;
-  checked: boolean;
-};
-
-function init() {
-  const task1: Task = {name: "Task 1", checked: false};
-  const task2: Task = {name: "Task 2", checked: true};
-  return [task1, task2]
-}
-
-export const useTaskStore = defineStore('task', {
+export const useTaskStore = defineStore({
+  id: "task",
   state: () => ({
-    tasks: init(),
+    tasks: undefined as TaskSchema[] | undefined
   }),
+  getters: {
+    getTasks: (state) => state.tasks,
+  },
   actions: {
-    add(task: Task) {
-      this.tasks.push(task);
+    async getMine() {
+     baseApi.get("me/tasks")
+      .then((res) => {
+          this.tasks = res.data;
+      })
+      .catch((e) => {
+          throw(e)
+      })
     },
-    toggleChecked(id: any) {
-      if (!this.tasks.at(id)) {
+    async toggleChecked(id: any) {
+
+      const task = this.tasks!.find(e => e.id === id);
+
+      if (!task) {
+        console.log("task not found: ", task) 
         return;
       }
-      this.tasks.at(id)!.checked = !this.tasks.at(id)!.checked;
+
+      baseApi.patch(`/tasks/${id}/toggle`)
+        .then((res) => {
+          task.isChecked = res.data.isChecked
+        })
+        .catch((e) => {
+          throw(e)
+        })
+    },
+    async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
+      baseApi.post("me/tasks", {title, description, dueDate})
+        .then((res) => {
+          this.tasks!.unshift(res.data)
+        })
+        .catch((e) => {
+          throw(e)
+        })
     }
   }
 });
+

@@ -57,13 +57,11 @@
     <div class="sticky top-[100vh]">
       <ul class="space-y-1.5 pb-2 pl-5 pr-5">
         <li>
-          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600"
-            href="javascript:;">
+          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" href="/settings">
             <Cog8ToothIcon class="w-5 h-5" />
             Settings
           </a>
-          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600"
-            href="javascript:;" @click="logout">
+          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" @click="logout">
             <ArrowLeftOnRectangleIcon class="w-5 h-5" />
             Logout
           </a>
@@ -71,12 +69,14 @@
       </ul>
       <div class="flex-shrink-0 group block border-t-2 p-4">
         <div class="flex items-center">
-          <img class="inline-block flex-shrink-0 h-[3.875rem] w-[3.875rem] rounded-full"
-            src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-            alt="Image Description" />
-          <div class="ml-3">
-            <h3 class="font-semibold text-gray-800">Maria Wanner</h3>
-            <p class="text-sm font-medium text-gray-400">maria@gmail.com</p>
+          <div class="inline-block flex-shrink-0 h-[3.875rem] w-[3.875rem] rounded-full overflow-hidden">
+            <div v-if="profile" class="bg-blue-500 text-white flex items-center justify-center text-xl font-semibold h-full w-full">
+              {{ profile.firstName.charAt(0).toUpperCase() }} {{ profile.lastName.charAt(0).toUpperCase() }}
+            </div>
+          </div>
+          <div v-if="profile" class="ml-3">
+            <h3 class="font-semibold text-gray-800">{{ profile.firstName }} {{ profile.lastName }}</h3>
+            <p class="text-sm font-medium text-gray-400">{{ profile.email }}</p>
           </div>
         </div>
       </div>
@@ -85,13 +85,22 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
-import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
+import { useUserStore } from '@/stores/user';
+import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
+import router from '@/router';
 
 const authStore = useAuthStore();
+const userStore = useUserStore();
+
+userStore.getMe()
+
+const profile = computed(() => userStore.getProfile);
 
 const logout = () => {
-  authStore.logout();
+  authStore.logout()
 };
+
 </script>
