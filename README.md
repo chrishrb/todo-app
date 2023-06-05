@@ -12,20 +12,20 @@
   </p>
 </div>
 
-## Install
+## Getting started (dev)
 
-```bash
-yarn ci
-```
-
-## Getting started
-
-* Install all packages
-  ```bash
-  yarn ci
-  ```
 * Start `backend` (see [README](backend/README.md))
 * Start `frontend` (see [README](frontend/README.md))
+
+## Run production
+
+```bash
+# build frontend and backend
+docker-compose -f docker-compose-prod.yml build
+
+# start all services
+docker-compose -f docker-compose-prod.yml up -d
+```
 
 ## Decisions 
 
@@ -52,6 +52,12 @@ yarn ci
 * tailwindcss with preline
 * axios
 * heroicons
+* nginx (frontend server for production)
+
+### Other
+
+* docker
+* traefik (reverse proxy)
 
 ## Authors
 

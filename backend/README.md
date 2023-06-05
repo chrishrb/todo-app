@@ -16,6 +16,7 @@
 
 * Run application in dev mode
   ```bash
+  yarn install
   yarn dev
   ```
 
