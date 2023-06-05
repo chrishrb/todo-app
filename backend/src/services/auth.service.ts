@@ -6,24 +6,21 @@ import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/
 import { Response, Request, NextFunction } from "express";
 import * as bcrypt from 'bcrypt';
 import { config } from "../utils/config";
-import { createClient } from 'redis';
+import redisClient from '../utils/redis';
 import dayjs from 'dayjs';
 import ms from 'ms'
 
 const prisma = new PrismaClient()
-const redis = createClient({url: process.env.REDIS_CLIENT_URL});
 
 async function saveTokenToBlacklist(token: string, expiresIn: string) {
-  await redis.connect();
-  await redis.set(`blacklist_${token}`, 'true')
-  await redis.expireAt(`blacklist_${token}`, dayjs().add(ms(expiresIn), 'milliseconds').add(1, 'hour').toDate())
-  await redis.disconnect()
+  const client = await redisClient.getConnection()
+  await client?.set(`blacklist_${token}`, 'true')
+  await client?.expireAt(`blacklist_${token}`, dayjs().add(ms(expiresIn), 'milliseconds').add(1, 'hour').toDate())
 }
 
 async function isTokenOnBlacklist(token: string): Promise<boolean> {
-  await redis.connect();
-  const value = await redis.get(`blacklist_${token}`)
-  await redis.disconnect()
+  const client = await redisClient.getConnection()
+  const value = await client?.get(`blacklist_${token}`)
 
   if (value) {
     return true;
