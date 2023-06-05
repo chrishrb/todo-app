@@ -25,7 +25,10 @@ export const useAuthStore = defineStore({
       router.push('/login')
     },
     async refresh(){
-      return unauthApi.get("/auth/refresh")
+      return unauthApi.get("/auth/refresh").then((response) => {
+        this.jwt = response.data.accessToken
+        localStorage.setItem('jwt', response.data.accessToken)
+    })
     }
   },
   getters: {
