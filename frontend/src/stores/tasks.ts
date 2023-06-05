@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import baseApi from '@/common/base-api.service';
-import type { TaskSchema } from "@/schemas/task.schema";
+import type { Task } from "@/schemas/task.schema";
 
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    tasks: undefined as TaskSchema[] | undefined
+    tasks: undefined as Task[] | undefined
   }),
   getters: {
     getTasks: (state) => state.tasks,
