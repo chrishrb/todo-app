@@ -4,10 +4,10 @@
     <!-- add button -->
     <div>
       <button id="addTask"
-        class="mt-3 block p-3 shadow-2xl shadow-gray-900 rounded-full hover:border hover:border-gray-300 hover:-translate-y-1 hover:-translate-x-1"
+        class="mt-2.5 block p-3 shadow-lg shadow-gray-300 rounded-full hover:shadow-2xl hover:shadow-gray-900 border border-gray-300 hover:-translate-y-0.5 hover:-translate-x-0.5"
         @click="showNewTask"
       >
-        <PlusIcon class="w-8 h-8" />
+        <PlusIcon class="w-7 h-7" />
       </button>
     </div>
 
