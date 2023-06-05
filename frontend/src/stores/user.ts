@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import baseApi from '@/common/base-api.service';
+import type { User } from '@/schemas/user.schema';
 
 export const useUserStore = defineStore({
   id: "user",
   state: () => ({
-    profile: null,
+    profile: undefined as User | undefined
   }),
   actions: {
     async getMe() {
