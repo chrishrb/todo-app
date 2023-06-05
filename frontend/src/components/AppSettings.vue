@@ -17,16 +17,8 @@
   </template>
   
   
-  <script lang="ts">
-  import { defineComponent } from 'vue';
+  <script lang="ts" setup>
   import AppLogo from "@/components/common/AppLogo.vue";
-  
-  export default defineComponent({
-    name: "settings-component",
-    components: {
-      AppLogo,
-    },
-  });
   </script>
   
   

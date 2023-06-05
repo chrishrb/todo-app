@@ -40,7 +40,7 @@
                       required aria-describedby="password-error" v-model="password">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                       <button type="button" class="focus:outline-none" @click="toggleShow">
-                        <component :is="showPassword ? 'EyeSlashIcon' : 'EyeIcon'" class="w-5 h-5" />
+                        <component :is="showPassword ? EyeSlashIcon : EyeIcon" class="w-5 h-5" />
                       </button>
                     </div>
                   </div>
@@ -65,46 +65,35 @@
 </template>
 
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+import { ref } from 'vue';
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 
-export default defineComponent({
-  name: "login-component",
-  components: {
-    AppLogo,
-    EyeIcon,
-    EyeSlashIcon
-  },
-  setup() {
-    const authStore = useAuthStore();
-    const userStore = useUserStore();
-    const email = ref("root@example.com");
-    const password = ref("root");
-    const showPassword = ref(false);
-    const error = ref("");
-    const router = useRouter();
+const authStore = useAuthStore();
+const userStore = useUserStore();
+const email = ref("root@example.com");
+const password = ref("root");
+const showPassword = ref(false);
+const error = ref("");
+const router = useRouter();
 
-    const login = async () => {
-      try {
-        await authStore.login(email.value, password.value);
-        error.value = "";
-        router.push('/home');
-      } catch (e: any) {
-        error.value = e;
-      }
-    };
+const login = async () => {
+  try {
+    await authStore.login(email.value, password.value);
+    error.value = "";
+    router.push('/home');
+  } catch (e: any) {
+    error.value = e;
+  }
+};
 
-    const toggleShow = () => {
-      showPassword.value = !showPassword.value;
-    };
+const toggleShow = () => {
+  showPassword.value = !showPassword.value;
+};
 
-    return { email, password, showPassword, error, login, toggleShow };
-  },
-});
 </script>
 

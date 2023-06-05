@@ -19,16 +19,8 @@
     </template>
     
     
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
 import AppLogo from "@/components/common/AppLogo.vue";
-
-export default defineComponent({
-  name: "registration-success-component",
-  components: {
-    AppLogo,
-  },
-});
 </script>
     
     
