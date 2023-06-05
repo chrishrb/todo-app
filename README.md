@@ -17,6 +17,13 @@
 * Start `backend` (see [README](backend/README.md))
 * Start `frontend` (see [README](frontend/README.md))
 
+### Links
+
+* **Frontend:** http://localhost:5173
+* **Backend:** http://localhost:3000/api/v1
+* **Adminer:** http://localhost:8081
+* **Swagger-Documentation:** http://localhost:3000/api-docs
+
 ## Run production
 
 ```bash
@@ -26,6 +33,13 @@ docker-compose -f docker-compose-prod.yml build
 # start all services
 docker-compose -f docker-compose-prod.yml up -d
 ```
+
+### Links
+
+* **Frontend:** http://localhost
+* **Backend:** http://localhost/api/v1
+* **Adminer:** http://localhost:8081
+* **Swagger-Documentation:** http://localhost/api-docs
 
 ## Decisions 
 
