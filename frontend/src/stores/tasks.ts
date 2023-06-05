@@ -17,7 +17,6 @@ export const useTaskStore = defineStore({
           this.tasks = res.data;
       })
       .catch((e) => {
-          console.log(e)
           throw(e)
       })
     },
@@ -33,6 +32,15 @@ export const useTaskStore = defineStore({
       baseApi.patch(`/tasks/${id}/toggle`)
         .then((res) => {
           task.isChecked = res.data.isChecked
+        })
+        .catch((e) => {
+          throw(e)
+        })
+    },
+    async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
+      baseApi.post("me/tasks", {title, description, dueDate})
+        .then((res) => {
+          this.tasks!.unshift(res.data)
         })
         .catch((e) => {
           throw(e)
