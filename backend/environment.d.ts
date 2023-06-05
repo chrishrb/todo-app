@@ -1,7 +1,8 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      AUTH_SECRET_KEY: string;
+      AUTH_SECRET_KEY?: string;
+      REDIS_CLIENT_URL?: string;
       NODE_ENV: string;
     }
   }

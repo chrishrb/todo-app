@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import ms from 'ms'
 
 const prisma = new PrismaClient()
-const redis = createClient();
+const redis = createClient({url: process.env.REDIS_CLIENT_URL});
 
 async function saveTokenToBlacklist(token: string, expiresIn: string) {
   await redis.connect();
