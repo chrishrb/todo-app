@@ -46,7 +46,7 @@
                         <input v-else type="Password" id="password" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                           <button type="button" class="focus:outline-none" @click="toggleShow">
-                            <component :is="showPassword ? 'EyeSlashIcon' : 'EyeIcon'" class="w-5 h-5" />
+                            <component :is="showPassword ? EyeSlashIcon : EyeIcon" class="w-5 h-5" />
                           </button>
                         </div>
                         <p v-if="passwordEmpty" class="text-xs text-red-600" id="password-empty">This field cannot be empty</p>
@@ -81,72 +81,66 @@
     </template>
     
     
-    <script lang="ts">
-    import { defineComponent } from 'vue';
-    import { useUserStore } from "@/stores/user"
-    import router from '@/router';
-    import AppLogo from "@/components/common/AppLogo.vue";
-    import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
-    
-    export default defineComponent({
-      name: "registration-component",
-      setup() {
-        const userStore = useUserStore();
-        return { userStore };
-      },
-      data() {
-        return {
-          firstName: "",
-          lastName: "",  
-          email: "",
-          password: "",
-          confirmedPassword: "",
-          showPassword: false,
-          passwordsMatch: true,
-          error: "",
-          firstNameEmpty: false,
-          lastNameEmpty:false,
-          emailEmpty: false,
-          passwordEmpty: false,
-          passwordConfirmEmpty: false,
-        }
-      },
-      computed: {
-        buttonLabel() {
-          return (this.showPassword) ? "Hide" : "Show";
-        }
-      },
-      components: {
-        AppLogo,
-        EyeIcon,
-        EyeSlashIcon
-      },
-      methods: {
-        register(){
-          this.firstNameEmpty = this.firstName === "";
-          this.lastNameEmpty = this.lastName === "";
-          this.passwordsMatch = this.password === this.confirmedPassword;
-          this.emailEmpty = this.email === "";
-          this.passwordEmpty = this.password === "";
-          this.passwordConfirmEmpty = this.confirmedPassword === "";
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { useUserStore } from "@/stores/user"
+import router from '@/router';
+import AppLogo from "@/components/common/AppLogo.vue";
+import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 
-          if (!this.firstNameEmpty && !this.lastNameEmpty && this.passwordsMatch && !this.emailEmpty && !this.passwordEmpty && !this.passwordConfirmEmpty) {
-            this.createUser();
-          }
-        },
-        async createUser() {
-          this.userStore.createUser(this.firstName, this.lastName, this.email, this.password).then(() => {
-            this.error = "";
-            router.push('/registerSuccess')
-          }).catch((e) => {
-            this.error = e;
-          });
-        },
-        toggleShow() {
-          this.showPassword = !this.showPassword;
-        }
-      }
-    });
-    </script>
-    
-    
+const userStore = useUserStore();
+
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const password = ref("");
+const confirmedPassword = ref("");
+const showPassword = ref(false);
+const passwordsMatch = ref(true);
+const error = ref("");
+const firstNameEmpty = ref(false);
+const lastNameEmpty = ref(false);
+const emailEmpty = ref(false);
+const passwordEmpty = ref(false);
+const passwordConfirmEmpty = ref(false);
+
+const toggleShow = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const register = () => {
+  firstNameEmpty.value = firstName.value === "";
+  lastNameEmpty.value = lastName.value === "";
+  passwordsMatch.value = password.value === confirmedPassword.value;
+  emailEmpty.value = email.value === "";
+  passwordEmpty.value = password.value === "";
+  passwordConfirmEmpty.value = confirmedPassword.value === "";
+
+  if (
+    !firstNameEmpty.value &&
+    !lastNameEmpty.value &&
+    passwordsMatch.value &&
+    !emailEmpty.value &&
+    !passwordEmpty.value &&
+    !passwordConfirmEmpty.value
+  ) {
+    createUser();
+  }
+};
+
+const createUser = async () => {
+  try {
+    await userStore.createUser(
+      firstName.value,
+      lastName.value,
+      email.value,
+      password.value
+    );
+    error.value = "";
+    router.push('/registerSuccess');
+  } catch (e: any) {
+    error.value = e;
+  }
+};
+
+</script>

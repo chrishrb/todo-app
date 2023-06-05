@@ -1,15 +1,16 @@
 import { defineStore } from 'pinia'
-import baseApi from '@/common/base-api.service';
+import unauthApi from '@/common/auth-api.service'
 import router from "@/router";
 
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
     jwt: localStorage.getItem('jwt') || null,
+
   }),
   actions: {
     async login(email: string, password: string) {
-      return baseApi.post("/auth/login", { email, password })
+      return unauthApi.post("/auth/login", { email, password })
         .then((response) => {
           this.jwt = response.data.accessToken
           localStorage.setItem('jwt', response.data.accessToken)
@@ -18,13 +19,16 @@ export const useAuthStore = defineStore({
         })
     },
     async logout() {
-      await baseApi.get("/auth/logout")
+      await unauthApi.get("/auth/logout")
       localStorage.removeItem('jwt')
       this.jwt = null
       router.push('/login')
     },
     async refresh(){
-      return baseApi.get("/auth/refresh")
+      return unauthApi.get("/auth/refresh").then((response) => {
+        this.jwt = response.data.accessToken
+        localStorage.setItem('jwt', response.data.accessToken)
+    })
     }
   },
   getters: {

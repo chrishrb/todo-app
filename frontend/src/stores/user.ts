@@ -7,11 +7,10 @@ export const useUserStore = defineStore({
     profile: null,
   }),
   actions: {
-    async getMe(email: string, password: string) {
-      console.log(email, password)
-      baseApi.get("/users/me")
+    async getMe() {
+      return baseApi.get("/me")
         .then((response) => {
-          this.profile = response.data;
+          this.profile = response.data
         })
         .catch((error) => {
           console.log(error);
