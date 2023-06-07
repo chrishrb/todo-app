@@ -9,5 +9,6 @@
 export type ErrorSchema = {
   field: string;
   value?: string;
-  error?: string;
+  errorCode?: number;
+  errorMessage?: string;
 }

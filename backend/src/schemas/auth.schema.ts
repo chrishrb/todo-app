@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
 import { JwtPayload } from "jsonwebtoken";
-import { ForbiddenError, UnauthorizedError } from "../exceptions/errors/login-error";
+import { UnauthorizedError } from "../exceptions/errors/login-error";
+import { ResponseError } from "../exceptions/response-details";
 
 /**
  * LoginSchema
@@ -10,10 +11,20 @@ import { ForbiddenError, UnauthorizedError } from "../exceptions/errors/login-er
  * @property {string} password - Password
  */
 export class LoginSchema {
-  @IsEmail()
+  @IsEmail(undefined, {
+    context: {
+      errorCode: ResponseError.INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.INVALID_EMAIL.errorMessage
+    }
+  })
   email: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.INVALID_PASSWORD.errorMessage
+    }
+  })
   password: string;
 
   constructor(email: string, password: string) {
@@ -79,13 +90,25 @@ export class JwtPayloadSchema {
 
   static fromPlainObj(type: JwtType, obj: string | JwtPayload) {
     if (typeof obj == 'string') {
-      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
+      throw new UnauthorizedError([{
+        field: 'token', 
+        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
+        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      }]);
     }
     if (obj.type == null || obj.type !== type) {
-      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
+      throw new UnauthorizedError([{
+        field: 'token', 
+        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
+        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      }]);
     }
     if (obj.userId == null || obj.isAdmin == null) {
-      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
+      throw new UnauthorizedError([{
+        field: 'token', 
+        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
+        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      }]);
     }
     return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);
   }

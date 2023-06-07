@@ -2,13 +2,20 @@ import { ValidatorOptions, validate } from "class-validator";
 import { ValidationError } from "./errors/validation-error";
 import { ErrorSchema } from "../schemas/error.schema";
 
+function getAllConstraints(constraints: object | undefined, defaultMsg: string | number) {
+  return constraints !== undefined ? Object.values(constraints)[0] : defaultMsg;
+}
+
 export async function validateSafe(object: object, validatorOptions?: ValidatorOptions): Promise<void> {
   const errors = await validate(object, validatorOptions);
 
   if (errors.length > 0) {
     const err: ErrorSchema[] = errors.map(error => {
-      const simpleError = error.constraints !== undefined ? Object.values(error.constraints)[0] : `${error.property} not valid.`;
-      return {field: error.property, value: error.value, error: simpleError} as ErrorSchema
+      const defaultErrorMessage = getAllConstraints(error.constraints, `${error.property} not valid`)
+      const errorCode = getAllConstraints(error.contexts, 4000)['errorCode']
+      const errorMessage = getAllConstraints(error.contexts, defaultErrorMessage)['errorMessage']
+
+      return {field: error.property, value: error.value, errorCode: errorCode, errorMessage: errorMessage} as ErrorSchema
     })
     throw new ValidationError(err);
   }
