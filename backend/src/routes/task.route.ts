@@ -50,7 +50,7 @@ taskRouter.route("/")
    */
   .get(authService.verify, asyncHandler(async (_, res) => {
     if (res.locals.user?.isAdmin === false) {
-      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, errorMessage: 'User does not have sufficient permissions.'}]);
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have sufficient permissions.'}]);
     }
     const tasks = await taskService.readAllTasks();
     res.status(200).json(tasks);
@@ -72,7 +72,7 @@ taskRouter.route("/:taskId")
   .get(authService.verify, asyncHandler(async (req, res) => {
     const task = await taskService.readTask(req.params.taskId);
     if (!isUserPermitted(res.locals.user, task.userId)) {
-      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, errorMessage: 'User does not have permissions for this resource.'}]);
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
     res.status(200).json(task);
   }))
@@ -93,7 +93,7 @@ taskRouter.route("/:taskId")
   .put(authService.verify, asyncHandler(async (req, res) => {
     const readTask = await taskService.readTask(req.params.taskId);
     if (!isUserPermitted(res.locals.user, readTask.userId)) {
-      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, errorMessage: 'User does not have permissions for this resource.'}]);
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
 
     const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate, req.body.isChecked);
@@ -118,7 +118,7 @@ taskRouter.route("/:taskId")
   .delete(authService.verify, asyncHandler(async (req, res) => {
     const readTask = await taskService.readTask(req.params.taskId);
     if (!isUserPermitted(res.locals.user, readTask.userId)) {
-      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, errorMessage: 'User does not have permissions for this resource.'}]);
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
 
     await taskService.deleteTask(req.params.taskId);
@@ -142,7 +142,7 @@ taskRouter.route("/:taskId/toggle")
   .patch(authService.verify, asyncHandler(async (req, res) => {
     const readTask = await taskService.readTask(req.params.taskId);
     if (!isUserPermitted(res.locals.user, readTask.userId)) {
-      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, errorMessage: 'User does not have permissions for this resource.'}]);
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
 
     const task = await taskService.toggleTask(req.params.taskId, readTask.isChecked);

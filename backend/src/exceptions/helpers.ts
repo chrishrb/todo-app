@@ -15,7 +15,7 @@ export async function validateSafe(object: object, validatorOptions?: ValidatorO
       const errorCode = getAllConstraints(error.contexts, 4000)['errorCode']
       const errorMessage = getAllConstraints(error.contexts, defaultErrorMessage)['errorMessage']
 
-      return {field: error.property, value: error.value, errorCode: errorCode, errorMessage: errorMessage} as ErrorSchema
+      return {field: error.property, value: error.value, replyCode: errorCode, replyMessage: errorMessage} as ErrorSchema
     })
     throw new ValidationError(err);
   }

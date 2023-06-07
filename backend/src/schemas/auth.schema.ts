@@ -92,22 +92,22 @@ export class JwtPayloadSchema {
     if (typeof obj == 'string') {
       throw new UnauthorizedError([{
         field: 'token', 
-        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+        replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+        replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
       }]);
     }
     if (obj.type == null || obj.type !== type) {
       throw new UnauthorizedError([{
         field: 'token', 
-        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+        replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+        replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
       }]);
     }
     if (obj.userId == null || obj.isAdmin == null) {
       throw new UnauthorizedError([{
         field: 'token', 
-        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+        replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+        replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
       }]);
     }
     return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);

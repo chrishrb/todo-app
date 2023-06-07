@@ -39,8 +39,8 @@ function verifyToken(type: JwtType, token: string) {
   } catch {
     throw new UnauthorizedError([{
       field: 'token', 
-      errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-      errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
     }]);
   }
 }
@@ -49,8 +49,8 @@ function getAccessTokenFromHeader(bearerHeader?: string) {
   if (!bearerHeader || typeof bearerHeader !== 'string') {
     throw new UnauthorizedError([{
       field: 'token', 
-      errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-      errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
     }]);
   }
   const [type, token] = bearerHeader.split(" ");
@@ -58,8 +58,8 @@ function getAccessTokenFromHeader(bearerHeader?: string) {
   if (type !== 'Bearer') {
     throw new UnauthorizedError([{
       field: 'token', 
-      errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-      errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
     }]);
   }
   return token;
@@ -81,8 +81,8 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
     throw new UnauthorizedError([{
       field: 'email', 
       value: userDto.email, 
-      errorCode: ResponseError.WRONG_EMAIL.errorCode, 
-      errorMessage: ResponseError.WRONG_EMAIL.errorMessage
+      replyCode: ResponseError.WRONG_EMAIL.errorCode, 
+      replyMessage: ResponseError.WRONG_EMAIL.errorMessage
     }]);
   }
 
@@ -90,8 +90,8 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
   if (!isCorrectPassword) {
     throw new UnauthorizedError([{
       field: 'password', 
-      errorCode: ResponseError.WRONG_PASSWORD.errorCode, 
-      errorMessage: ResponseError.WRONG_PASSWORD.errorMessage
+      replyCode: ResponseError.WRONG_PASSWORD.errorCode, 
+      replyMessage: ResponseError.WRONG_PASSWORD.errorMessage
     }]);
   }
 
@@ -115,8 +115,8 @@ export async function refresh(refreshToken?: string): Promise<TokenSchema> {
   if (!refreshToken || await isTokenOnBlacklist(refreshToken)) {
     throw new UnauthorizedError([{
       field: 'token', 
-      errorCode: ResponseError.REFRESH_TOKEN.errorCode,
-      errorMessage: ResponseError.REFRESH_TOKEN.errorMessage
+      replyCode: ResponseError.REFRESH_TOKEN.errorCode,
+      replyMessage: ResponseError.REFRESH_TOKEN.errorMessage
     }]);
   }
   const decodedRefreshToken = verifyToken(JwtType.REFRESH_TOKEN, refreshToken);
@@ -142,8 +142,8 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
   if (await isTokenOnBlacklist(token)) {
     throw new UnauthorizedError([{
       field: 'token', 
-      errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-      errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
     }]);
   }
   await saveTokenToBlacklist(token, config.accessTokenExpiryTime);
@@ -163,8 +163,8 @@ export function verify(req: Request, res: Response, next: NextFunction): void {
     if (onBlacklist) {
       next(new UnauthorizedError([{
         field: 'token', 
-        errorCode: ResponseError.ACCESS_TOKEN.errorCode,
-        errorMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+        replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+        replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
       }]))
     } else {
       res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)

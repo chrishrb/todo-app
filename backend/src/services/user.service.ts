@@ -17,8 +17,8 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     throw new ConflictError([{
       field: "email", 
       value: existingUser.email, 
-      errorCode: ResponseError.USER_EXISTS.errorCode,
-      errorMessage: ResponseError.USER_EXISTS.errorMessage,
+      replyCode: ResponseError.USER_EXISTS.errorCode,
+      replyMessage: ResponseError.USER_EXISTS.errorMessage,
     }]);
   }
   
@@ -47,8 +47,8 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     throw new NotFoundError([{
       field: 'id', 
       value: userId, 
-      errorCode: ResponseError.USER_NOT_FOUND.errorCode,
-      errorMessage: ResponseError.USER_NOT_FOUND.errorMessage
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
     }]);
   }
 
@@ -75,8 +75,8 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
     throw new NotFoundError([{
       field: 'id', 
       value: userId, 
-      errorCode: ResponseError.USER_NOT_FOUND.errorCode,
-      errorMessage: ResponseError.USER_NOT_FOUND.errorMessage
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
     }]);
   }
 
@@ -121,8 +121,8 @@ export async function deleteUser(userId?: string): Promise<void> {
     throw new NotFoundError([{
       field: 'id', 
       value: userId, 
-      errorCode: ResponseError.USER_NOT_FOUND.errorCode,
-      errorMessage: ResponseError.USER_NOT_FOUND.errorMessage
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
     }])
   })
 }

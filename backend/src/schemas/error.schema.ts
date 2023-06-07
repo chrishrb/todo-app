@@ -4,11 +4,12 @@
  * @typedef {object} ErrorSchema
  * @property {string} field - Field
  * @property {string|null} value - Value
- * @property {string|null} error - Error
+ * @property {number|null} replyCode - ReplyCode
+ * @property {string|null} replyMessage - ReplyMessage
  */
 export type ErrorSchema = {
   field: string;
   value?: string;
-  errorCode?: number;
-  errorMessage?: string;
+  replyCode?: number;
+  replyMessage?: string;
 }

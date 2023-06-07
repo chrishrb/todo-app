@@ -41,7 +41,7 @@ export function createServer(port: number): Server {
   app.use(notFoundMiddleware)
 
   if (!process.env.AUTH_SECRET_KEY) {
-    throw new InternalError([{field: 'AUTH_SECRET_KEY', errorMessage: "Authentication does not work. No AUTH_SECRET_KEY found in env."}]);
+    throw new InternalError([{field: 'AUTH_SECRET_KEY', replyMessage: "Authentication does not work. No AUTH_SECRET_KEY found in env."}]);
   }
 
   // Server setup
