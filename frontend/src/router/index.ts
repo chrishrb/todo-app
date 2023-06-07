@@ -56,7 +56,7 @@ const router = createRouter({
         if (from && from.name === 'settings') {
           next()
         } else {
-          next({ name: 'login' })
+          next({ name: 'settings' })
         }
       },
     },
