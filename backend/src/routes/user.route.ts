@@ -84,7 +84,6 @@ userRouter.route("/:userId")
     }
     const userDto = new UpdateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName);
 
-    await validateSafe(userDto);
     const user = await userService.updateUser(req.params.userId, userDto);
 
     res.status(200).json(user)

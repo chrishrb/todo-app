@@ -58,19 +58,24 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
 }
 
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
-  const user = await prisma.user.update({
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    }
+  });
+  const updatedUser = await prisma.user.update({
     where: {
       id: userId,
     },
     data: {
       email: userDto.email,
-      firstName: userDto.firstName,
-      lastName: userDto.lastName,
-      password: userDto.password,
+      firstName: (userDto.firstName ? userDto.firstName : user?.firstName),
+      lastName: (userDto.lastName ? userDto.lastName : user?.lastName),
+      password: (userDto.password ? await bcrypt.hash(userDto.password, 10)  : user?.password),
     }
   });
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
+  return new ReadUserSchema(updatedUser.id, updatedUser.email, updatedUser.firstName, updatedUser.lastName, updatedUser.isAdmin);
 }
 
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
