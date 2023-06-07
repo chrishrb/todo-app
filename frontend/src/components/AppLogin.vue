@@ -71,8 +71,7 @@ import { useAuthStore } from "@/stores/auth"
 import { useRouter } from 'vue-router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
-import { FrontendError } from '@/exceptions/frontend.error';
-import { formatErrorMessage } from '@/common/helpers';
+import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
 const email = ref("root@example.com");
@@ -87,9 +86,7 @@ const login = async () => {
     error.value = "";
     router.push('/home');
   } catch (e: any) {
-    if (e instanceof FrontendError) {
-      error.value = e.details?.[0].error ? formatErrorMessage(e.details[0].error) : e.errorMessage;
-    }
+    error.value = getErrorText(e.details);
   }
 };
 

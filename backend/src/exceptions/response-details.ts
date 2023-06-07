@@ -1,7 +1,7 @@
 export class ResponseError {
   // Validation
   static readonly INVALID_EMAIL = new ResponseError(4001, 'Invalid email')
-  static readonly INVALID_PASSWORD = new ResponseError(4002, 'Invalid email')
+  static readonly INVALID_PASSWORD = new ResponseError(4002, 'Invalid password')
   static readonly INVALID_FIRST_NAME = new ResponseError(4003, 'Invalid firstName')
   static readonly INVALID_LAST_NAME = new ResponseError(4004, 'Invalid lastName')
 
