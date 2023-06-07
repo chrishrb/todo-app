@@ -87,6 +87,8 @@ import { useUserStore } from "@/stores/user"
 import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
+import { FrontendError } from '@/exceptions/frontend.error';
+import { formatErrorMessage } from '@/common/helpers';
 
 const userStore = useUserStore();
 
@@ -139,7 +141,10 @@ const createUser = async () => {
     error.value = "";
     router.push('/registerSuccess');
   } catch (e: any) {
-    error.value = e;
+    console.dir(e)
+    if (e instanceof FrontendError) {
+      error.value = e.details?.[0].error ? formatErrorMessage(e.details[0].error) : e.errorMessage;
+    }
   }
 };
 

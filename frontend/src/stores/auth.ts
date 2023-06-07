@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import unauthApi from '@/common/auth-api.service'
 import router from "@/router";
+import { FrontendError } from '@/exceptions/frontend.error';
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -15,7 +16,7 @@ export const useAuthStore = defineStore({
           this.jwt = response.data.accessToken
           localStorage.setItem('jwt', response.data.accessToken)
         }).catch(e => {
-          throw new Error(e.response.data.details)
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
     async logout() {

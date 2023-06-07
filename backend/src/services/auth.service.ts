@@ -65,12 +65,12 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
   });
 
   if (!user) {
-    throw new UnauthorizedError([{field: 'email', value: userDto.email, error: "Email not found."}]);
+    throw new UnauthorizedError([{field: 'email', value: userDto.email, error: "email not found"}]);
   }
 
   const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
   if (!isCorrectPassword) {
-    throw new UnauthorizedError([{field: 'password', value: userDto.password, error: "Password not correct."}]);
+    throw new UnauthorizedError([{field: 'password', value: userDto.password, error: "password not correct"}]);
   }
 
   const accessTokenPayload = new JwtPayloadSchema(JwtType.ACCESS_TOKEN, user.id, user.isAdmin);
