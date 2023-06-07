@@ -67,6 +67,11 @@
             <ArrowLeftOnRectangleIcon class="w-5 h-5" />
             {{ $t ('logout')}}
           </a>
+          <div class="locale-changer">
+            <select v-model="$i18n.locale">
+              <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+            </select>
+          </div>
         </li>
       </ul>
       <div class="flex-shrink-0 group block border-t-2 p-4">
@@ -92,7 +97,6 @@ import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
-import router from '@/router';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
