@@ -56,7 +56,7 @@ export class UpdateUserSchema {
   email: string;
 
   @IsOptional()
-  @IsNotEmpty()
+  @IsString()
   password: string;
 
   @IsOptional()

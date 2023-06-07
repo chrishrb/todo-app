@@ -1,5 +1,4 @@
 <template>
-  <AppLogo />
     <body class="bg-gray-100 flex h-full items-center py-16">
       <main class="w-full max-w-md mx-auto p-6">
         <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
@@ -79,8 +78,8 @@ import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 
 const userStore = useUserStore();
 
-const firstName = ref("");
-const lastName = ref("");
+const firstName = ref(userStore.getProfile?.firstName ?? "");
+const lastName = ref(userStore.getProfile?.lastName ?? "");
 const password = ref("");
 const confirmedPassword = ref("");
 const showPassword = ref(false);
