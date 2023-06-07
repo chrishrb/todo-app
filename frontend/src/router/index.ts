@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import RegistrationView from '../views/RegistrationView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
+import SettingsSuccessView from '../views/SettingsSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
 
 
@@ -41,6 +42,18 @@ const router = createRouter({
       component: RegistrationSuccessView,
       beforeEnter: (to, from, next) => {
         if (from && from.name === 'register') {
+          next()
+        } else {
+          next({ name: 'login' })
+        }
+      },
+    },
+    {
+      path: '/settingsSuccess',
+      name: 'settingsSuccess',
+      component: SettingsSuccessView,
+      beforeEnter: (to, from, next) => {
+        if (from && from.name === 'settings') {
           next()
         } else {
           next({ name: 'login' })
