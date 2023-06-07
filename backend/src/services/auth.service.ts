@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { UnauthorizedError } from "../exceptions/errors/login-error";
-import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/auth.schema";
 import { Response, Request, NextFunction } from "express";
@@ -37,18 +36,18 @@ function verifyToken(type: JwtType, token: string) {
     const decoded = jsonwebtoken.verify(token, process.env.AUTH_SECRET_KEY!);
     return JwtPayloadSchema.fromPlainObj(type, decoded);
   } catch {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
   }
 }
 
 function getAccessTokenFromHeader(bearerHeader?: string) {
   if (!bearerHeader || typeof bearerHeader !== 'string') {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
   }
   const [type, token] = bearerHeader.split(" ");
 
   if (type !== 'Bearer') {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
   }
   return token;
 }
@@ -66,12 +65,12 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
   });
 
   if (!user) {
-    throw new UnauthorizedError("Email not found.");
+    throw new UnauthorizedError([{field: 'email', value: userDto.email, error: "Email not found."}]);
   }
 
   const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
   if (!isCorrectPassword) {
-    throw new UnauthorizedError("Incorrect password.");
+    throw new UnauthorizedError([{field: 'password', value: userDto.password, error: "Password not correct."}]);
   }
 
   const accessTokenPayload = new JwtPayloadSchema(JwtType.ACCESS_TOKEN, user.id, user.isAdmin);
@@ -92,7 +91,7 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
  */
 export async function refresh(refreshToken?: string): Promise<TokenSchema> {
   if (!refreshToken || await isTokenOnBlacklist(refreshToken)) {
-    throw new UnauthorizedError("No refresh token or not valid anymore.");
+    throw new UnauthorizedError([{field: 'token', 'error': 'No refresh token or not valid anymore.'}]);
   }
   const decodedRefreshToken = verifyToken(JwtType.REFRESH_TOKEN, refreshToken);
 
@@ -115,7 +114,7 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
 
   const token = getAccessTokenFromHeader(accessTokenHeader)
   if (await isTokenOnBlacklist(token)) {
-    throw new UnauthorizedError("Invalid token")
+    throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
   }
   await saveTokenToBlacklist(token, config.accessTokenExpiryTime);
 }
@@ -129,14 +128,10 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
  * @param next
  */
 export function verify(req: Request, res: Response, next: NextFunction): void {
-  if (!process.env.AUTH_SECRET_KEY) {
-    throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
-  }
-
   const token = getAccessTokenFromHeader(req.headers['authorization'])
   isTokenOnBlacklist(token).then((onBlacklist) => {
     if (onBlacklist) {
-      next(new UnauthorizedError())
+      next(new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]))
     } else {
       res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
       next();

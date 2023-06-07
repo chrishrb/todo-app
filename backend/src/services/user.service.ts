@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
-import { ConflictError } from "../exceptions/errors/registration-error";
+import { ConflictError } from "../exceptions/errors/conflict-error";
 
 const prisma = new PrismaClient()
 
@@ -13,7 +13,7 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }
   });
   if (existingUser) {
-    throw new ConflictError("Email already registered.");
+    throw new ConflictError([{field: "email", value: existingUser.email, error: "Email already registered."}]);
   }
   
   const hashedPassword = await bcrypt.hash(userDto.password, 10)
@@ -51,7 +51,7 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
   });
 
   if (user == null) {
-    throw new NotFoundError(`User with id ${userId} not found.`)
+    throw new NotFoundError([{field: 'id', value: userId, error: `User with id ${userId} not found.`}])
   }
 
   return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
@@ -92,6 +92,6 @@ export async function deleteUser(userId?: string): Promise<void> {
   });
 
   await prisma.$transaction([deleteTasks, delUser]).catch(() => {
-    throw new NotFoundError(`User with id ${userId} not found.`)
+    throw new NotFoundError([{field: 'id', value: userId, error: `User with id ${userId} not found.`}])
   })
 }

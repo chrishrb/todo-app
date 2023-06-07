@@ -39,7 +39,7 @@ userRouter.route("/")
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
     if (res.locals.user?.isAdmin === false) {
-      throw new ForbiddenError();
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, error: 'User does not have sufficient permissions.'}]);
     }
     const users = await userService.readAllUsers();
     res.status(200).json(users)
@@ -61,7 +61,7 @@ userRouter.route("/:userId")
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
     if (res.locals.user?.userId !== req.params.userId && res.locals.user?.isAdmin === false) {
-      throw new ForbiddenError();
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, error: 'User does not have permissions for this resource.'}]);
     }
     const user = await userService.readUser(req.params.userId);
     res.status(200).json(user)
@@ -80,7 +80,7 @@ userRouter.route("/:userId")
    */
   .put(authService.verify, asyncHandler(async (req, res) => {
     if (res.locals.user?.userId !== req.params.userId && res.locals.user?.isAdmin === false) {
-      throw new ForbiddenError();
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, error: 'User does not have permissions for this resource.'}]);
     }
     const userDto = new UpdateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName);
 
@@ -103,7 +103,7 @@ userRouter.route("/:userId")
    */
   .delete(authService.verify, asyncHandler(async (req, res) => {
     if (res.locals.user?.userId !== req.params.userId && res.locals.user?.isAdmin === false) {
-      throw new ForbiddenError();
+      throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, error: 'User does not have permissions for this resource.'}]);
     }
     await userService.deleteUser(req.params.userId);
 

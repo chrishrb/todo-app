@@ -45,7 +45,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
   });
 
   if (task == null) {
-    throw new NotFoundError(`Task with id ${taskId} not found.`)
+    throw new NotFoundError([{field: 'id', value: taskId, error: `Task with id ${taskId} not found.`}])
   }
 
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate?.toISOString(), task.isChecked);

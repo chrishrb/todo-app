@@ -79,13 +79,13 @@ export class JwtPayloadSchema {
 
   static fromPlainObj(type: JwtType, obj: string | JwtPayload) {
     if (typeof obj == 'string') {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
     }
     if (obj.type == null || obj.type !== type) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
     }
     if (obj.userId == null || obj.isAdmin == null) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError([{field: 'token', 'error': 'No token or not valid anymore.'}]);
     }
     return new JwtPayloadSchema(obj.type as JwtType, obj.userId, obj.isAdmin);
   }
