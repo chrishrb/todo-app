@@ -11,7 +11,7 @@
           <a class="hs-accordion-toggle flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-base text-slate-700 rounded-md hover:text-primary-600"
             href="javascript:;">
             <QueueListIcon class="w-5 h-5" />
-            Today tasks
+            {{ $t ('todayTasks')}}
 
             <ChevronUpIcon
               class="hs-accordion-active:block ml-auto hidden w-4 h-4 text-gray-600 group-hover:text-gray-500" />
@@ -25,19 +25,19 @@
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block bg-red-500 rounded-full mr-2"></span>
-                  Personal
+                  {{ $t ('personal')}}
                 </a>
               </li>
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
-                  Work
+                  {{ $t ('work')}}
                 </a>
               </li>
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block border-orange-500 border-2 rounded-full mr-2"></span>
-                  Study
+                  {{ $t ('study')}}
                 </a>
               </li>
             </ul>
@@ -48,7 +48,7 @@
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600"
             href="javascript:;">
             <CalendarDaysIcon class="w-5 h-5" />
-            Scheduled tasks
+            {{ $t ('scheduledTasks')}}
           </a>
         </li>
 
@@ -60,12 +60,12 @@
           <div>
             <router-link class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" to="/settings">
               <Cog8ToothIcon class="w-5 h-5" />
-              Settings
+              {{ $t ('settings')}}
             </router-link>
           </div>
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" @click="logout">
             <ArrowLeftOnRectangleIcon class="w-5 h-5" />
-            Logout
+            {{ $t ('logout')}}
           </a>
         </li>
       </ul>
@@ -92,7 +92,6 @@ import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
-import router from '@/router';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();

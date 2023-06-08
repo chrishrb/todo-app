@@ -4,7 +4,7 @@
         <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
           <div class="p-4 sm:p-7">
             <div class="text-center">
-              <h1 class="block text-2xl font-bold text-gray-800">Settings</h1>
+              <h1 class="block text-2xl font-bold text-gray-800">{{ $t ('settings')}}</h1>
             </div>
             <div class="mt-5">
               <!-- Form -->
@@ -12,13 +12,13 @@
                 <div class="grid gap-y-4">
                   <!-- Form Group -->
                   <div>
-                    <label for="firstName" class="block text-sm mb-2">Change First Name</label>
+                    <label for="firstName" class="block text-sm mb-2">{{ $t ('changeFirstName')}}</label>
                     <div class="relative">
                       <input type="firstName" id="firstName" name="firstName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="firstName">
                     </div>
                   </div>
                   <div>
-                    <label for="lastName" class="block text-sm mb-2">Change Last Name</label>
+                    <label for="lastName" class="block text-sm mb-2">{{ $t ('changeLastName')}}</label>
                     <div class="relative">
                       <input type="lastName" id="lastName" name="lastName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="lastName">
                     </div>
@@ -28,7 +28,7 @@
                   <!-- Form Group -->
                   <div>
                     <div class="flex justify-between items-center">
-                      <label for="password" class="block text-sm mb-2">Change Password</label>
+                      <label for="password" class="block text-sm mb-2">{{ $t ('changePassword')}}</label>
                     </div>
                     <div class="relative">
                       <input v-if="showPassword" type="showPassword" id="password" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
@@ -42,21 +42,29 @@
                   </div>
                   <div>
                     <div class="flex justify-between items-center">
-                      <label for="passwordConfirmation" class="block text-sm mb-2">Password confirmation</label>
+                      <label for="passwordConfirmation" class="block text-sm mb-2">{{ $t ('passwordConfirmation')}}</label>
                     </div>
                     <div class="relative">
                       <input v-if="showPassword" type="showPassword" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
                       <input v-else type="Password" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
                     </div>
                     <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
-                    <p v-show="!(passwordsMatch)" class="text-xs text-red-600 mt-2" id="password-error">Passwords don't match</p>
+                    <p v-show="!(passwordsMatch)" class="text-xs text-red-600 mt-2" id="password-error">{{ $t ('passwordsDontMatch')}}</p>
+                  </div>
+                  <div class="flex justify-between items-center">
+                      <label for="locale-changer" class="block text-sm mb-2">{{ $t ('changeLanguage')}}</label>
+                  </div>
+                  <div class="locale-changer">
+                    <select v-model="$i18n.locale" class="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500">
+                      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+                    </select>
                   </div>
                   <!-- End Form Group -->
                     <div class="flex">
                       <router-link to="/home" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
-                        <button type="button">Back</button>
+                        <button type="button">{{ $t ('back')}}</button>
                       </router-link>
-                        <button type="submit" class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">Change Settings</button>
+                        <button type="submit" class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">{{ $t ('changeSettings')}}</button>
                     </div>
                   </div>
               </form>
@@ -73,7 +81,6 @@
 import { ref } from 'vue';
 import { useUserStore } from "@/stores/user"
 import router from '@/router';
-import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 
