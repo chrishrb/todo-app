@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
-import { ConflictError } from "../exceptions/errors/registration-error";
+import { ConflictError } from "../exceptions/errors/conflict-error";
+import { ResponseError } from "../exceptions/response-details";
 
 const prisma = new PrismaClient()
 
@@ -13,7 +14,12 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }
   });
   if (existingUser) {
-    throw new ConflictError("Email already registered.");
+    throw new ConflictError([{
+      field: "email", 
+      value: existingUser.email, 
+      replyCode: ResponseError.USER_EXISTS.errorCode,
+      replyMessage: ResponseError.USER_EXISTS.errorMessage,
+    }]);
   }
   
   const hashedPassword = await bcrypt.hash(userDto.password, 10)
@@ -31,7 +37,22 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
 }
 
 export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
-  const user = await prisma.user.update({
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    }
+  });
+
+  if (user == null) {
+    throw new NotFoundError([{
+      field: 'id', 
+      value: userId, 
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
+    }]);
+  }
+
+  const updateUser = await prisma.user.update({
     where: {
       id: userId,
     },
@@ -40,7 +61,7 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     }
   });
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
+  return new ReadUserSchema(updateUser.id, updateUser.email, updateUser.firstName, updateUser.lastName, updateUser.isAdmin);
 }
 
 export async function readUser(userId: string): Promise<ReadUserSchema> {
@@ -51,7 +72,12 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
   });
 
   if (user == null) {
-    throw new NotFoundError(`User with id ${userId} not found.`)
+    throw new NotFoundError([{
+      field: 'id', 
+      value: userId, 
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
+    }]);
   }
 
   return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
@@ -63,15 +89,25 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
       id: userId,
     }
   });
+
+  if (user == null) {
+    throw new NotFoundError([{
+      field: 'id', 
+      value: userId, 
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
+    }]);
+  }
+
   const updatedUser = await prisma.user.update({
     where: {
       id: userId,
     },
     data: {
-      email: userDto.email,
-      firstName: (userDto.firstName ? userDto.firstName : user?.firstName),
-      lastName: (userDto.lastName ? userDto.lastName : user?.lastName),
-      password: (userDto.password ? await bcrypt.hash(userDto.password, 10)  : user?.password),
+      email: userDto.email != null ? userDto.email : undefined,
+      firstName: userDto.firstName != null ? userDto.firstName : undefined,
+      lastName: userDto.lastName != null ? userDto.lastName : undefined,
+      password: userDto.password != null ? await bcrypt.hash(userDto.password, 10) : undefined,
     }
   });
 
@@ -97,6 +133,11 @@ export async function deleteUser(userId?: string): Promise<void> {
   });
 
   await prisma.$transaction([deleteTasks, delUser]).catch(() => {
-    throw new NotFoundError(`User with id ${userId} not found.`)
+    throw new NotFoundError([{
+      field: 'id', 
+      value: userId, 
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
+    }])
   })
 }

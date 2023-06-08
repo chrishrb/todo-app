@@ -68,13 +68,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useAuthStore } from "@/stores/auth"
-import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
+import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
-const userStore = useUserStore();
 const email = ref("root@example.com");
 const password = ref("root");
 const showPassword = ref(false);
@@ -87,7 +86,7 @@ const login = async () => {
     error.value = "";
     router.push('/home');
   } catch (e: any) {
-    error.value = e;
+    error.value = getErrorText(e.details);
   }
 };
 

@@ -27,10 +27,10 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
       id: taskId,
     },
     data: {
-      isChecked: taskDto.isChecked,
-      title: taskDto.title,
-      description: taskDto.description,
-      dueDate: taskDto.dueDate,
+      isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
+      title: taskDto.title != null ? taskDto.title : undefined,
+      description: taskDto.description != null ? taskDto.description : undefined,
+      dueDate: taskDto.dueDate != null ? taskDto.dueDate : undefined,
     }
   });
 
@@ -45,7 +45,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
   });
 
   if (task == null) {
-    throw new NotFoundError(`Task with id ${taskId} not found.`)
+    throw new NotFoundError([{field: 'id', value: taskId, replyMessage: `Task with id ${taskId} not found.`}])
   }
 
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate?.toISOString(), task.isChecked);
