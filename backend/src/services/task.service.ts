@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { CreateTaskMeSchema, CreateTaskSchema, ReadTaskSchema, UpdateTaskSchema } from "../schemas/task.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
+import { notEmpty } from "../exceptions/helpers";
 
 const prisma = new PrismaClient();
 
@@ -27,10 +28,10 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
       id: taskId,
     },
     data: {
+      title: notEmpty(taskDto.title) ? taskDto.title! : undefined,
+      description: notEmpty(taskDto.description) ? taskDto.description : undefined,
+      dueDate: notEmpty(taskDto.dueDate) ? taskDto.dueDate : undefined,
       isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
-      title: taskDto.title != null ? taskDto.title : undefined,
-      description: taskDto.description != null ? taskDto.description : undefined,
-      dueDate: taskDto.dueDate != null ? taskDto.dueDate : undefined,
     }
   });
 

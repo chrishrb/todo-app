@@ -20,3 +20,7 @@ export async function validateSafe(object: object, validatorOptions?: ValidatorO
     throw new ValidationError(err);
   }
 }
+
+export function notEmpty(value: string | null | undefined) {
+  return value != undefined && value != null && value.trim() !== '';
+}

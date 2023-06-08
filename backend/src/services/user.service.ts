@@ -4,6 +4,7 @@ import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
 import { ConflictError } from "../exceptions/errors/conflict-error";
 import { ResponseError } from "../exceptions/response-details";
+import { notEmpty } from "../exceptions/helpers";
 
 const prisma = new PrismaClient()
 
@@ -104,10 +105,10 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
       id: userId,
     },
     data: {
-      email: userDto.email != null ? userDto.email : undefined,
-      firstName: userDto.firstName != null ? userDto.firstName : undefined,
-      lastName: userDto.lastName != null ? userDto.lastName : undefined,
-      password: userDto.password != null ? await bcrypt.hash(userDto.password, 10) : undefined,
+      email: notEmpty(userDto.email) ? userDto.email! : undefined,
+      firstName: notEmpty(userDto.firstName) ? userDto.firstName! : undefined,
+      lastName: notEmpty(userDto.lastName) ? userDto.lastName! : undefined,
+      password: notEmpty(userDto.password) ? await bcrypt.hash(userDto.password!, 10) : undefined,
     }
   });
 
