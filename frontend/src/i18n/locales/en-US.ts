@@ -25,5 +25,6 @@ export default{
     "back": "Back",
     "changeSettings": "Change Settings",
     "settingsSuccess": "Your settings were changed successfully !",
-    "home": "home"
+    "home": "home",
+    "changeLanguage": "Change Language"
 }

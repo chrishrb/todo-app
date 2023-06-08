@@ -25,5 +25,6 @@ export default{
     "back": "Zurück",
     "changeSettings": "Einstellungen übernehmen",
     "settingsSuccess": "Ihre Einstellungen wurden erfolgreich gespeichert!",
-    "home": "Startseite"
+    "home": "Startseite",
+    "changeLanguage": "Sprache ändern"
 }

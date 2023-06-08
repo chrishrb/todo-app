@@ -1,13 +1,13 @@
 import { createI18n } from 'vue-i18n';
 import de from './locales/de'
-import en from './locales/en'
+import en from './locales/en-US'
 
 const i18n = createI18n({
-  locale: 'en',
-  fallbackLocale: 'en',
+  locale: navigator.language,
+  fallbackLocale: 'en-US',
   messages: {
-    en: en,
-    de: de
+    'en-US': en,
+    'de': de
   },
 });
 

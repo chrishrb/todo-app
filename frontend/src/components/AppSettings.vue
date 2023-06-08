@@ -51,6 +51,14 @@
                     <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
                     <p v-show="!(passwordsMatch)" class="text-xs text-red-600 mt-2" id="password-error">{{ $t ('passwordsDontMatch')}}</p>
                   </div>
+                  <div class="flex justify-between items-center">
+                      <label for="locale-changer" class="block text-sm mb-2">{{ $t ('changeLanguage')}}</label>
+                  </div>
+                  <div class="locale-changer">
+                    <select v-model="$i18n.locale" class="py-3 px-4 pr-9 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500">
+                      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{ locale }}</option>
+                    </select>
+                  </div>
                   <!-- End Form Group -->
                     <div class="flex">
                       <router-link to="/home" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
@@ -73,7 +81,6 @@
 import { ref } from 'vue';
 import { useUserStore } from "@/stores/user"
 import router from '@/router';
-import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 
