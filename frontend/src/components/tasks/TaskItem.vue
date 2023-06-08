@@ -14,7 +14,7 @@
       v-show="item.description"
       class="py-1 px-2 block w-full border-gray-300 rounded-md text-gray-500 col-span-7 left-5 relative"
     >
-      {{ item.description?.slice(0, 255) }}
+      {{ item.description?.slice(0, 255) }}...
     </span>
 
     <span class="col-span-2 col-start-11">
