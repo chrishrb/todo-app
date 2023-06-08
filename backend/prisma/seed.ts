@@ -3,7 +3,7 @@ import * as user_service from '../src/services/user.service'
 import * as task_service from '../src/services/task.service'
 import * as fs from 'fs';
 
-const loremIpsum = fs.readFileSync('./lorem-ipsum-200.txt', 'utf-8');
+const loremIpsum = fs.readFileSync('prisma/lorem-ipsum-200.txt', 'utf-8');
 const prisma = new PrismaClient()
 
 async function main() {
