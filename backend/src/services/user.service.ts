@@ -4,6 +4,7 @@ import { NotFoundError } from "../exceptions/errors/not-found-error";
 import * as bcrypt from 'bcrypt';
 import { ConflictError } from "../exceptions/errors/conflict-error";
 import { ResponseError } from "../exceptions/response-details";
+import { notEmpty } from "../exceptions/helpers";
 
 const prisma = new PrismaClient()
 
@@ -84,19 +85,34 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
 }
 
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
-  const user = await prisma.user.update({
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    }
+  });
+
+  if (user == null) {
+    throw new NotFoundError([{
+      field: 'id', 
+      value: userId, 
+      replyCode: ResponseError.USER_NOT_FOUND.errorCode,
+      replyMessage: ResponseError.USER_NOT_FOUND.errorMessage
+    }]);
+  }
+
+  const updatedUser = await prisma.user.update({
     where: {
       id: userId,
     },
     data: {
-      email: userDto.email != null ? userDto.email : undefined,
-      firstName: userDto.firstName != null ? userDto.firstName : undefined,
-      lastName: userDto.lastName != null ? userDto.lastName : undefined,
-      password: userDto.password != null ? userDto.password : undefined,
+      email: notEmpty(userDto.email) ? userDto.email! : undefined,
+      firstName: notEmpty(userDto.firstName) ? userDto.firstName! : undefined,
+      lastName: notEmpty(userDto.lastName) ? userDto.lastName! : undefined,
+      password: notEmpty(userDto.password) ? await bcrypt.hash(userDto.password!, 10) : undefined,
     }
   });
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
+  return new ReadUserSchema(updatedUser.id, updatedUser.email, updatedUser.firstName, updatedUser.lastName, updatedUser.isAdmin);
 }
 
 export async function readAllUsers(): Promise<ReadUserSchema[]> {

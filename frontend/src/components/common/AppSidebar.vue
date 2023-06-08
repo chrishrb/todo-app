@@ -57,10 +57,12 @@
     <div class="sticky top-[100vh]">
       <ul class="space-y-1.5 pb-2 pl-5 pr-5">
         <li>
-          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" href="/settings">
-            <Cog8ToothIcon class="w-5 h-5" />
-            Settings
-          </a>
+          <div>
+            <router-link class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" to="/settings">
+              <Cog8ToothIcon class="w-5 h-5" />
+              Settings
+            </router-link>
+          </div>
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" @click="logout">
             <ArrowLeftOnRectangleIcon class="w-5 h-5" />
             Logout

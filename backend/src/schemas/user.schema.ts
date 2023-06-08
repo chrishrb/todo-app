@@ -89,7 +89,7 @@ export class UpdateUserSchema {
   email: string | null;
 
   @IsOptional()
-  @IsNotEmpty({
+  @IsString({
     context: {
       errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
       errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage

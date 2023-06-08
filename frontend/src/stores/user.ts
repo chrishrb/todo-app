@@ -25,6 +25,12 @@ export const useUserStore = defineStore({
         .catch(e => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
+    },
+    async updateUser(userId: string, firstName: string, lastName: string, email: string, password: string) {
+      return baseApi.put(`/users/${userId}`, {email, password, firstName, lastName})
+      .catch(e => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+      })
     }
   },
   getters: {
