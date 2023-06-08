@@ -2,7 +2,7 @@
   <div id="sidebar"
     class="fixed top-0 left-0 bottom-0 w-80 bg-white border-r border-gray-200 overflow-y-auto scrollbar-y lg:block lg:translate-x-0 lg:right-auto lg:bottom-0">
     <!-- logo -->
-    <AppLogo />
+    <LogoComponent/>
     <!-- logo -->
 
     <nav class="hs-accordion-group pb-5 pl-5 pr-5 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
@@ -88,10 +88,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
+import LogoComponent from './LogoComponent.vue';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();

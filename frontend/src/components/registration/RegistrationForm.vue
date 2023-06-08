@@ -1,5 +1,4 @@
 <template>
-    <AppLogo />
       <body class="bg-gray-100 flex h-full items-center py-16">
         <main class="w-full max-w-md mx-auto p-6">
           <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
@@ -85,7 +84,6 @@
 import { ref } from 'vue';
 import { useUserStore } from "@/stores/user"
 import router from '@/router';
-import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 import { useI18n } from 'vue-i18n';

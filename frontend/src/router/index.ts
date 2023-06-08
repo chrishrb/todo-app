@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import RegistrationView from '../views/RegistrationView.vue'
-import SettingsView from '../views/SettingsView.vue'
-import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
-import SettingsSuccessView from '../views/SettingsSuccessView.vue'
+import HomeView from '../views/home/HomeView.vue'
+import LoginView from '../views/login/LoginView.vue'
+import RegistrationView from '../views/registration/RegistrationView.vue'
+import RegistrationSuccessView from '../views/registration/RegistrationSuccessView.vue'
+import SettingsView from '../views/settings/SettingsView.vue'
+import SettingsSuccessView from '../views/settings/SettingsSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user'
 

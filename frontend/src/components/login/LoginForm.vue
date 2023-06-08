@@ -1,6 +1,4 @@
 <template>
-  <AppLogo />
-
   <body class="bg-gray-100 flex h-full items-center py-16">
     <main class="w-full max-w-md mx-auto p-6">
       <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
@@ -70,7 +68,6 @@
 import { ref } from 'vue';
 import { useAuthStore } from "@/stores/auth"
 import { useRouter } from 'vue-router';
-import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 

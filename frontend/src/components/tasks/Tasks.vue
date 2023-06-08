@@ -44,7 +44,7 @@
         </div>
 
       </div>
-      <div v-for="(item, key) in store.tasks">
+      <div v-for="(item) in store.tasks" :key="item.id" >
         <div class="flex bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400">
 
           <button id="check3"
