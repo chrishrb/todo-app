@@ -9,7 +9,7 @@
               </div>
             </div>
             <div class="flex ml-2 mr-2 mb-2">
-                <router-link to="/home" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">
+                <router-link to="/" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">
                     <button type="button">{{ $t ('home')}}</button>
                 </router-link>
             </div>

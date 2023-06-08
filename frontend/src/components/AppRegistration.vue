@@ -31,7 +31,6 @@
                       <div class="relative">
                         <input type="email" id="email" name="email" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" aria-describedby="email-error" v-model="email">
                       </div>
-                      <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
                       <p v-if="emailEmpty" class="text-xs text-red-600" id="email-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <!-- End Form Group -->
@@ -89,8 +88,11 @@ import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
+import { useI18n } from 'vue-i18n';
+import { mapLocaleToLanguage } from '@/common/language.service';
 
 const userStore = useUserStore();
+const { locale } = useI18n();
 
 const firstName = ref("");
 const lastName = ref("");
@@ -105,6 +107,7 @@ const lastNameEmpty = ref(false);
 const emailEmpty = ref(false);
 const passwordEmpty = ref(false);
 const passwordConfirmEmpty = ref(false);
+
 
 const toggleShow = () => {
   showPassword.value = !showPassword.value;
@@ -136,10 +139,11 @@ const createUser = async () => {
       firstName.value,
       lastName.value,
       email.value,
-      password.value
+      password.value,
+      mapLocaleToLanguage(locale.value),
     );
+    await router.push({name: 'registerSuccess'});
     error.value = "";
-    router.push('/registerSuccess');
   } catch (e: any) {
     error.value = getErrorText(e.details);
   }

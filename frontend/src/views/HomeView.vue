@@ -1,7 +1,9 @@
 <template>
-  <AppSidebar/>
-  <div  class="p-4 ml-80">
-    <AppTask/>
+  <div>
+    <AppSidebar />
+    <div class="p-4 ml-80">
+      <AppTask />
+    </div>
   </div>
 </template>
 

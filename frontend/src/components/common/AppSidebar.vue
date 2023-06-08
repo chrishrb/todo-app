@@ -91,12 +91,10 @@ import { computed } from 'vue';
 import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
-import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
+import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
-
-userStore.getMe()
 
 const profile = computed(() => userStore.getProfile);
 

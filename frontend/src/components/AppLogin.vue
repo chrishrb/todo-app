@@ -84,7 +84,7 @@ const login = async () => {
   try {
     await authStore.login(email.value, password.value);
     error.value = "";
-    router.push('/home');
+    router.push({name: 'home'});
   } catch (e: any) {
     error.value = getErrorText(e.details);
   }

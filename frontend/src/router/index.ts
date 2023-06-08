@@ -6,6 +6,7 @@ import SettingsView from '../views/SettingsView.vue'
 import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
 import SettingsSuccessView from '../views/SettingsSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from '@/stores/user'
 
 
 const router = createRouter({
@@ -13,13 +14,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: () => {
-        const authStore = useAuthStore()
-        return authStore.isLoggedIn ? '/home' : '/login'
-      }
-    },
-    {
-      path: '/home',
       name: 'home',
       component: HomeView,
       meta: {
@@ -37,7 +31,7 @@ const router = createRouter({
       component: RegistrationView,
     },
     {
-      path: '/registerSuccess',
+      path: '/register-success',
       name: 'registerSuccess',
       component: RegistrationSuccessView,
       beforeEnter: (to, from, next) => {
@@ -49,7 +43,7 @@ const router = createRouter({
       },
     },
     {
-      path: '/settingsSuccess',
+      path: '/settings-success',
       name: 'settingsSuccess',
       component: SettingsSuccessView,
       beforeEnter: (to, from, next) => {
@@ -73,8 +67,16 @@ const router = createRouter({
 
 router.beforeResolve(async (to, from, next) => {
   const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    next({ name: 'login' })
+  const userStore = useUserStore();
+  if (to.meta.requiresAuth) {
+    if (authStore.isLoggedIn) {
+      if (!userStore.isProfileLoaded) {
+        await userStore.getMe();
+      }
+      next()
+    } else {
+      next({ name: 'login' })
+    }
   } else {
     next()
   }
