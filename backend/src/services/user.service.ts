@@ -31,10 +31,11 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
       password: hashedPassword,
       firstName: userDto.firstName,
       lastName: userDto.lastName,
+      language: userDto.language != null ? userDto.language : undefined,
     }
   });
   
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language);
 }
 
 export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
@@ -62,7 +63,7 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     }
   });
 
-  return new ReadUserSchema(updateUser.id, updateUser.email, updateUser.firstName, updateUser.lastName, updateUser.isAdmin);
+  return new ReadUserSchema(updateUser.id, updateUser.email, updateUser.firstName, updateUser.lastName, updateUser.isAdmin, updateUser.language);
 }
 
 export async function readUser(userId: string): Promise<ReadUserSchema> {
@@ -81,7 +82,7 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
     }]);
   }
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin);
+  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language);
 }
 
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
@@ -109,15 +110,16 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
       firstName: notEmpty(userDto.firstName) ? userDto.firstName! : undefined,
       lastName: notEmpty(userDto.lastName) ? userDto.lastName! : undefined,
       password: notEmpty(userDto.password) ? await bcrypt.hash(userDto.password!, 10) : undefined,
+      language: userDto.language != null ? userDto.language : undefined,
     }
   });
 
-  return new ReadUserSchema(updatedUser.id, updatedUser.email, updatedUser.firstName, updatedUser.lastName, updatedUser.isAdmin);
+  return new ReadUserSchema(updatedUser.id, updatedUser.email, updatedUser.firstName, updatedUser.lastName, updatedUser.isAdmin, updatedUser.language);
 }
 
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
-  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin))
+  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language))
 }
 
 export async function deleteUser(userId?: string): Promise<void> {

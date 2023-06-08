@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Language" AS ENUM ('en_us', 'de');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -6,6 +9,7 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
+    "language" "Language" NOT NULL DEFAULT 'en_us',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
