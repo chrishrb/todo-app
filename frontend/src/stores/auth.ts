@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import unauthApi from '@/common/auth-api.service'
+import baseApi from '@/common/base-api.service'
 import router from "@/router";
 import { FrontendError } from '@/exceptions/frontend.error';
 import { mapStringToLocale } from '@/common/language.service';
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async login(email: string, password: string) {
-      return unauthApi.post("/auth/login", { email, password })
+      return baseApi.post("/auth/login", { email, password })
         .then((response) => {
           this.jwt = response.data.accessToken
           localStorage.setItem('jwt', response.data.accessToken)
@@ -25,7 +25,7 @@ export const useAuthStore = defineStore({
     async logout() {
       const userStore = useUserStore();
 
-      await unauthApi.get("/auth/logout")
+      await baseApi.get("/auth/logout")
       localStorage.removeItem('jwt')
       this.jwt = null
       i18n.global.locale.value = mapStringToLocale(navigator.language);
@@ -33,7 +33,7 @@ export const useAuthStore = defineStore({
       userStore.profile = undefined;
     },
     async refresh(){
-      return unauthApi.get("/auth/refresh").then((response) => {
+      return baseApi.get("/auth/refresh").then((response) => {
         this.jwt = response.data.accessToken
         localStorage.setItem('jwt', response.data.accessToken)
     })
