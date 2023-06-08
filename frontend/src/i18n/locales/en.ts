@@ -23,6 +23,7 @@ export default{
     "changeLastName": "Change Last Name",
     "changePassword": "Change Password",
     "back": "Back",
+    "changeSettings": "Change Settings",
     "settingsSuccess": "Your settings were changed successfully !",
     "home": "home"
 }

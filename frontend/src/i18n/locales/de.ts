@@ -23,6 +23,7 @@ export default{
     "changeLastName": "Nachnamen ändern",
     "changePassword": "Passwort ändern",
     "back": "Zurück",
+    "changeSettings": "Einstellungen übernehmen",
     "settingsSuccess": "Ihre Einstellungen wurden erfolgreich gespeichert!",
     "home": "Startseite"
 }
