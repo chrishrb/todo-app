@@ -28,8 +28,8 @@
 import { useTaskStore } from '@/stores/tasks';
 import { nextTick, onMounted, ref } from 'vue';
 import { PlusIcon } from '@heroicons/vue/24/outline';
-import TaskItem from '@/components/main/TaskItem.vue';
-import NewTask from '@/components/main/NewTask.vue';
+import TaskItem from '@/components/tasks/TaskItem.vue';
+import NewTask from '@/components/tasks/NewTask.vue';
 
 const store = useTaskStore();
 
