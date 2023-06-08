@@ -16,6 +16,8 @@ authRouter.route("/login")
    * @summary Login
    * @param {LoginSchema} request.body.required - userLogin - application/json
    * @return {AuthLoginSchema} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 500 - Internal Server error
    */
   .post(asyncHandler(async (req, res) => {
     const userDto = new LoginSchema(req.body.email, req.body.password);

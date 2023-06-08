@@ -31,7 +31,6 @@
                       <div class="relative">
                         <input type="email" id="email" name="email" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" aria-describedby="email-error" v-model="email">
                       </div>
-                      <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
                       <p v-if="emailEmpty" class="text-xs text-red-600" id="email-empty">This field cannot be empty</p>
                     </div>
                     <!-- End Form Group -->
@@ -63,6 +62,7 @@
                       <p v-if="passwordConfirmEmpty" class="text-xs text-red-600" id="passwordConfirmation-empty">This field cannot be empty</p>
                       <p v-show="!(passwordsMatch)" class="text-xs text-red-600 mt-2" id="password-error">Passwords don't match</p>
                     </div>
+                    <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
                     <!-- End Form Group -->
                       <div class="flex">
                         <router-link to="/login" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
@@ -87,6 +87,7 @@ import { useUserStore } from "@/stores/user"
 import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
+import { getErrorText } from '@/exceptions/frontend.error';
 
 const userStore = useUserStore();
 
@@ -108,7 +109,7 @@ const toggleShow = () => {
   showPassword.value = !showPassword.value;
 };
 
-const register = () => {
+const register = async () => {
   firstNameEmpty.value = firstName.value === "";
   lastNameEmpty.value = lastName.value === "";
   passwordsMatch.value = password.value === confirmedPassword.value;
@@ -124,7 +125,7 @@ const register = () => {
     !passwordEmpty.value &&
     !passwordConfirmEmpty.value
   ) {
-    createUser();
+    await createUser();
   }
 };
 
@@ -139,7 +140,7 @@ const createUser = async () => {
     error.value = "";
     router.push('/registerSuccess');
   } catch (e: any) {
-    error.value = e;
+    error.value = getErrorText(e.details);
   }
 };
 

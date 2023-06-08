@@ -1,15 +1,41 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { ResponseError } from "../exceptions/response-details";
 
 class UserSchema {
-  @IsEmail()
+  @IsEmail(undefined, {
+    context: {
+      errorCode: ResponseError.USER_INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.USER_INVALID_EMAIL.errorMessage
+    }
+  })
   email: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
+    }
+  })
   firstName: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
+    }
+  })
   lastName: string;
 
   constructor(email: string, firstName: string, lastName: string) {
@@ -29,10 +55,12 @@ class UserSchema {
  * @property {string} password.required - Pasword
  */
 export class CreateUserSchema extends UserSchema {
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage
+    }
+  })
   password: string;
 
   constructor(email: string, password: string, firstName: string, lastName: string) {
@@ -52,22 +80,42 @@ export class CreateUserSchema extends UserSchema {
  */
 export class UpdateUserSchema {
   @IsOptional()
-  @IsEmail()
-  email: string;
+  @IsEmail(undefined, {
+    context: {
+      errorCode: ResponseError.USER_INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.USER_INVALID_EMAIL.errorMessage
+    }
+  })
+  email: string | null;
 
   @IsOptional()
-  @IsNotEmpty()
-  password: string;
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage
+    }
+  })
+  password: string | null;
 
   @IsOptional()
-  @IsString()
-  firstName: string;
+  @IsString({
+    context: {
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
+    }
+  })
+  firstName: string | null;
 
   @IsOptional()
-  @IsString()
-  lastName: string;
+  @IsString({
+    context: {
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
+    }
+  })
+  lastName: string | null;
 
-  constructor(email: string, password: string, firstName: string, lastName: string) {
+  constructor(email: string | null, password: string | null, firstName: string | null, lastName: string | null) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
