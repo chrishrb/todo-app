@@ -28,6 +28,7 @@ export class FrontendError extends Error {
 }
 
 // TODO: make i18n ready
+// see backend: src/exceptions/error-details.ts
 function getTextFromErrorCode(errorCode?: number) {
   switch (errorCode) {
     case 4001:

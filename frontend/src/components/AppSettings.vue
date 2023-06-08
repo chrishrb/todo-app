@@ -75,6 +75,7 @@ import { useUserStore } from "@/stores/user"
 import router from '@/router';
 import AppLogo from "@/components/common/AppLogo.vue";
 import {EyeIcon, EyeSlashIcon} from "@heroicons/vue/24/outline"
+import { getErrorText } from '@/exceptions/frontend.error';
 
 const userStore = useUserStore();
 
@@ -117,7 +118,7 @@ try {
   error.value = "";
   router.push('/settingsSuccess');
 } catch (e: any) {
-  error.value = e;
+    error.value = getErrorText(e.details);
 }
 };
 
