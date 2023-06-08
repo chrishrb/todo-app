@@ -13,16 +13,16 @@ import { ResponseError } from "../exceptions/response-details";
 export class LoginSchema {
   @IsEmail(undefined, {
     context: {
-      errorCode: ResponseError.INVALID_EMAIL.errorCode,
-      errorMessage: ResponseError.INVALID_EMAIL.errorMessage
+      errorCode: ResponseError.USER_INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.USER_INVALID_EMAIL.errorMessage
     }
   })
   email: string;
 
   @IsNotEmpty({
     context: {
-      errorCode: ResponseError.INVALID_PASSWORD.errorCode,
-      errorMessage: ResponseError.INVALID_PASSWORD.errorMessage
+      errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage
     }
   })
   password: string;

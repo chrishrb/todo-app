@@ -1,18 +1,5 @@
-import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateIf } from "class-validator";
-
-class TaskSchema {
-  @IsNotEmpty()
-  @IsString()
-  title: string;
-
-  @IsBoolean()
-  isChecked?: boolean
-
-  constructor(title: string) {
-    this.title = title;
-    this.isChecked = false;
- }
-}
+import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { ResponseError } from "../exceptions/response-details";
 
 /**
  * CreateTaskSchema
@@ -23,21 +10,60 @@ class TaskSchema {
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
  */
-export class CreateTaskSchema extends TaskSchema {
-  @IsUUID(4)
+export class CreateTaskSchema {
+  @IsUUID(4, {
+    context: {
+      errorCode: ResponseError.TASK_INVALID_USER_ID.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_USER_ID.errorMessage
+    }
+  })
   userId: string;
 
-  @IsOptional()
-  @IsString()
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  title: string;
+
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
   description: string | null; 
 
-  @IsOptional()
-  @IsDate()
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
+  @IsDate({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
   dueDate: string | null;
 
   constructor(title: string, userId: string, description: string | null, dueDate: string | null) {
-    super(title)
     this.userId = userId;
+    this.title = title;
     this.description = description;
     this.dueDate = dueDate;
   }
@@ -51,17 +77,51 @@ export class CreateTaskSchema extends TaskSchema {
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
  */
-export class CreateTaskMeSchema extends TaskSchema {
-  @IsOptional()
-  @IsString()
+export class CreateTaskMeSchema {
+  @IsNotEmpty({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  title: string;
+
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
   description: string | null; 
 
-  @IsOptional()
-  @IsDateString()
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
+  @IsDate({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
   dueDate: string | null;
 
   constructor(title: string, description: string | null, dueDate: string) {
-    super(title)
+    this.title = title;
     this.description = description;
     this.dueDate = dueDate;
   }
@@ -71,26 +131,70 @@ export class CreateTaskMeSchema extends TaskSchema {
  * UpdateTaskSchema
  *
  * @typedef {object} UpdateTaskSchema
- * @property {string} title - Title
- * @property {string} description - Description
- * @property {string} dueDate - Due date - date-time
- * @property {boolean} isChecked - Is completed?
+ * @property {string|null} title - Title
+ * @property {string|null} description - Description
+ * @property {string|null} dueDate - Due date - date-time
+ * @property {boolean|null} isChecked - Is completed?
  */
-export class UpdateTaskSchema extends TaskSchema {
-  @IsOptional()
-  @IsString()
+export class UpdateTaskSchema {
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_TITLE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_TITLE.errorMessage
+    }
+  })
+  title: string | null;
+
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
   description: string | null;
 
-  @IsOptional()
-  @IsDate()
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
+  @IsDate({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
+    }
+  })
   dueDate: string | null;
 
-  @IsOptional()
-  @IsBoolean()
-  isChecked: boolean;
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_IS_CHECKED.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_IS_CHECKED.errorMessage
+    }
+  })
+  @IsBoolean({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_IS_CHECKED.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_IS_CHECKED.errorMessage
+    }
+  })
+  isChecked: boolean | null;
   
-  constructor(title: string, description: string | null, dueDate: string | null, isChecked: boolean) {
-    super(title);
+  constructor(title: string | null, description: string | null, dueDate: string | null, isChecked: boolean | null) {
+    this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.isChecked = isChecked;
@@ -108,16 +212,17 @@ export class UpdateTaskSchema extends TaskSchema {
  * @property {string} dueDate - Due date - date-time
  * @property {boolean} isChecked - Is Checked
  */
-export class ReadTaskSchema extends TaskSchema {
+export class ReadTaskSchema {
   id: string;
+  title: string;
   userId: string;
   description: string | null;
   dueDate: string | null | undefined;
   isChecked: boolean;
 
   constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean) {
-    super(title);
     this.id = id;
+    this.title = title;
     this.userId = userId;
     this.description = description;
     this.dueDate = dueDate,

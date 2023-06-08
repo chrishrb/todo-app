@@ -4,36 +4,36 @@ import { ResponseError } from "../exceptions/response-details";
 class UserSchema {
   @IsEmail(undefined, {
     context: {
-      errorCode: ResponseError.INVALID_EMAIL.errorCode,
-      errorMessage: ResponseError.INVALID_EMAIL.errorMessage
+      errorCode: ResponseError.USER_INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.USER_INVALID_EMAIL.errorMessage
     }
   })
   email: string;
 
   @IsNotEmpty({
     context: {
-      errorCode: ResponseError.INVALID_FIRST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_FIRST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
     }
   })
   @IsString({
     context: {
-      errorCode: ResponseError.INVALID_FIRST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_FIRST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
     }
   })
   firstName: string;
 
   @IsNotEmpty({
     context: {
-      errorCode: ResponseError.INVALID_LAST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_LAST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
     }
   })
   @IsString({
     context: {
-      errorCode: ResponseError.INVALID_LAST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_LAST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
     }
   })
   lastName: string;
@@ -57,8 +57,8 @@ class UserSchema {
 export class CreateUserSchema extends UserSchema {
   @IsNotEmpty({
     context: {
-      errorCode: ResponseError.INVALID_PASSWORD.errorCode,
-      errorMessage: ResponseError.INVALID_PASSWORD.errorMessage
+      errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage
     }
   })
   password: string;
@@ -82,40 +82,40 @@ export class UpdateUserSchema {
   @IsOptional()
   @IsEmail(undefined, {
     context: {
-      errorCode: ResponseError.INVALID_EMAIL.errorCode,
-      errorMessage: ResponseError.INVALID_EMAIL.errorMessage
+      errorCode: ResponseError.USER_INVALID_EMAIL.errorCode,
+      errorMessage: ResponseError.USER_INVALID_EMAIL.errorMessage
     }
   })
-  email: string;
+  email: string | null;
 
   @IsOptional()
   @IsNotEmpty({
     context: {
-      errorCode: ResponseError.INVALID_PASSWORD.errorCode,
-      errorMessage: ResponseError.INVALID_PASSWORD.errorMessage
+      errorCode: ResponseError.USER_INVALID_PASSWORD.errorCode,
+      errorMessage: ResponseError.USER_INVALID_PASSWORD.errorMessage
     }
   })
-  password: string;
+  password: string | null;
 
   @IsOptional()
   @IsString({
     context: {
-      errorCode: ResponseError.INVALID_FIRST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_FIRST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_FIRST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_FIRST_NAME.errorMessage
     }
   })
-  firstName: string;
+  firstName: string | null;
 
   @IsOptional()
   @IsString({
     context: {
-      errorCode: ResponseError.INVALID_LAST_NAME.errorCode,
-      errorMessage: ResponseError.INVALID_LAST_NAME.errorMessage
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
     }
   })
-  lastName: string;
+  lastName: string | null;
 
-  constructor(email: string, password: string, firstName: string, lastName: string) {
+  constructor(email: string | null, password: string | null, firstName: string | null, lastName: string | null) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;

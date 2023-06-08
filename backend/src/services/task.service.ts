@@ -27,10 +27,10 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
       id: taskId,
     },
     data: {
-      isChecked: taskDto.isChecked,
-      title: taskDto.title,
-      description: taskDto.description,
-      dueDate: taskDto.dueDate,
+      isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
+      title: taskDto.title != null ? taskDto.title : undefined,
+      description: taskDto.description != null ? taskDto.description : undefined,
+      dueDate: taskDto.dueDate != null ? taskDto.dueDate : undefined,
     }
   });
 

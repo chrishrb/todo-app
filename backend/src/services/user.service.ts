@@ -89,10 +89,10 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
       id: userId,
     },
     data: {
-      email: userDto.email,
-      firstName: userDto.firstName,
-      lastName: userDto.lastName,
-      password: userDto.password,
+      email: userDto.email != null ? userDto.email : undefined,
+      firstName: userDto.firstName != null ? userDto.firstName : undefined,
+      lastName: userDto.lastName != null ? userDto.lastName : undefined,
+      password: userDto.password != null ? userDto.password : undefined,
     }
   });
 

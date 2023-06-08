@@ -1,9 +1,17 @@
 export class ResponseError {
-  // Validation
-  static readonly INVALID_EMAIL = new ResponseError(4001, 'Invalid email')
-  static readonly INVALID_PASSWORD = new ResponseError(4002, 'Invalid password')
-  static readonly INVALID_FIRST_NAME = new ResponseError(4003, 'Invalid firstName')
-  static readonly INVALID_LAST_NAME = new ResponseError(4004, 'Invalid lastName')
+  // User-Validation
+  static readonly USER_INVALID_EMAIL = new ResponseError(4001, 'Invalid email')
+  static readonly USER_INVALID_PASSWORD = new ResponseError(4002, 'Invalid password')
+  static readonly USER_INVALID_FIRST_NAME = new ResponseError(4003, 'Invalid firstName')
+  static readonly USER_INVALID_LAST_NAME = new ResponseError(4004, 'Invalid lastName')
+
+  // Task-Validation
+  static readonly TASK_INVALID_TITLE = new ResponseError(4005, 'Invalid title')
+  static readonly TASK_INVALID_DESCRIPTION = new ResponseError(4006, 'Invalid description')
+  static readonly TASK_INVALID_DATE = new ResponseError(4007, 'Invalid date')
+  static readonly TASK_INVALID_IS_CHECKED = new ResponseError(4008, 'Invalid isChecked')
+  static readonly TASK_INVALID_USER_ID = new ResponseError(4009, 'Invalid userId')
+
 
   // Duplicate resource
   static readonly USER_EXISTS = new ResponseError(4107, 'Email already registered')
