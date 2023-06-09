@@ -24,7 +24,6 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.11.0",
-    "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "datejs": "^1.0.0-rc3",
@@ -42,7 +41,6 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^9.0.1",
-    "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.5",
     "@types/chai-json-pattern": "^1.1.0",
     "@types/cookie-parser": "^1.4.3",

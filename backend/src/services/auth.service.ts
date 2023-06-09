@@ -3,7 +3,6 @@ import { UnauthorizedError } from "../exceptions/errors/login-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/auth.schema";
 import { Response, Request, NextFunction } from "express";
-import * as bcrypt from 'bcrypt';
 import { config } from "../utils/config";
 import redisClient from '../utils/redis';
 import dayjs from 'dayjs';
@@ -65,6 +64,10 @@ function getAccessTokenFromHeader(bearerHeader?: string) {
   return token;
 }
 
+async function checkPassword(email: string, password: string): Promise<boolean> {
+  return await prisma.$queryRaw`SELECT check_password(${email}, ${password})`;
+}
+
 /*
  * Login user with email and password
  *
@@ -86,7 +89,7 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
     }]);
   }
 
-  const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
+  const isCorrectPassword = await checkPassword(userDto.password, user.password);
   if (!isCorrectPassword) {
     throw new UnauthorizedError([{
       field: 'password', 

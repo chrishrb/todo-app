@@ -61,7 +61,7 @@ docker compose exec -it backend /usr/local/bin/npm run db:seed
 * redis
 * jsonwebtoken
 * prisma: 4.11
-* some helper libraries (ms, tslog, datejs, class-validator, types for typescript, bcrypt, cookie-parser, axios)
+* some helper libraries (ms, tslog, datejs, class-validator, types for typescript, cookie-parser, axios)
 
 ### Frontend
 
