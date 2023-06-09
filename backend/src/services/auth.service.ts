@@ -8,6 +8,7 @@ import redisClient from '../utils/redis';
 import dayjs from 'dayjs';
 import ms from 'ms'
 import { ResponseError } from "../exceptions/response-details";
+import { checkPassword } from "../db/user.db";
 
 const prisma = new PrismaClient()
 
@@ -62,10 +63,6 @@ function getAccessTokenFromHeader(bearerHeader?: string) {
     }]);
   }
   return token;
-}
-
-async function checkPassword(email: string, password: string): Promise<boolean> {
-  return await prisma.$queryRaw`SELECT check_password(${email}, ${password})`;
 }
 
 /*
