@@ -8,7 +8,7 @@ async function main() {
   const root = await user_service.createUser({ email: 'root@example.com', password: 'root', firstName: 'Root', lastName: '', language: null })
   await user_service.setAsAdmin(root.id);
 
-  const john = await user_service.createUser({ email: 'john.doe@example.com', password: 'johni', firstName: 'John', lastName: 'Doe', language: Language.DE })
+  const john = await user_service.createUser({ email: 'john.doe@example.com', password: 'johni', firstName: 'John', lastName: 'Doe', language: Language.DE_DE })
   console.log({ root, john })
 
   const task1 = await task_service.createTask(root.id, {title: "Learn typescript", description: "You need typescript in your future, so learn it now", dueDate: null})

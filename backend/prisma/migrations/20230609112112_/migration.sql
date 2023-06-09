@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Language" AS ENUM ('en_us', 'de');
+CREATE TYPE "Language" AS ENUM ('en_us', 'de_de');
 
 -- CreateTable
 CREATE TABLE "User" (

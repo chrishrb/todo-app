@@ -1,6 +1,6 @@
 export enum Language {
   EN_US = 'EN_US',
-  DE = 'DE',
+  DE_DE = 'DE_DE',
 }
 
 export type User = {

@@ -34,5 +34,5 @@ model Task {
 
 enum Language {
   EN_US @map("en_us")
-  DE @map("de")
+  DE_DE @map("de_de")
 }
