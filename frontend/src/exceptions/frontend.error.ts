@@ -51,11 +51,13 @@ function getTextFromErrorCode(errorCode?: number) {
 export function getErrorText(errorDetails?: ErrorDetailsSchema[]) {
   if (!errorDetails) {
     // TODO: make i18n ready
+    console.log(errorDetails);
     return "Something did go wrong."
   }
   const text = errorDetails.map(detail => getTextFromErrorCode(detail.replyCode)).join("\n");
   if (!text) {
     // TODO: make i18n ready
+    console.log(errorDetails);
     return "Something did go wrong."
   }
   return text;

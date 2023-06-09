@@ -19,7 +19,7 @@ userRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .post(asyncHandler(async (req, res) => {
-    const userDto = new CreateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName);
+    const userDto = new CreateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName, req.body.language);
 
     await validateSafe(userDto);
     const user = await userService.createUser(userDto)
@@ -82,7 +82,7 @@ userRouter.route("/:userId")
     if (res.locals.user?.userId !== req.params.userId && res.locals.user?.isAdmin === false) {
       throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
-    const userDto = new UpdateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName);
+    const userDto = new UpdateUserSchema(req.body.email, req.body.password, req.body.firstName, req.body.lastName, req.body.language);
 
     await validateSafe(userDto);
 

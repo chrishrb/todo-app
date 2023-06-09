@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ResponseError } from "../exceptions/response-details";
+import { Language } from '@prisma/client';
 
 class UserSchema {
   @IsEmail(undefined, {
@@ -38,10 +39,20 @@ class UserSchema {
   })
   lastName: string;
 
-  constructor(email: string, firstName: string, lastName: string) {
+  @IsOptional()
+  @IsEnum(Language, {
+    context: {
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
+    }
+  })
+  language: Language | null;
+
+  constructor(email: string, firstName: string, lastName: string, language: Language | null) {
     this.email = email;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.language = language;
   }
 }
 
@@ -63,8 +74,8 @@ export class CreateUserSchema extends UserSchema {
   })
   password: string;
 
-  constructor(email: string, password: string, firstName: string, lastName: string) {
-    super(email, firstName, lastName);
+  constructor(email: string, password: string, firstName: string, lastName: string, language: Language | null) {
+    super(email, firstName, lastName, language);
     this.password = password;
   }
 }
@@ -115,11 +126,21 @@ export class UpdateUserSchema {
   })
   lastName: string | null;
 
-  constructor(email: string | null, password: string | null, firstName: string | null, lastName: string | null) {
+  @IsOptional()
+  @IsEnum(Language, {
+    context: {
+      errorCode: ResponseError.USER_INVALID_LAST_NAME.errorCode,
+      errorMessage: ResponseError.USER_INVALID_LAST_NAME.errorMessage
+    }
+  })
+  language: Language | null;
+
+  constructor(email: string | null, password: string | null, firstName: string | null, lastName: string | null, language: Language | null) {
     this.email = email;
     this.password = password;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.language  = language;
   }
 }
 
@@ -137,8 +158,8 @@ export class ReadUserSchema extends UserSchema {
   id: string;
   isAdmin: boolean;
 
-  constructor(id: string, email: string, firstName: string, lastName: string, isAdmin: boolean) {
-    super(email, firstName, lastName);
+  constructor(id: string, email: string, firstName: string, lastName: string, isAdmin: boolean, language: Language | null) {
+    super(email, firstName, lastName, language);
     this.id = id;
     this.isAdmin = isAdmin;
   }

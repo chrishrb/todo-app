@@ -4,6 +4,7 @@ export class ResponseError {
   static readonly USER_INVALID_PASSWORD = new ResponseError(4002, 'Invalid password')
   static readonly USER_INVALID_FIRST_NAME = new ResponseError(4003, 'Invalid firstName')
   static readonly USER_INVALID_LAST_NAME = new ResponseError(4004, 'Invalid lastName')
+  static readonly USER_INVALID_LANGUAGE = new ResponseError(4010, 'Invalid language')
 
   // Task-Validation
   static readonly TASK_INVALID_TITLE = new ResponseError(4005, 'Invalid title')
