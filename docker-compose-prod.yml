@@ -10,7 +10,7 @@ services:
       - '--entrypoints.web.address=:80'
     ports:
       - '80:80'
-      - '8080:8080'
+      - '8082:8080'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     networks:
@@ -31,7 +31,6 @@ services:
       context: frontend
     depends_on:
       - backend
-      - traefik
     networks:
         - internal
         - web
@@ -51,7 +50,6 @@ services:
     depends_on:
       - db
       - redis
-      - traefik
     networks:
         - internal
     labels:

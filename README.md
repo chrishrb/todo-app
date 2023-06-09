@@ -28,14 +28,18 @@
 
 ```bash
 # build frontend and backend
-docker-compose -f docker-compose-prod.yml build
+docker compose -f docker-compose-prod.yml build
 
 # start all services
-docker-compose -f docker-compose-prod.yml up -d
+docker compose -f docker-compose-prod.yml up -d
+
+# (only first time: seed database with initial data)
+docker compose exec -it backend /usr/local/bin/npm run db:seed
 ```
 
 ### Links
 
+* **Traefik Dashboard:** http://localhost:8082
 * **Frontend:** http://localhost
 * **Backend:** http://localhost/api/v1
 * **Adminer:** http://localhost:8081

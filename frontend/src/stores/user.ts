@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import authApi from '@/common/base-api.service';
+import authApi from '@/common/auth-api.service';
 import baseApi from '@/common/base-api.service'
 import { FrontendError } from '@/exceptions/frontend.error';
 import { mapLanguageToLocale } from '@/common/language.service';
