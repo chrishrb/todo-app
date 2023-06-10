@@ -2,7 +2,12 @@
 
 ## Getting started
 
-1. Start redis and postgres server with docker
+1. Install all packages
+   ```bash
+   yarn install
+   ```
+
+2. Start redis and postgres server with docker
    ```bash
    docker-compose up -d
 
@@ -10,9 +15,8 @@
    yarn run db:migrate-dev
    ```
 
-2. Run application in dev mode
+3. Run application in dev mode
    ```bash
-   yarn install
    yarn dev
    ```
 
