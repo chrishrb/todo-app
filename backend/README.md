@@ -5,6 +5,9 @@
 1. Start redis and postgres server with docker
    ```bash
    docker-compose up -d
+
+   # Migrate database and seed on first startup
+   yarn run db:migrate-dev
    ```
 
 2. Run application in dev mode

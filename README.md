@@ -23,8 +23,8 @@ Execute the following command to create the necessary environment variables:
 ## Getting started (dev)
 
 1. [Prepare environment](#prepare-environment)
-2. Start `backend` (see [README](backend/README.md))
-3. Start `frontend` (see [README](frontend/README.md))
+2. Start `backend` (see [README](backend/))
+3. Start `frontend` (see [README](frontend/))
 
 ### Links
 
