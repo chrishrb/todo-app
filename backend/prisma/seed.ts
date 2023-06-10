@@ -1,14 +1,22 @@
 import { Language, PrismaClient } from '@prisma/client'
 
+const PASSWORD_PLACEHOLDER = '************';
 const prisma = new PrismaClient()
 
 async function main() {
+  if (process.env.ADMIN_PASSWORD == null) {
+    throw new Error("Environment variable ADMIN_PASSWORD not defined.")
+  }
+  if (process.env.USER_PASSWORD == null) {
+    throw new Error("Environment variable USER_PASSWORD not defined.")
+  }
+
   const root = await prisma.user.create({
     data:
     {
-      email: 'root@example.com',
-      password: 'root',
-      firstName: 'Root',
+      email: 'admin@todo.com',
+      password: process.env.ADMIN_PASSWORD,
+      firstName: 'Admin',
       lastName: '',
       language: undefined,
       isAdmin: true,
@@ -34,8 +42,8 @@ async function main() {
   const john = await prisma.user.create({
     data:
     {
-      email: 'john.doe@example.com',
-      password: 'johni',
+      email: 'john.doe@todo.com',
+      password: process.env.USER_PASSWORD,
       firstName: 'John',
       lastName: 'Doe',
       language: Language.DE_DE,
@@ -55,7 +63,10 @@ async function main() {
   });
 
 
-  console.log(root, john)
+  console.log(
+    {...root, ...{ password: PASSWORD_PLACEHOLDER}},
+    {...john, ...{ password: PASSWORD_PLACEHOLDER }},
+  )
 }
 main()
   .then(async () => {

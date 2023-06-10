@@ -44,9 +44,11 @@ services:
     build:
       context: backend
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/todo?schema=public
-      - AUTH_SECRET_KEY=fpc0hmAEI4o4WMmq7L3nkgZuHIKXUl9qUj9MoX6D1tsHxFpEuRpfZ9gBbQ/Q2/0RM5l3ZSk0nREFer+9
-      - REDIS_CLIENT_URL=redis://redis:6379
+      - AUTH_SECRET_KEY=${PROD_AUTH_SECRET_KEY}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${PROD_POSTGRES_PASSWORD}@db:5432/todo?schema=public
+      - REDIS_CLIENT_URL=redis://:${PROD_REDIS_PASSWORD}@redis:6379
+      - ADMIN_PASSWORD
+      - USER_PASSWORD
     depends_on:
       - db
       - redis
@@ -62,22 +64,22 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD=${PROD_POSTGRES_PASSWORD}
     volumes: 
-      - db:/var/lib/postgresql/data
+      - todo-prod-db:/var/lib/postgresql/data
     networks:
         - internal
 
   redis:
     image: 'bitnami/redis:latest'
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PASSWORD=${PROD_REDIS_PASSWORD}
     networks:
         - internal
 
 volumes:
-  db:
+  todo-prod-db:
     driver: local
 
 networks:
