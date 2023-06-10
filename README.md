@@ -12,10 +12,19 @@
   </p>
 </div>
 
+## Prepare environment
+
+Execute the following command to create the necessary environment variables:
+
+```bash
+./generate_env.sh
+```
+
 ## Getting started (dev)
 
-* Start `backend` (see [README](backend/README.md))
-* Start `frontend` (see [README](frontend/README.md))
+1. [Prepare environment](#prepare-environment)
+2. Start `backend` (see [README](backend/README.md))
+3. Start `frontend` (see [README](frontend/README.md))
 
 ### Links
 
@@ -26,16 +35,18 @@
 
 ## Run production
 
-```bash
-# build frontend and backend
-docker compose -f docker-compose-prod.yml build
+1. First [prepare environment](#prepare-environment)
+2. Start all container
+   ```bash
+   # build frontend and backend
+   docker compose -f docker-compose-prod.yml build
 
-# start all services
-docker compose -f docker-compose-prod.yml up -d
+   # start all services
+   docker compose -f docker-compose-prod.yml up -d
 
-# (only first time: seed database with initial data)
-docker compose exec -it backend /usr/local/bin/npm run db:seed
-```
+   # (only first time: seed database with initial data)
+   docker compose exec -it backend /usr/local/bin/npm run db:seed
+   ```
 
 ### Links
 
