@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { UpdateUserSchema, ReadUserSchema, CreateUserSchema } from "../schemas/user.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
-import * as bcrypt from 'bcrypt';
 import { ConflictError } from "../exceptions/errors/conflict-error";
 import { ResponseError } from "../exceptions/response-details";
 import { notEmpty } from "../exceptions/helpers";
@@ -23,12 +22,10 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }]);
   }
   
-  const hashedPassword = await bcrypt.hash(userDto.password, 10)
-
   const user = await prisma.user.create({
     data: {
       email: userDto.email,
-      password: hashedPassword,
+      password: userDto.password,
       firstName: userDto.firstName,
       lastName: userDto.lastName,
       language: userDto.language != null ? userDto.language : undefined,
@@ -109,7 +106,7 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
       email: notEmpty(userDto.email) ? userDto.email! : undefined,
       firstName: notEmpty(userDto.firstName) ? userDto.firstName! : undefined,
       lastName: notEmpty(userDto.lastName) ? userDto.lastName! : undefined,
-      password: notEmpty(userDto.password) ? await bcrypt.hash(userDto.password!, 10) : undefined,
+      password: notEmpty(userDto.password) ? userDto.password! : undefined,
       language: userDto.language != null ? userDto.language : undefined,
     }
   });
