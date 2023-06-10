@@ -1,5 +1,9 @@
 <template>
-  <div class="grid grid-cols-12 bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400">
+  <div data-hs-overlay="#task-detail-modal" class="grid grid-cols-12 cursor-pointer bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400">
+
+    <TaskDetails
+      :item="props.item"
+      v-show="showTaskDetailModal"/>
 
     <div class="flex col-span-10 mt-1">
       <button
@@ -27,8 +31,12 @@
 <script lang="ts" setup>
 import type { Task } from '@/schemas/task.schema'
 import { useTaskStore } from '@/stores/tasks';
+import TaskDetails from '@/components/tasks/TaskDetails.vue'
+import { ref } from 'vue';
 
 const store = useTaskStore()
+
+const showTaskDetailModal = ref(false);
 
 const props = defineProps<{
   item: Task
