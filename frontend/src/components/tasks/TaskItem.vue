@@ -1,9 +1,16 @@
 <template>
-  <div data-hs-overlay="#task-detail-modal" class="grid grid-cols-12 cursor-pointer bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400">
+  <div 
+    class="grid grid-cols-12 bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400"
+    @click="isModalOpen = true"
+  >
+
+    <!-- <button @click="isModalOpen = true">open</button> -->
 
     <TaskDetails
-      :item="props.item"
-      v-show="showTaskDetailModal"/>
+      :item="item"
+      :is-modal-open="isModalOpen"
+      @close-modal="handleCloseModal"
+    />
 
     <div class="flex col-span-10 mt-1">
       <button
@@ -36,12 +43,15 @@ import { ref } from 'vue';
 
 const store = useTaskStore()
 
-const showTaskDetailModal = ref(false);
+const isModalOpen = ref(false);
 
 const props = defineProps<{
   item: Task
 }>();
 
+function handleCloseModal() {
+  isModalOpen.value = false;
+}
 
 function getShortenedDescription(desc: string | null): string | null{
   if (!desc) {
