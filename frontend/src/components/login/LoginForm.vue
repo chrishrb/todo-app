@@ -72,7 +72,7 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
-const email = ref("root@example.com");
+const email = ref("admin@todo.com");
 const password = ref("root");
 const showPassword = ref(false);
 const error = ref("");

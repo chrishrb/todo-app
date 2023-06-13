@@ -29,7 +29,12 @@ axiosInstance.interceptors.response.use(
   async (err) => {
     const authStore = useAuthStore();
     if (err.response.status === 401) {
-      await authStore.refresh()
+      try {
+        await authStore.refresh();
+      } catch (e) {
+        await authStore.logout();
+        return Promise.reject(e);
+      }
       return axiosInstance.request(err.config);
     } else {
       return Promise.reject(err)
