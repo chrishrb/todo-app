@@ -18,6 +18,7 @@ export const useUserStore = defineStore({
           this.profile = response.data
           i18n.global.locale.value = mapLanguageToLocale(this.profile?.language)
         })
+        .catch(() => {});
     },
     async createUser(firstName: string, lastName: string, email: string, password: string, language: Language) {
       return baseApi.post("/users", { email, password, firstName, lastName, language })
