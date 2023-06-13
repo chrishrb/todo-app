@@ -29,6 +29,7 @@ model Task {
   isChecked   Boolean   @default(false)
   description String?
   dueDate     DateTime?
+  tag         String?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
