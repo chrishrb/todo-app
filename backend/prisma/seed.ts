@@ -24,16 +24,9 @@ async function main() {
         createMany: {
           data: [
             { 
-              title: "Learn typescript", 
-              description: "You need typescript in your future, so learn it now", 
-              dueDate: null,
-              tag: 'study'
-            },
-            { 
               title: "Study project for full stack", 
               description: "Finish project", 
               dueDate: new Date(2023, 6, 9, 12, 0).toISOString(),
-              tag: 'study'
             }
           ]
         }
@@ -63,6 +56,31 @@ async function main() {
       }
     },
   });
+
+  const assignTask = await prisma.task.create({
+    data: {
+      user: {
+        connect: {
+          id: root.id
+        }
+      }, 
+      title: "Learn typescript", 
+      description: "You need typescript in your future, so learn it now", 
+      dueDate: null,
+      tags: {
+        create: [
+          {
+            tag: {
+              create: {
+                name: 'study'
+              }
+            }
+          }
+        ]
+      }
+    },
+  })
+
 
 
   console.log(
