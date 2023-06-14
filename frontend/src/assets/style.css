@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.basic-calendar-item {
+  color: rgb(243 244 246); 
+  border: none;
+  cursor: pointer;
+}
