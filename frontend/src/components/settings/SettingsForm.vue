@@ -65,7 +65,7 @@
                 <div>
                   <label for="language" class="block text-sm mb-2">{{ $t('changeLanguage') }}</label>
                   <div class="relative">
-                    <select v-model="language"
+                    <select v-model="language" id="language" name="language"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border">
                       <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">{{
                         locale }}</option>
@@ -102,15 +102,15 @@ import { useUserStore } from "@/stores/user"
 import router from '@/router';
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
-import { mapLanguageToLocale, mapLocaleToLanguage } from '@/common/language.service';
+import { mapLocaleToLanguage } from '@/common/language.service';
 import { useI18n } from 'vue-i18n';
 
 const userStore = useUserStore();
 const {t} = useI18n()
 
-const firstName = ref(userStore.getProfile?.firstName ?? "");
-const lastName = ref(userStore.getProfile?.lastName ?? "");
-const language = ref(mapLanguageToLocale(userStore.getProfile?.language))
+const firstName = ref(userStore.profile?.firstName ?? "");
+const lastName = ref(userStore.profile?.lastName ?? "");
+const language = ref(userStore.getLanguage)
 const password = ref("");
 const confirmedPassword = ref("");
 const showPassword = ref(false);
@@ -141,7 +141,7 @@ const changeSettings = async () => {
 const updateUser = async () => {
   try {
     await userStore.updateUser(
-      (userStore.getProfile?.id ?? ''),
+      (userStore.profile?.id ?? ''),
       firstName.value,
       lastName.value,
       password.value,

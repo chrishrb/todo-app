@@ -3,6 +3,6 @@ export type Task = {
   title: string,
   userId: string,
   description: string | null,
-  dueDate: string | undefined | null,
+  dueDate?: Date,
   isChecked: boolean
 }
