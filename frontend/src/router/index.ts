@@ -5,6 +5,7 @@ import RegistrationView from '../views/RegistrationView.vue'
 import SettingsView from '../views/SettingsView.vue'
 import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
+import TaskDetails from '@/components/tasks/TaskDetails.vue'
 
 
 const router = createRouter({
@@ -24,6 +25,13 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: ':taskId',
+          name: 'taskdetails',
+          component: TaskDetails,
+        }
+      ]
     },
     {
       path: '/login',

@@ -5,10 +5,12 @@ import type { Task } from "@/schemas/task.schema";
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    tasks: undefined as Task[] | undefined
+    tasks: undefined as Task[] | undefined,
+    task: undefined as Task | undefined,
   }),
   getters: {
     getTasks: (state) => state.tasks,
+    getTask: (state) => state.task,
   },
   actions: {
     async getMine() {
@@ -19,6 +21,15 @@ export const useTaskStore = defineStore({
       .catch((e) => {
           throw(e)
       })
+    },
+    async fetchTask(id: string) {
+      baseApi.get(`/tasks/${id}`)
+        .then((res) => {
+          this.task = res.data;
+        })
+        .catch((e) => {
+          throw(e)
+        })
     },
     async toggleChecked(id: any) {
 
@@ -35,6 +46,21 @@ export const useTaskStore = defineStore({
         })
         .catch((e) => {
           throw(e)
+        })
+    },
+    async setDone(id: any) {
+      let task = this.tasks!.find(e => e.id === id)
+
+      if (!task) {
+        console.log("task not found: ", task);
+        return;
+      }
+
+      task!.isChecked = true;
+      
+      baseApi.put(`/tasks/${id}`, {task})
+        .then((res) => {
+          task = res.data;
         })
     },
     async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
