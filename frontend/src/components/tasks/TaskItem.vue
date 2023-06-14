@@ -1,16 +1,10 @@
 <template>
   <div 
     class="grid grid-cols-12 bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400"
-    @click="isModalOpen = true"
+    @click="openModal"
   >
 
-    <!-- <button @click="isModalOpen = true">open</button> -->
-
-    <TaskDetails
-      :item="item"
-      :is-modal-open="isModalOpen"
-      @close-modal="handleCloseModal"
-    />
+    <TaskDetails />
 
     <div class="flex col-span-10 mt-1">
       <button
@@ -39,18 +33,20 @@
 import type { Task } from '@/schemas/task.schema'
 import { useTaskStore } from '@/stores/tasks';
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useTaskStore()
-
-const isModalOpen = ref(false);
+const router = useRouter()
+const route = useRoute()
 
 const props = defineProps<{
   item: Task
 }>();
 
-function handleCloseModal() {
-  isModalOpen.value = false;
+function openModal() {
+  const taskId = props.item.id;
+  router.push({ name: 'taskdetails', params: { taskId } });
 }
 
 function getShortenedDescription(desc: string | null): string | null{
