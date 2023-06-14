@@ -6,11 +6,8 @@ import RegistrationSuccessView from '../views/registration/RegistrationSuccessVi
 import SettingsView from '../views/settings/SettingsView.vue'
 import SettingsSuccessView from '../views/settings/SettingsSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
-<<<<<<< HEAD
 import { useUserStore } from '@/stores/user'
-=======
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
->>>>>>> 262d82a7f19a9ea5e1494b7c80794c7956174ee1
 
 
 const router = createRouter({
