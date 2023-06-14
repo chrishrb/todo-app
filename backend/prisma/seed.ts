@@ -57,6 +57,12 @@ async function main() {
     },
   });
 
+  const workTag = await prisma.tag.create({
+    data: {
+      name: 'work'
+    }
+  })
+
   const assignTask = await prisma.task.create({
     data: {
       user: {
@@ -71,18 +77,37 @@ async function main() {
         create: [
           {
             tag: {
-              create: {
-                name: 'study'
+              connect: {
+                id: workTag.id
               }
             }
           }
         ]
-      }
+      },
     },
   })
 
+  const newTask = await prisma.task.create({
+    data: {
+      user: {
+        connect: {
+          id: root.id
+        }
+      },
+      title: "second task", 
+      description: "This is a second example task", 
+      dueDate: null 
+    }
+  })
 
-
+  const newTagOnTask = await prisma.tagsOnTasks.create({
+    data: {
+      tag_id: workTag.id,
+      task_id: newTask.id
+    }
+  })
+  
+  
   console.log(
     {...root, ...{ password: PASSWORD_PLACEHOLDER}},
     {...john, ...{ password: PASSWORD_PLACEHOLDER }},
