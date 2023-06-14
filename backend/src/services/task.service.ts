@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { CreateTaskMeSchema, CreateTaskSchema, ReadTaskSchema, UpdateTaskSchema } from "../schemas/task.schema";
 import { NotFoundError } from "../exceptions/errors/not-found-error";
+import { notEmpty } from "../exceptions/helpers";
 
 const prisma = new PrismaClient();
 
@@ -27,10 +28,10 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
       id: taskId,
     },
     data: {
-      isChecked: taskDto.isChecked,
-      title: taskDto.title,
-      description: taskDto.description,
-      dueDate: taskDto.dueDate,
+      title: notEmpty(taskDto.title) ? taskDto.title! : undefined,
+      description: notEmpty(taskDto.description) ? taskDto.description : undefined,
+      dueDate: notEmpty(taskDto.dueDate) ? taskDto.dueDate : undefined,
+      isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
     }
   });
 
@@ -45,7 +46,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
   });
 
   if (task == null) {
-    throw new NotFoundError(`Task with id ${taskId} not found.`)
+    throw new NotFoundError([{field: 'id', value: taskId, replyMessage: `Task with id ${taskId} not found.`}])
   }
 
   return new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate?.toISOString(), task.isChecked);

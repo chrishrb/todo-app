@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { UnauthorizedError } from "../exceptions/errors/login-error";
-import { InternalError } from "../exceptions/errors/internal-error";
 import jsonwebtoken from "jsonwebtoken"
 import { LoginSchema, JwtPayloadSchema, TokenSchema, JwtType } from "../schemas/auth.schema";
 import { Response, Request, NextFunction } from "express";
-import * as bcrypt from 'bcrypt';
 import { config } from "../utils/config";
 import redisClient from '../utils/redis';
 import dayjs from 'dayjs';
 import ms from 'ms'
+import { ResponseError } from "../exceptions/response-details";
+import { checkPassword } from "../db/user.db";
 
 const prisma = new PrismaClient()
 
@@ -37,18 +37,30 @@ function verifyToken(type: JwtType, token: string) {
     const decoded = jsonwebtoken.verify(token, process.env.AUTH_SECRET_KEY!);
     return JwtPayloadSchema.fromPlainObj(type, decoded);
   } catch {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{
+      field: 'token', 
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+    }]);
   }
 }
 
 function getAccessTokenFromHeader(bearerHeader?: string) {
   if (!bearerHeader || typeof bearerHeader !== 'string') {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{
+      field: 'token', 
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+    }]);
   }
   const [type, token] = bearerHeader.split(" ");
 
   if (type !== 'Bearer') {
-    throw new UnauthorizedError();
+    throw new UnauthorizedError([{
+      field: 'token', 
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+    }]);
   }
   return token;
 }
@@ -66,12 +78,21 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
   });
 
   if (!user) {
-    throw new UnauthorizedError("Email not found.");
+    throw new UnauthorizedError([{
+      field: 'email', 
+      value: userDto.email, 
+      replyCode: ResponseError.WRONG_EMAIL.errorCode, 
+      replyMessage: ResponseError.WRONG_EMAIL.errorMessage
+    }]);
   }
 
-  const isCorrectPassword = await bcrypt.compare(userDto.password, user.password);
+  const isCorrectPassword = await checkPassword(userDto.password, user.password);
   if (!isCorrectPassword) {
-    throw new UnauthorizedError("Incorrect password.");
+    throw new UnauthorizedError([{
+      field: 'password', 
+      replyCode: ResponseError.WRONG_PASSWORD.errorCode, 
+      replyMessage: ResponseError.WRONG_PASSWORD.errorMessage
+    }]);
   }
 
   const accessTokenPayload = new JwtPayloadSchema(JwtType.ACCESS_TOKEN, user.id, user.isAdmin);
@@ -92,7 +113,11 @@ export async function login(userDto: LoginSchema): Promise<TokenSchema> {
  */
 export async function refresh(refreshToken?: string): Promise<TokenSchema> {
   if (!refreshToken || await isTokenOnBlacklist(refreshToken)) {
-    throw new UnauthorizedError("No refresh token or not valid anymore.");
+    throw new UnauthorizedError([{
+      field: 'token', 
+      replyCode: ResponseError.REFRESH_TOKEN.errorCode,
+      replyMessage: ResponseError.REFRESH_TOKEN.errorMessage
+    }]);
   }
   const decodedRefreshToken = verifyToken(JwtType.REFRESH_TOKEN, refreshToken);
 
@@ -115,7 +140,11 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
 
   const token = getAccessTokenFromHeader(accessTokenHeader)
   if (await isTokenOnBlacklist(token)) {
-    throw new UnauthorizedError("Invalid token")
+    throw new UnauthorizedError([{
+      field: 'token', 
+      replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+      replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+    }]);
   }
   await saveTokenToBlacklist(token, config.accessTokenExpiryTime);
 }
@@ -129,14 +158,14 @@ export async function logout(accessTokenHeader?: string, refreshTokenHeader?: st
  * @param next
  */
 export function verify(req: Request, res: Response, next: NextFunction): void {
-  if (!process.env.AUTH_SECRET_KEY) {
-    throw new InternalError("Authentication does not work. No AUTH_SECRET_KEY found in env.")
-  }
-
   const token = getAccessTokenFromHeader(req.headers['authorization'])
   isTokenOnBlacklist(token).then((onBlacklist) => {
     if (onBlacklist) {
-      next(new UnauthorizedError())
+      next(new UnauthorizedError([{
+        field: 'token', 
+        replyCode: ResponseError.ACCESS_TOKEN.errorCode,
+        replyMessage: ResponseError.ACCESS_TOKEN.errorMessage,
+      }]))
     } else {
       res.locals.user = verifyToken(JwtType.ACCESS_TOKEN, token)
       next();

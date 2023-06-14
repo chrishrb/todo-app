@@ -1,17 +1,19 @@
+import { ErrorSchema } from "../../schemas/error.schema";
+
 /**
  * BaseError
  *
  * @typedef {object} BaseError
  * @property {number} errorCode - ErrorCode
  * @property {string} errorMessage - ErrorMessage
- * @property {object} details - Details
+ * @property {ErrorSchema[]} details - Details
  */
 export abstract class BaseError extends Error {
   public errorCode: number;
   public errorMessage: string;
-  public details: string | object;
+  public details?: ErrorSchema[];
 
-  constructor(errorCode: number, errorMessage: string, details: string | object) {
+  constructor(errorCode: number, errorMessage: string, details?: ErrorSchema[]) {
     super();
 
     this.errorCode = errorCode;

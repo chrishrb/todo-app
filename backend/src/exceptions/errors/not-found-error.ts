@@ -1,7 +1,8 @@
+import { ErrorSchema } from "../../schemas/error.schema";
 import { BaseError } from "./base-error";
 
 export class NotFoundError extends BaseError {
-  constructor(message: string = "Page not found.") {
-    super(404, 'NotFound', message)
+  constructor(details: ErrorSchema[]) {
+    super(404, 'NotFound', details)
   }
 }
