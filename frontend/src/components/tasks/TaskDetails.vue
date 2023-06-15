@@ -10,9 +10,8 @@
           <div class="flex flex-col bg-white border shadow-sm rounded-xl">
             <div class="flex justify-between items-center py-3 px-4 border-b">
               <h3 class="font-bold text-gray-800">
-                {{ store.getTask?.title }}
+                {{ store.task?.title }}
               </h3>
-              <input>
               <button @click="handleClose" class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm">
                 <span class="sr-only">Close</span>
                 <svg class="w-3.5 h-3.5" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,7 +40,7 @@
 
 <script setup lang="ts">
 import type { Task } from '@/schemas/task.schema';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
@@ -52,19 +51,24 @@ const router = useRouter();
 const modal = ref(null)
 const isModalOpen = ref(false)
 
-const taskId = ref(router.currentRoute.value.params.taskId);
+const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
     console.log('TASK', taskId.value)
-    isModalOpen.value = true;
+    store.fetchTask(taskId.value)
+      .then(() => {
+        isModalOpen.value = true
+      })
   }
 })
 
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
     store.fetchTask(to.params.taskId as string)
-    isModalOpen.value = true
+      .then(() => {
+        isModalOpen.value = true
+      })
   }
 })
 

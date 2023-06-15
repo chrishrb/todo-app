@@ -10,7 +10,7 @@
       <button
         class="w-5 h-5 rounded-full border border-primary-500 cursor-pointer hover:border-primary-800"
         :class="[{ 'bg-primary-500': props.item.isChecked }]"
-        @click="store.toggleChecked(props.item.id)"
+        @click.stop="store.toggleChecked(props.item.id)"
       />
       <div class="relative pl-2 -top-0.5">{{ item.title }}</div>
     </div>
@@ -38,7 +38,6 @@ import { useRoute, useRouter } from 'vue-router';
 
 const store = useTaskStore()
 const router = useRouter()
-const route = useRoute()
 
 const props = defineProps<{
   item: Task

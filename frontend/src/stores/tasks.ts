@@ -21,7 +21,7 @@ export const useTaskStore = defineStore({
         })
     },
     async fetchTask(id: string) {
-      baseApi.get(`/tasks/${id}`)
+      return baseApi.get(`/tasks/${id}`)
         .then((res) => {
           this.task = res.data;
         })
@@ -29,7 +29,7 @@ export const useTaskStore = defineStore({
           throw(e)
         })
     },
-    async toggleChecked(id: any) {
+    async toggleChecked(id: string) {
       const task = this.tasks!.find(e => e.id === id);
 
       if (!task) {
@@ -44,20 +44,12 @@ export const useTaskStore = defineStore({
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
-    async setDone(id: any) {
-      let task = this.tasks!.find(e => e.id === id)
-
-      if (!task) {
-        console.log("task not found: ", task);
+    async setDone() {
+      if (this.task?.isChecked || this.task === undefined){
         return;
       }
 
-      task!.isChecked = true;
-      
-      baseApi.put(`/tasks/${id}`, {task})
-        .then((res) => {
-          task = res.data;
-        })
+      return this.toggleChecked(this.task.id);
     },
     async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
       return baseApi.post("me/tasks", { title, description, dueDate })
