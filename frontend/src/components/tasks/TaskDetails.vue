@@ -1,5 +1,4 @@
 <template>
-
   <Teleport to='#modal'>
     <div class="hs-overlay fixed top-0 left-0 z-[60] justify-center w-full h-full bg-black bg-opacity-10 overflow-x-hidden overflow-y-auto items-center" v-if="isModalOpen">
       <!-- <div ref="modal" class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 transition-all ease-out sm:max-w-lg sm:w-full m-3"> -->
@@ -7,8 +6,8 @@
     <!-- <div v-if="isModalOpen" class="hs-overlay hidden w-full h-full fixed top-0 left-0 z-[60] overflow-x-hidden overflow-y-auto [--overlay-backdrop:static] items-center"> -->
       <!-- <div ref="modal" class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 opacity-0 transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto pointer-events-auto"> -->
         <router-view>
-          <div class="flex flex-col bg-white border shadow-sm rounded-xl">
-            <div class="flex justify-between items-center py-3 px-4 border-b">
+          <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full">
+            <div class="flex justify-between items-center py-3 px-4 border-b w-full">
               <h3 class="font-bold text-gray-800">
                 {{ store.task?.title }}
               </h3>
@@ -21,7 +20,7 @@
             </div>
             <div class="p-4 overflow-y-auto">
               <p class="mt-1 text-gray-800">
-                This is a wider card with supporting text below as a natural lead-in to additional content.
+                {{ store.task?.description }}
               </p>
             </div>
             <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
@@ -39,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Task } from '@/schemas/task.schema';
 import { onMounted, ref, watch, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
@@ -56,7 +54,7 @@ const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
     console.log('TASK', taskId.value)
-    store.fetchTask(taskId.value)
+    return store.fetchTask(taskId.value)
       .then(() => {
         isModalOpen.value = true
       })
@@ -65,7 +63,7 @@ onMounted(() => {
 
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
-    store.fetchTask(to.params.taskId as string)
+    return store.fetchTask(to.params.taskId as string)
       .then(() => {
         isModalOpen.value = true
       })
