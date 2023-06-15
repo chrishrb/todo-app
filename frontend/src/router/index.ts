@@ -5,6 +5,7 @@ import RegistrationView from '../views/registration/RegistrationView.vue'
 import RegistrationSuccessView from '../views/registration/RegistrationSuccessView.vue'
 import SettingsView from '../views/settings/SettingsView.vue'
 import SettingsSuccessView from '../views/settings/SettingsSuccessView.vue'
+import CalendarView from '../views/calendar/CalendarView.vue'
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user'
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
@@ -61,6 +62,14 @@ const router = createRouter({
           next({ name: 'settings' })
         }
       },
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: CalendarView,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: '/settings',

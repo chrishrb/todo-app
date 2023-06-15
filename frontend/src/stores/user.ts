@@ -16,7 +16,7 @@ export const useUserStore = defineStore({
       return authApi.get("/me")
         .then((response) => {
           this.profile = response.data
-          i18n.global.locale.value = mapLanguageToLocale(this.profile?.language)
+          i18n.global.locale.value = this.getLanguage
         })
         .catch(() => {});
     },
@@ -38,7 +38,7 @@ export const useUserStore = defineStore({
     }
   },
   getters: {
-    getProfile: (state) => state.profile,
     isProfileLoaded: (state) => !!state.profile,
+    getLanguage: (state) => mapLanguageToLocale(state.profile?.language),
   }
 });
