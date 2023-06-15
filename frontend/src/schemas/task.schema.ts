@@ -3,6 +3,6 @@ export type Task = {
   title: string,
   userId: string,
   description: string | null,
-  dueDate?: Date,
+  dueDate?: string,
   isChecked: boolean
 }

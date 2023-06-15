@@ -50,10 +50,10 @@ type Item = {
 onMounted(async () => {
   await taskStore.getMine();
   if (taskStore.tasks) {
-    items.value = taskStore.tasks.map(e => {
+    items.value = taskStore.tasks.filter(e => !!e.dueDate).map(e => {
       return {
         id: e.id,
-        startDate: e.dueDate,
+        startDate: new Date(e.dueDate!),
         title: e.title,
         classes: ['basic-calendar-item'],
         // TODO: change background color based on tag

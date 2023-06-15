@@ -60,7 +60,7 @@ function getShortenedDescription(desc: string | null): string | null{
   return desc;
 }
 
-function getFancyDateString(date: string | null | undefined, locale: string) {
+function getFancyDateString(date: string | undefined, locale: string) {
   if (!date) {
     return ""
   }

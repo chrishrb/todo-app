@@ -56,6 +56,7 @@ const taskId = ref(router.currentRoute.value.params.taskId);
 
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
+    console.log('TASK', taskId.value)
     isModalOpen.value = true;
   }
 })
@@ -69,13 +70,15 @@ onBeforeRouteUpdate(async (to, from) => {
 
 onClickOutside(modal, () => {handleClose()})
 
-function handleClose() {
+async function handleClose() {
   isModalOpen.value = false;
-  router.push('/home');
+  await router.push({ name: 'home' })
 }
 
 function handleDone() { 
   store.setDone(taskId)
-  handleClose();
+    .then(() => {
+      handleClose();
+    })
 }
 </script>
