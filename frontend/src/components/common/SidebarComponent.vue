@@ -2,7 +2,7 @@
   <div id="sidebar"
     class="fixed top-0 left-0 bottom-0 w-80 bg-white border-r border-gray-200 overflow-y-auto scrollbar-y lg:block lg:translate-x-0 lg:right-auto lg:bottom-0">
     <!-- logo -->
-    <AppLogo />
+    <LogoComponent/>
     <!-- logo -->
 
     <nav class="hs-accordion-group pb-5 pl-5 pr-5 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
@@ -11,7 +11,7 @@
           <a class="hs-accordion-toggle flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-base text-slate-700 rounded-md hover:text-primary-600"
             href="javascript:;">
             <QueueListIcon class="w-5 h-5" />
-            Today tasks
+            {{ $t ('todayTasks')}}
 
             <ChevronUpIcon
               class="hs-accordion-active:block ml-auto hidden w-4 h-4 text-gray-600 group-hover:text-gray-500" />
@@ -25,19 +25,19 @@
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block bg-red-500 rounded-full mr-2"></span>
-                  Personal
+                  {{ $t ('personal')}}
                 </a>
               </li>
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
-                  Work
+                  {{ $t ('work')}}
                 </a>
               </li>
               <li>
                 <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md" href="javascript:;">
                   <span class="w-2.5 h-2.5 inline-block border-orange-500 border-2 rounded-full mr-2"></span>
-                  Study
+                  {{ $t ('study')}}
                 </a>
               </li>
             </ul>
@@ -48,7 +48,7 @@
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600"
             href="javascript:;">
             <CalendarDaysIcon class="w-5 h-5" />
-            Scheduled tasks
+            {{ $t ('scheduledTasks')}}
           </a>
         </li>
 
@@ -57,13 +57,15 @@
     <div class="sticky top-[100vh]">
       <ul class="space-y-1.5 pb-2 pl-5 pr-5">
         <li>
-          <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" href="/settings">
-            <Cog8ToothIcon class="w-5 h-5" />
-            Settings
-          </a>
+          <div>
+            <router-link class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" to="/settings">
+              <Cog8ToothIcon class="w-5 h-5" />
+              {{ $t ('settings')}}
+            </router-link>
+          </div>
           <a class="flex items-center gap-x-3.5 py-2 px-2.5 text-slate-700 text-base rounded-md hover:text-primary-600 cursor-pointer" @click="logout">
             <ArrowLeftOnRectangleIcon class="w-5 h-5" />
-            Logout
+            {{ $t ('logout')}}
           </a>
         </li>
       </ul>
@@ -86,16 +88,13 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import AppLogo from "@/components/common/AppLogo.vue";
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
-import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon, UserCircleIcon } from "@heroicons/vue/24/outline"
-import router from '@/router';
+import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
+import LogoComponent from './LogoComponent.vue';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
-
-userStore.getMe()
 
 const profile = computed(() => userStore.getProfile);
 

@@ -3,6 +3,8 @@ declare global {
     interface ProcessEnv {
       AUTH_SECRET_KEY?: string;
       REDIS_CLIENT_URL?: string;
+      ADMIN_PASSWORD?: string;
+      USER_PASSWORD?: string;
       NODE_ENV: string;
     }
   }

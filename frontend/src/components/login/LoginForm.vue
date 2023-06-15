@@ -1,12 +1,10 @@
 <template>
-  <AppLogo />
-
   <body class="bg-gray-100 flex h-full items-center py-16">
     <main class="w-full max-w-md mx-auto p-6">
       <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm">
         <div class="p-4 sm:p-7">
           <div class="text-center">
-            <h1 class="block text-2xl font-bold text-gray-800">Sign in</h1>
+            <h1 class="block text-2xl font-bold text-gray-800">{{ $t('signIn') }}</h1>
           </div>
           <div class="mt-5">
 
@@ -15,7 +13,7 @@
               <div class="grid gap-y-4">
                 <!-- Form Group -->
                 <div>
-                  <label for="email" class="block text-sm mb-2">Email</label>
+                  <label for="email" class="block text-sm mb-2">{{ $t('email') }}</label>
                   <div class="relative">
                     <input type="email" id="email" name="email"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border"
@@ -27,9 +25,9 @@
                 <!-- Form Group -->
                 <div>
                   <div class="flex justify-between items-center">
-                    <label for="password" class="block text-sm mb-2">Password</label>
+                    <label for="password" class="block text-sm mb-2">{{ $t('password') }}</label>
                     <a class="text-sm text-blue-600 decoration-2 hover:underline font-medium"
-                      href="../examples/html/recover-account.html">Forgot password?</a>
+                      href="../examples/html/recover-account.html">{{ $t('forgotPassword') }}</a>
                   </div>
                   <div class="relative">
                     <input v-if="showPassword" type="showPassword" id="password" name="password"
@@ -49,10 +47,11 @@
                 <div class="flex">
                   <router-link to="/register"
                     class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
-                    <button type="button">Register</button>
+                    <button type="button">{{ $t('register') }}</button>
                   </router-link>
                   <button type="submit"
-                    class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">Login</button>
+                    class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">{{
+                      $t('login') }}</button>
                 </div>
               </div>
             </form>
@@ -68,14 +67,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useAuthStore } from "@/stores/auth"
-import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
-import AppLogo from "@/components/common/AppLogo.vue";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
+import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
-const userStore = useUserStore();
-const email = ref("root@example.com");
+const email = ref("admin@todo.com");
 const password = ref("root");
 const showPassword = ref(false);
 const error = ref("");
@@ -85,9 +82,9 @@ const login = async () => {
   try {
     await authStore.login(email.value, password.value);
     error.value = "";
-    router.push('/home');
+    router.push({ name: 'home' });
   } catch (e: any) {
-    error.value = e;
+    error.value = getErrorText(e.details);
   }
 };
 

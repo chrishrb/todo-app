@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/home/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import RegistrationView from '../views/RegistrationView.vue'
-import SettingsView from '../views/SettingsView.vue'
-import RegistrationSuccessView from '../views/RegistrationSuccessView.vue'
+import LoginView from '../views/login/LoginView.vue'
+import RegistrationView from '../views/registration/RegistrationView.vue'
+import RegistrationSuccessView from '../views/registration/RegistrationSuccessView.vue'
+import SettingsView from '../views/settings/SettingsView.vue'
+import SettingsSuccessView from '../views/settings/SettingsSuccessView.vue'
 import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from '@/stores/user'
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
 
 
@@ -13,13 +15,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: () => {
-        const authStore = useAuthStore()
-        return authStore.isLoggedIn ? '/home' : '/login'
-      }
-    },
-    {
-      path: '/home',
       name: 'home',
       component: HomeView,
       meta: {
@@ -44,7 +39,7 @@ const router = createRouter({
       component: RegistrationView,
     },
     {
-      path: '/registerSuccess',
+      path: '/register-success',
       name: 'registerSuccess',
       component: RegistrationSuccessView,
       beforeEnter: (to, from, next) => {
@@ -52,6 +47,18 @@ const router = createRouter({
           next()
         } else {
           next({ name: 'login' })
+        }
+      },
+    },
+    {
+      path: '/settings-success',
+      name: 'settingsSuccess',
+      component: SettingsSuccessView,
+      beforeEnter: (to, from, next) => {
+        if (from && from.name === 'settings') {
+          next()
+        } else {
+          next({ name: 'settings' })
         }
       },
     },
@@ -68,8 +75,16 @@ const router = createRouter({
 
 router.beforeResolve(async (to, from, next) => {
   const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-    next({ name: 'login' })
+  const userStore = useUserStore();
+  if (to.meta.requiresAuth) {
+    if (authStore.isLoggedIn) {
+      if (!userStore.isProfileLoaded) {
+        await userStore.getMe();
+      }
+      next()
+    } else {
+      next({ name: 'login' })
+    }
   } else {
     next()
   }

@@ -1,13 +1,14 @@
+import { ErrorSchema } from "../../schemas/error.schema";
 import { BaseError } from "./base-error";
 
 export class UnauthorizedError extends BaseError {
-  constructor(message: string = "Unauthorized.") {
-    super(401, 'Unauthorized', message)
+  constructor(details: ErrorSchema[]) {
+    super(401, 'Unauthorized', details)
   }
 }
 
 export class ForbiddenError extends BaseError {
-  constructor(message: string = "Forbidden.") {
-    super(403, 'Forbidden', message)
+  constructor(details: ErrorSchema[]) {
+    super(403, 'Forbidden', details)
   }
 }

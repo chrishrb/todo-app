@@ -11,6 +11,7 @@
     "db:reset": "yarn prisma migrate reset",
     "db:migrate-prod": "yarn prisma migrate deploy",
     "db:migrate-dev": "yarn prisma migrate dev",
+    "db:seed": "yarn prisma db seed",
     "ci": "yarn install --frozen-lockfile",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:integration": "dotenv -e .env.test -- prisma migrate reset -f && dotenv -e .env.test -- cucumber-js -p default"
@@ -23,7 +24,6 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.11.0",
-    "bcrypt": "^5.1.0",
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "datejs": "^1.0.0-rc3",
@@ -41,7 +41,6 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^9.0.1",
-    "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.5",
     "@types/chai-json-pattern": "^1.1.0",
     "@types/cookie-parser": "^1.4.3",

@@ -4,7 +4,7 @@
       <tr>
         <td>
           <!-- double check icon -->
-          <router-link to="/home">
+          <router-link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor"
               class="bi bi-check-all text-primary-600" viewBox="0 0 16 16">
               <path
@@ -13,7 +13,7 @@
           </router-link>
         </td>
         <td>
-          <router-link to="/home">
+          <router-link to="/">
             <p class="text-4xl text-primary-600 font-bold mb-1">
               todo
             </p>
