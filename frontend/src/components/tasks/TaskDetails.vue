@@ -10,7 +10,7 @@
           <div class="flex flex-col bg-white border shadow-sm rounded-xl">
             <div class="flex justify-between items-center py-3 px-4 border-b">
               <h3 class="font-bold text-gray-800">
-                {{  }}
+                {{ store.getTask?.title }}
               </h3>
               <input>
               <button @click="handleClose" class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm">
@@ -55,9 +55,7 @@ const isModalOpen = ref(false)
 const taskId = ref(router.currentRoute.value.params.taskId);
 
 onMounted(() => {
-  if (taskId) {
-    console.log(taskId)
-    console.log("b: ", !!taskId)
+  if (taskId.value && !isModalOpen.value) {
     isModalOpen.value = true;
   }
 })
