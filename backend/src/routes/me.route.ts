@@ -34,14 +34,16 @@ meRouter.route("/tasks")
    * @tags Tasks - Task endpoint
    * @security BearerAuth
    * @summary Get tasks of current logged in user
+   * @param {string} [tags] - Optional: Tags for filtering tasks
    * @return {array<ReadTaskSchema>} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
     // TODO: Add more filter, e.g. ?isChecked=true
+    const tags = req.query.tags?.toString();
     const userId = res.locals.user?.userId;
-    const tasks = await taskService.readAllTasksByUser(userId);
+    const tasks = await taskService.readAllTasksByUser(userId, tags);
     res.status(200).json(tasks);
   }))
   /**
@@ -81,24 +83,4 @@ meRouter.route("/tags")
     const userId = res.locals.user?.userId;
     const tags = await tagService.getTags(userId);
     res.status(200).json(tags);
-  }))
-
-meRouter.route("/tasksWithSpecifiedTags")
-
-  /**
-   * GET /api/v1/me/tasksWithSpecifiedTags
-   * @tags Me - Me endpoint
-   * @security BearerAuth
-   * @summary Get only Tasks with a specified Tag of current logged in user
-   * @param {GetTasksWithSpecifiedTagSchema} request.body.required - Desired Tag as string
-   * @return {array<ReadTaskSchema>} 200 - success response
-   * @return {BaseError} 401 - Unauthorized error
-   * @return {BaseError} 500 - Internal Server error
-   */
-  .get(authService.verify, asyncHandler(async (req, res) => {
-    // TODO: Add more filter, e.g. ?isChecked=true
-    const userId = res.locals.user?.userId;
-    const tag = req.body.tag;
-    const tasks = await taskService.readAllTasksWithSpecifiedTagByUser(userId, tag);
-    res.status(200).json(tasks);
   }))
