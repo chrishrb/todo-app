@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as authService from "../services/auth.service";
 import * as userService from "../services/user.service";
 import * as taskService from "../services/task.service"
+import * as tagService from "../services/tag.service"
 import { validateSafe } from "../exceptions/helpers";
 import { CreateTaskMeSchema } from "../schemas/task.schema";
 import asyncHandler from 'express-async-handler'
@@ -64,3 +65,40 @@ meRouter.route("/tasks")
     res.status(200).json(task);
   }))
 ;
+
+meRouter.route("/tags")
+
+  /**
+   * GET /api/v1/me/tags
+   * @tags Me - Me endpoint
+   * @security BearerAuth
+   * @summary Get Tags of tasks of current logged in user
+   * @return {array<tags>} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 500 - Internal Server error
+   */
+  .get(authService.verify, asyncHandler(async (req, res) => {
+    const userId = res.locals.user?.userId;
+    const tags = await tagService.getTags(userId);
+    res.status(200).json(tags);
+  }))
+
+meRouter.route("/tasksWithSpecifiedTags")
+
+  /**
+   * GET /api/v1/me/tasksWithSpecifiedTags
+   * @tags Me - Me endpoint
+   * @security BearerAuth
+   * @summary Get only Tasks with a specified Tag of current logged in user
+   * @param {GetTasksWithSpecifiedTagSchema} request.body.required - Desired Tag as string
+   * @return {array<ReadTaskSchema>} 200 - success response
+   * @return {BaseError} 401 - Unauthorized error
+   * @return {BaseError} 500 - Internal Server error
+   */
+  .get(authService.verify, asyncHandler(async (req, res) => {
+    // TODO: Add more filter, e.g. ?isChecked=true
+    const userId = res.locals.user?.userId;
+    const tag = req.body.tag;
+    const tasks = await taskService.readAllTasksWithSpecifiedTagByUser(userId, tag);
+    res.status(200).json(tasks);
+  }))

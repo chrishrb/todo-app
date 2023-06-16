@@ -88,3 +88,14 @@ export async function toggleTask(taskId: string, currentIsChecked: boolean): Pro
 
   return new ReadTaskSchema(taskNow.id, taskNow.userId, taskNow.title, taskNow.description, taskNow.dueDate?.toISOString(), taskNow.isChecked, taskNow.tag);
 }
+
+export async function readAllTasksWithSpecifiedTagByUser(userId: string, tag: string): Promise<ReadTaskSchema[]> {
+  const tasks = await prisma.task.findMany({
+    where: {
+      userId: userId,
+      tag: tag
+    },
+  });
+
+  return tasks.map(task => new ReadTaskSchema(task.id, task.userId, task.title, task.description, task.dueDate?.toISOString(), task.isChecked, task.tag));
+}

@@ -33,7 +33,7 @@ async function main() {
               title: "Study project for full stack", 
               description: "Finish project", 
               dueDate: new Date(2023, 6, 9, 12, 0).toISOString(),
-              tag: 'study'
+              tag: 'work'
             }
           ]
         }

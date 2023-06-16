@@ -280,3 +280,23 @@ export class ReadTaskSchema {
     this.tag = tag;
   }
 }
+
+/**
+ * GetTasksWithSpecifiedTagSchema
+ *
+ * @typedef {object} GetTasksWithSpecifiedTagSchema
+ * @property {string} tag - Tag
+ */
+export class GetTasksWithSpecifiedTagSchema {
+  @IsString({
+    context: {
+      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+    }
+  })
+  tag: string; 
+
+  constructor(tag: string) {
+    this.tag = tag;
+  }
+}
