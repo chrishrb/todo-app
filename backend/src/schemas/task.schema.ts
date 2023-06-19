@@ -9,6 +9,7 @@ import { ResponseError } from "../exceptions/response-details";
  * @property {string} userId.required - UserId
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
+ * @property {string} tag - Tag
  */
 export class CreateTaskSchema {
   @IsUUID(4, {
@@ -61,11 +62,26 @@ export class CreateTaskSchema {
   })
   dueDate: string | null;
 
-  constructor(title: string, userId: string, description: string | null, dueDate: string | null) {
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  tag: string | null; 
+
+  constructor(title: string, userId: string, description: string | null, dueDate: string | null, tag: string | null) {
     this.userId = userId;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
+    this.tag = tag;
   }
 }
 
@@ -76,6 +92,7 @@ export class CreateTaskSchema {
  * @property {string} title.required - Title
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
+ * @property {string} tag - Tag
  */
 export class CreateTaskMeSchema {
   @IsNotEmpty({
@@ -120,10 +137,25 @@ export class CreateTaskMeSchema {
   })
   dueDate: string | null;
 
-  constructor(title: string, description: string | null, dueDate: string) {
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  tag: string | null; 
+
+  constructor(title: string, description: string | null, dueDate: string, tag: string | null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
+    this.tag = tag;
   }
 }
 
@@ -135,6 +167,7 @@ export class CreateTaskMeSchema {
  * @property {string|null} description - Description
  * @property {string|null} dueDate - Due date - date-time
  * @property {boolean|null} isChecked - Is completed?
+ * @property {string|null} tag - Tag
  */
 export class UpdateTaskSchema {
   @IsOptional({
@@ -192,12 +225,27 @@ export class UpdateTaskSchema {
     }
   })
   isChecked: boolean | null;
+
+  @IsOptional({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  @IsString({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  tag: string | null; 
   
-  constructor(title: string | null, description: string | null, dueDate: string | null, isChecked: boolean | null) {
+  constructor(title: string | null, description: string | null, dueDate: string | null, isChecked: boolean | null, tag: string | null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.isChecked = isChecked;
+    this.tag = tag;
   }
 }
 
@@ -211,6 +259,7 @@ export class UpdateTaskSchema {
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
  * @property {boolean} isChecked - Is Checked
+ * @property {string} tag - Tag
  */
 export class ReadTaskSchema {
   id: string;
@@ -219,13 +268,35 @@ export class ReadTaskSchema {
   description: string | null;
   dueDate: string | null | undefined;
   isChecked: boolean;
+  tag: string | null
 
-  constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean) {
+  constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean, tag: string | null) {
     this.id = id;
     this.title = title;
     this.userId = userId;
     this.description = description;
     this.dueDate = dueDate,
     this.isChecked = isChecked;
+    this.tag = tag;
+  }
+}
+
+/**
+ * GetTasksWithSpecifiedTagSchema
+ *
+ * @typedef {object} GetTasksWithSpecifiedTagSchema
+ * @property {string} tag - Tag
+ */
+export class GetTasksWithSpecifiedTagSchema {
+  @IsString({
+    context: {
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+    }
+  })
+  tag: string; 
+
+  constructor(tag: string) {
+    this.tag = tag;
   }
 }
