@@ -214,8 +214,8 @@ export class UpdateTaskSchema {
 
   @IsOptional({
     context: {
-      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
+      errorCode: ResponseError.TASK_INVALID_IS_CHECKED.errorCode,
+      errorMessage: ResponseError.TASK_INVALID_IS_CHECKED.errorMessage
     }
   })
   @IsBoolean({
@@ -228,8 +228,8 @@ export class UpdateTaskSchema {
 
   @IsOptional({
     context: {
-      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
-      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
   @IsString({
