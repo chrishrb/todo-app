@@ -8,7 +8,7 @@ import i18n from '@/i18n';
 
 export const useAuthStore = defineStore({
   id: "auth",
-  
+
   state: () => ({
     jwt: localStorage.getItem('jwt') || null,
   }),
@@ -25,18 +25,21 @@ export const useAuthStore = defineStore({
     async logout() {
       const userStore = useUserStore();
 
-      await baseApi.get("/auth/logout")
+      try {
+        await baseApi.get("/auth/logout")
+      } catch (_) { }
+
       localStorage.removeItem('jwt')
       this.jwt = null
       i18n.global.locale.value = mapStringToLocale(navigator.language);
-      router.push('login');
       userStore.profile = undefined;
+      await router.push({ name: 'login' });
     },
-    async refresh(){
+    async refresh() {
       return baseApi.get("/auth/refresh").then((response) => {
         this.jwt = response.data.accessToken
         localStorage.setItem('jwt', response.data.accessToken)
-    })
+      })
     }
   },
   getters: {
