@@ -70,8 +70,8 @@ export class CreateTaskSchema {
   })
   @IsString({
     context: {
-      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
-      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
   tag: string | null; 
@@ -145,8 +145,8 @@ export class CreateTaskMeSchema {
   })
   @IsString({
     context: {
-      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
-      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
   tag: string | null; 
@@ -234,8 +234,8 @@ export class UpdateTaskSchema {
   })
   @IsString({
     context: {
-      errorCode: ResponseError.TASK_INVALID_DESCRIPTION.errorCode,
-      errorMessage: ResponseError.TASK_INVALID_DESCRIPTION.errorMessage
+      errorCode: ResponseError.TAG_INVALID_TAGNAME.errorCode,
+      errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
   tag: string | null; 
