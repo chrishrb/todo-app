@@ -4,6 +4,7 @@ services:
     image: adminer:latest
     environment:
       ADMINER_DEFAULT_SERVER: postgresql
+      TZ: Europe/Berlin
     ports:
       - '8081:8080'
 
@@ -13,6 +14,7 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+      - TZ=Europe/Berlin
     ports:
       - '5432:5432'
     volumes: 
@@ -22,6 +24,8 @@ services:
     image: 'bitnami/redis:latest'
     environment:
       - REDIS_PASSWORD
+      - TZ=Europe/Berlin
+      - PGTZ=GMT+2
     ports:
       - '6379:6379'
 

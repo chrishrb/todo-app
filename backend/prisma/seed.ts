@@ -1,4 +1,8 @@
 import { Language, PrismaClient } from '@prisma/client'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const PASSWORD_PLACEHOLDER = '************';
 const prisma = new PrismaClient()
@@ -32,7 +36,7 @@ async function main() {
             { 
               title: "Study project for full stack", 
               description: "Finish project", 
-              dueDate: new Date(2023, 6, 9, 12, 0).toISOString(),
+              dueDate: dayjs('2023-07-09 10:00').utc().format(),
               tag: 'work'
             }
           ]
