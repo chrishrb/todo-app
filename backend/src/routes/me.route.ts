@@ -6,6 +6,7 @@ import * as tagService from "../services/tag.service"
 import { validateSafe } from "../exceptions/helpers";
 import { CreateTaskMeSchema } from "../schemas/task.schema";
 import asyncHandler from 'express-async-handler'
+import { TaskReadQuerySchema } from "../schemas/query.schema";
 
 export const meRouter = Router()
 
@@ -34,16 +35,25 @@ meRouter.route("/tasks")
    * @tags Tasks - Task endpoint
    * @security BearerAuth
    * @summary Get tasks of current logged in user
+   * @param {string} sortBy.query - sortBy - enum: dueDate,isChecked,createdAt,updatedAt
+   * @param {string} orderBy.query - orderBy - enum: asc,desc
    * @param {string} tag.query - tag
+   * @param {string} isChecked.query - isChecked - enum: false,true
    * @return {array<ReadTaskSchema>} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 500 - Internal Server error
    */
   .get(authService.verify, asyncHandler(async (req, res) => {
-    // TODO: Add more filter, e.g. ?isChecked=true
-    const tag = req.query.tag?.toString();
+    const queryParams = new TaskReadQuerySchema(
+      req.query.sortBy?.toString(),
+      req.query.orderBy?.toString(),
+      req.query.tag?.toString(),
+      req.query.isChecked?.toString(),
+    )
+    await validateSafe(queryParams)
+
     const userId = res.locals.user?.userId;
-    const tasks = await taskService.readAllTasksByUser(userId, tag);
+    const tasks = await taskService.readAllTasksByUser(userId, queryParams);
     res.status(200).json(tasks);
   }))
   /**
