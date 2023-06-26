@@ -1,7 +1,10 @@
 import { Language, PrismaClient } from '@prisma/client'
+import * as fs from 'fs';
 
 const PASSWORD_PLACEHOLDER = '************';
 const prisma = new PrismaClient()
+
+const loremIpsum = fs.readFileSync('prisma/lorem-ipsum-200.txt', 'utf-8');
 
 async function main() {
   if (process.env.ADMIN_PASSWORD == null) {
@@ -32,6 +35,11 @@ async function main() {
               title: "Study project for full stack", 
               description: "Finish project", 
               dueDate: new Date(2023, 6, 9, 12, 0).toISOString() 
+            },
+            {
+              title: "lorem ipsum",
+              description: loremIpsum,
+              dueDate: new Date(2023, 6, 9, 12, 0).toISOString()
             }
           ]
         }
