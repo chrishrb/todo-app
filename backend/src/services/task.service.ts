@@ -59,9 +59,10 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
     },
     data: {
       title: notEmpty(taskDto.title) ? taskDto.title! : undefined,
-      description: notEmpty(taskDto.description) ? taskDto.description : undefined,
+      description: taskDto.description !== undefined  ? taskDto.description : undefined,
       dueDate: notEmpty(taskDto.dueDate) ? dayjs.utc(taskDto.dueDate).toDate() : undefined,
       isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
+      tag: taskDto.tag !== undefined ? taskDto.tag : undefined,
     }
   });
 

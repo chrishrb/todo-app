@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { ResponseError } from "../exceptions/response-details";
 
 /**
@@ -54,7 +54,7 @@ export class CreateTaskSchema {
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
     }
   })
-  @IsDate({
+  @IsDateString(undefined, {
     context: {
       errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
@@ -204,7 +204,7 @@ export class UpdateTaskSchema {
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
     }
   })
-  @IsDate({
+  @IsDateString(undefined, {
     context: {
       errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
