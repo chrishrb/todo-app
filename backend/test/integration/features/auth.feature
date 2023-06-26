@@ -1,3 +1,4 @@
+@auth
 Feature: Authentication
   Login user, verify user, refresh token
 
@@ -7,7 +8,7 @@ Feature: Authentication
       """
         {
           "email": "admin@todo.com",
-          "password": "root"
+          "password": "admin"
         }
       """
     Then the response code should be 200

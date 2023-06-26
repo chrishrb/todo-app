@@ -1,3 +1,4 @@
+@user
 Feature: User
   Create, update, delete and get users
 
@@ -86,3 +87,56 @@ Feature: User
           "updatedAt": dateString
         }
       """
+
+  Scenario: Get user by id
+    Given I am a normal user
+    And I am authenticated
+    When I send a GET request to "http://localhost:8000/api/v1/users/5a288c41-83a0-4046-9c63-38a117e4b61a"
+    Then the response code should be 200
+    And the response body should be json:
+      """
+        {
+          "id": uuid(4),
+          "email": "john.doe@todo.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "isAdmin": false,
+          "language": "DE_DE",
+          "createdAt": dateString,
+          "updatedAt": dateString
+        }
+      """
+
+  Scenario: Update user by id
+    Given the Content-Type is 'application/json'
+    And I am a normal user
+    And I am authenticated
+    When I send a PUT request to "http://localhost:8000/api/v1/users/5a288c41-83a0-4046-9c63-38a117e4b61a" with json:
+      """
+        {
+          "firstName": "Vivian",
+          "lastName": "Rodwell",
+          "isAdmin": true,
+          "language": "EN_US"
+        }
+      """
+    Then the response code should be 200
+    And the response body should be json:
+      """
+        {
+          "id": uuid(4),
+          "email": "john.doe@todo.com",
+          "firstName": "Vivian",
+          "lastName": "Rodwell",
+          "isAdmin": false,
+          "language": "EN_US",
+          "createdAt": dateString,
+          "updatedAt": dateString
+        }
+      """
+
+  Scenario: Delete user by id
+    Given I am a normal user
+    And I am authenticated
+    When I send a DELETE request to "http://localhost:8000/api/v1/users/5a288c41-83a0-4046-9c63-38a117e4b61a"
+    Then the response code should be 204
