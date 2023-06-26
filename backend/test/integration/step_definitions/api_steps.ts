@@ -5,6 +5,7 @@ import { Server } from 'node:http';
 import chai, { expect } from 'chai';
 import chaiJsonPattern from 'chai-json-pattern';
 import { LoginSchema } from '../../../src/schemas/auth.schema';
+import { setTimeout } from 'node:timers/promises';
 
 chai.use(chaiJsonPattern);
 
@@ -14,6 +15,7 @@ export class ApiSteps {
   private headers: { [key: string]: string | string[]; } = {};
   private response: AxiosResponse | null;
   private user: LoginSchema | null;
+  private parameters: { [key: string]: string | string[]; } = {};
 
   // --------------------------------------------------------------------------
   // GIVEN
@@ -25,12 +27,12 @@ export class ApiSteps {
 
   @given(/I am a normal user/)
   public async imAnormalUser(): Promise<void> {
-    this.user = new LoginSchema('john.doe@example.com', 'johni');
+    this.user = new LoginSchema('john.doe@todo.com', 'johni');
   }
 
   @given(/I am a admin user/)
   public async imAadminUser(): Promise<void> {
-    this.user = new LoginSchema('root@example.com', 'root');
+    this.user = new LoginSchema('admin@todo.com', 'admin');
   }
 
   @given(/I am authenticated/)
@@ -42,7 +44,7 @@ export class ApiSteps {
         this.headers['Cookie'] = response.headers['set-cookie']
       }
       // Workaround: tokens are the same if you create them too fast, so we wait a short period
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await setTimeout(500);
     } catch (error) {
       if (error instanceof AxiosError) {
         throw Error(`StatusCode: ${error.response?.status} Body: ${error.response?.data}`)
@@ -67,10 +69,49 @@ export class ApiSteps {
     }
   }
 
+  @when(/I send a PUT request to "([^"]*)" with json:/)
+  public async iSendAPuttRequestTo(path: string, body: string): Promise<void> {
+    try {
+      this.response = await axios.put(path, body, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
   @when(/I send a GET request to "([^"]*)"/)
   public async iSendAGetRequestTo(path: string): Promise<void> {
     try {
       this.response = await axios.get(path, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @when(/I send a PATCH request to "([^"]*)"/)
+  public async iSendAPatchRequestTo(path: string): Promise<void> {
+    try {
+      this.response = await axios.patch(path, null, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @when(/I send a DELETE request to "([^"]*)"/)
+  public async iSendADeleteRequestTo(path: string): Promise<void> {
+    try {
+      this.response = await axios.delete(path, { headers: this.headers })
     } catch (error) {
       if (error instanceof AxiosError) {
         this.response = error.response!
@@ -102,17 +143,21 @@ export class ApiSteps {
 
   @then(/the user is logged out/)
   public async theUserIsLoggedOut() {
-    return axios.get("http://localhost:8000/api/v1/auth/verify", { headers: this.headers })
-      .then(() => {
-        throw Error("User is still logged in")
-      })
-      .catch((error) => {
-        if (error instanceof AxiosError) {
-          expect(error.response?.status).to.be.equal(401);
-        } else {
-          throw error
-        }
-      })
+    try {
+      await axios.get("http://localhost:8000/api/v1/auth/verify", { headers: this.headers })
+      throw Error("User still logged in")
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        expect(error.response?.status).to.be.equal(401);
+      } else {
+        throw error
+      }
+    }
+  }
+
+  @then(/save id of response/)
+  public saveIdOfResponse() {
+    this.parameters['id'] = this.response?.data.id
   }
 
   @then(/print response/)

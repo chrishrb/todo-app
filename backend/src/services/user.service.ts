@@ -4,6 +4,10 @@ import { NotFoundError } from "../exceptions/errors/not-found-error";
 import { ConflictError } from "../exceptions/errors/conflict-error";
 import { ResponseError } from "../exceptions/response-details";
 import { notEmpty } from "../exceptions/helpers";
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const prisma = new PrismaClient()
 
@@ -32,7 +36,16 @@ export async function createUser(userDto: CreateUserSchema): Promise<ReadUserSch
     }
   });
   
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language);
+  return new ReadUserSchema(
+    user.id, 
+    user.email, 
+    user.firstName, 
+    user.lastName, 
+    user.isAdmin, 
+    user.language,
+    dayjs.utc(user.createdAt).toISOString(),
+    dayjs.utc(user.updatedAt).toISOString(),
+  );
 }
 
 export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
@@ -51,7 +64,7 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     }]);
   }
 
-  const updateUser = await prisma.user.update({
+  const updatedUser = await prisma.user.update({
     where: {
       id: userId,
     },
@@ -60,7 +73,16 @@ export async function setAsAdmin(userId: string): Promise<ReadUserSchema> {
     }
   });
 
-  return new ReadUserSchema(updateUser.id, updateUser.email, updateUser.firstName, updateUser.lastName, updateUser.isAdmin, updateUser.language);
+  return new ReadUserSchema(
+    updatedUser.id, 
+    updatedUser.email, 
+    updatedUser.firstName, 
+    updatedUser.lastName, 
+    updatedUser.isAdmin, 
+    updatedUser.language,
+    dayjs.utc(updatedUser.createdAt).toISOString(),
+    dayjs.utc(updatedUser.updatedAt).toISOString(),
+  );
 }
 
 export async function readUser(userId: string): Promise<ReadUserSchema> {
@@ -79,7 +101,16 @@ export async function readUser(userId: string): Promise<ReadUserSchema> {
     }]);
   }
 
-  return new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language);
+  return new ReadUserSchema(
+    user.id, 
+    user.email, 
+    user.firstName, 
+    user.lastName, 
+    user.isAdmin, 
+    user.language,
+    dayjs.utc(user.createdAt).toISOString(),
+    dayjs.utc(user.updatedAt).toISOString(),
+  );
 }
 
 export async function updateUser(userId: string, userDto: UpdateUserSchema): Promise<ReadUserSchema> {
@@ -111,12 +142,30 @@ export async function updateUser(userId: string, userDto: UpdateUserSchema): Pro
     }
   });
 
-  return new ReadUserSchema(updatedUser.id, updatedUser.email, updatedUser.firstName, updatedUser.lastName, updatedUser.isAdmin, updatedUser.language);
+  return new ReadUserSchema(
+    updatedUser.id, 
+    updatedUser.email, 
+    updatedUser.firstName, 
+    updatedUser.lastName, 
+    updatedUser.isAdmin, 
+    updatedUser.language,
+    dayjs.utc(updatedUser.createdAt).toISOString(),
+    dayjs.utc(updatedUser.updatedAt).toISOString(),
+  );
 }
 
 export async function readAllUsers(): Promise<ReadUserSchema[]> {
   const users = await prisma.user.findMany();
-  return users.map(user => new ReadUserSchema(user.id, user.email, user.firstName, user.lastName, user.isAdmin, user.language))
+  return users.map(user => new ReadUserSchema(
+    user.id, 
+    user.email, 
+    user.firstName, 
+    user.lastName, 
+    user.isAdmin, 
+    user.language,
+    dayjs.utc(user.createdAt).toISOString(),
+    dayjs.utc(user.updatedAt).toISOString(),
+  ));
 }
 
 export async function deleteUser(userId?: string): Promise<void> {

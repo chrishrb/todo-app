@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { ResponseError } from "../exceptions/response-details";
 
 /**
@@ -54,7 +54,7 @@ export class CreateTaskSchema {
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
     }
   })
-  @IsDate({
+  @IsDateString(undefined, {
     context: {
       errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
@@ -129,7 +129,7 @@ export class CreateTaskMeSchema {
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
     }
   })
-  @IsDate({
+  @IsDateString(undefined, {
     context: {
       errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
@@ -204,7 +204,7 @@ export class UpdateTaskSchema {
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
     }
   })
-  @IsDate({
+  @IsDateString(undefined, {
     context: {
       errorCode: ResponseError.TASK_INVALID_DATE.errorCode,
       errorMessage: ResponseError.TASK_INVALID_DATE.errorMessage
@@ -268,9 +268,21 @@ export class ReadTaskSchema {
   description: string | null;
   dueDate: string | null | undefined;
   isChecked: boolean;
-  tag: string | null
+  tag: string | null;
+  createdAt: string;
+  updatedAt: string;
 
-  constructor(id: string, userId: string, title: string, description: string | null, dueDate: string | null | undefined, isChecked: boolean, tag: string | null) {
+  constructor(
+    id: string, 
+    userId: string, 
+    title: string, 
+    description: string | null, 
+    dueDate: string | null | undefined, 
+    isChecked: boolean, 
+    tag: string | null, 
+    createdAt: string, 
+    updatedAt: string
+  ) {
     this.id = id;
     this.title = title;
     this.userId = userId;
@@ -278,6 +290,8 @@ export class ReadTaskSchema {
     this.dueDate = dueDate,
     this.isChecked = isChecked;
     this.tag = tag;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }
 
