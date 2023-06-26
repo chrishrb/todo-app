@@ -2,14 +2,22 @@
 
   <Teleport to='#modal'>
     <div class="hs-overlay fixed top-0 left-0 z-[60] justify-center w-full h-full bg-black bg-opacity-10 overflow-hidden" v-if="isModalOpen">
-      <!-- <div ref="modal" class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 transition-all ease-out sm:max-w-lg sm:w-full m-3"> -->
       <router-view>
-      <div ref="modal" class="sm:w-[60%] m-3 sm:mx-auto mt-[10%] flex items-center h-min">
+        <div ref="modal" class="sm:w-[60%] m-3 sm:mx-auto mt-[10%] flex items-center h-min">
           <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full h-96">
             <div class="flex justify-between items-center py-3 px-4">
-              <h1 class="text-gray-800 text-xl">
-                {{ store.task?.title }}
-              </h1>
+
+              <div class="flex justify-between flex-row">
+                <button
+                  class="w-5 h-5 m-1 rounded-full border border-primary-500 cursor-pointer hover:border-primary-800"
+                  :class="[{ 'bg-primary-500': store.task?.isChecked }]"
+                  @click="store.toggleChecked(store.task?.id as string)"
+                />
+
+                <h1 class="text-gray-800 text-xl ml-2">
+                  {{ store.task?.title }}
+                </h1>
+              </div>
               <button @click="handleClose" class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm">
                 <span class="sr-only">{{ $t('close') }}</span>
                 <svg class="w-3.5 h-3.5" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +25,7 @@
                 </svg>
               </button>
             </div>
-            <div class="flex flex-row overflow-y-hidden">
+            <div class="flex flex-row overflow-y-hidden flex-1">
               <div class="px-4 py-2 overflow-y-auto">
                 <p class="font-bold">
                   {{ $t('description') }}
@@ -26,7 +34,9 @@
                   {{ store.task?.description }}
                 </p>
               </div>
-              <div class="px-4 py-2 self-end">
+              <div
+                class="px-4 py-2 self-start"
+                v-if="store.task?.dueDate">
                 <p class="font-bold">
                   {{ $t('due') }}
                 </p>
@@ -41,17 +51,14 @@
               </button>
             </div>
           </div>
-      </div>
+        </div>
       </router-view>
     </div>
-    <!--   </div> -->
-    <!-- </div> -->
   </Teleport>
 </template>
 
 <script setup lang="ts">
-import type { Task } from '@/schemas/task.schema';
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
