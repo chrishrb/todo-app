@@ -1,5 +1,4 @@
 <template>
-
   <Teleport to='#modal'>
     <div class="hs-overlay fixed top-0 left-0 z-[60] justify-center w-full h-full bg-black bg-opacity-10 overflow-hidden" v-if="isModalOpen">
       <router-view>
@@ -77,7 +76,7 @@ const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
     console.log('TASK', taskId.value)
-    store.fetchTask(taskId.value)
+    return store.fetchTask(taskId.value)
       .then(() => {
         isModalOpen.value = true
       })
@@ -86,7 +85,7 @@ onMounted(() => {
 
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
-    store.fetchTask(to.params.taskId as string)
+    return store.fetchTask(to.params.taskId as string)
       .then(() => {
         isModalOpen.value = true
       })

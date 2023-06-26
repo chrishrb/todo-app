@@ -8,10 +8,14 @@
 
     <div class="flex col-span-10 mt-1">
       <button
-        class="w-5 h-5 rounded-full border border-primary-500 cursor-pointer hover:border-primary-800"
-        :class="[{ 'bg-primary-500': props.item.isChecked }]"
-        @click.stop="store.toggleChecked(props.item.id)"
-      />
+        class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
+        @click.stop="store.toggleChecked(props.item.id)">
+        <div class="flex w-5 h-5 rounded-full border border-primary-500 "
+          :class="[{ 'hidden': props.item.isChecked }]"
+        />
+        <CheckCircleIcon :class="[{ 'hidden': !props.item.isChecked }]" class="text-primary-600 w-full h-full"/>
+      </button>
+
       <div class="relative pl-2 -top-0.5">{{ item.title }}</div>
     </div>
 
@@ -35,6 +39,7 @@ import { useTaskStore } from '@/stores/tasks';
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
 import { useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
+import { CheckCircleIcon } from "@heroicons/vue/24/solid"
 
 const store = useTaskStore()
 const router = useRouter()
