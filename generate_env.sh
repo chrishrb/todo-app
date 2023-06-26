@@ -34,3 +34,8 @@ REDIS_PASSWORD=${redis_password}
 DATABASE_URL=postgresql://${postgres_username}:${postgres_password}@localhost:5432/todo?schema=public
 REDIS_CLIENT_URL=redis://:${redis_password}@localhost:6379
 EOF
+
+# backend/.env.test
+cat > backend/.env.test << EOF
+DATABASE_URL=postgresql://${postgres_username}:${postgres_password}@localhost:5432/todo_test?schema=public
+EOF

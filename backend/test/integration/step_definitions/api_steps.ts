@@ -14,6 +14,7 @@ export class ApiSteps {
   private headers: { [key: string]: string | string[]; } = {};
   private response: AxiosResponse | null;
   private user: LoginSchema | null;
+  private parameters: { [key: string]: string | string[]; } = {};
 
   // --------------------------------------------------------------------------
   // GIVEN
@@ -25,12 +26,12 @@ export class ApiSteps {
 
   @given(/I am a normal user/)
   public async imAnormalUser(): Promise<void> {
-    this.user = new LoginSchema('john.doe@example.com', 'johni');
+    this.user = new LoginSchema('john.doe@todo.com', 'johni');
   }
 
   @given(/I am a admin user/)
   public async imAadminUser(): Promise<void> {
-    this.user = new LoginSchema('root@example.com', 'root');
+    this.user = new LoginSchema('admin@todo.com', 'root');
   }
 
   @given(/I am authenticated/)
@@ -67,10 +68,49 @@ export class ApiSteps {
     }
   }
 
+  @when(/I send a PUT request to "([^"]*)" with json:/)
+  public async iSendAPuttRequestTo(path: string, body: string): Promise<void> {
+    try {
+      this.response = await axios.put(path, body, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
   @when(/I send a GET request to "([^"]*)"/)
   public async iSendAGetRequestTo(path: string): Promise<void> {
     try {
       this.response = await axios.get(path, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @when(/I send a PATCH request to "([^"]*)"/)
+  public async iSendAPatchRequestTo(path: string): Promise<void> {
+    try {
+      this.response = await axios.patch(path, { headers: this.headers })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        this.response = error.response!
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  @when(/I send a DELETE request to "([^"]*)"/)
+  public async iSendADeleteRequestTo(path: string): Promise<void> {
+    try {
+      this.response = await axios.delete(path, { headers: this.headers })
     } catch (error) {
       if (error instanceof AxiosError) {
         this.response = error.response!
@@ -113,6 +153,11 @@ export class ApiSteps {
           throw error
         }
       })
+  }
+
+  @then(/save id of response/)
+  public saveIdOfResponse() {
+    this.parameters['id'] = this.response?.data.id
   }
 
   @then(/print response/)

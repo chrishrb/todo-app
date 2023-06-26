@@ -6,7 +6,7 @@ Feature: Authentication
     When I send a POST request to "http://localhost:8000/api/v1/auth/login" with json:
       """
         {
-          "email": "root@example.com",
+          "email": "admin@todo.com",
           "password": "root"
         }
       """
@@ -34,7 +34,14 @@ Feature: Authentication
         {
           "errorCode": 401,
           "errorMessage": "Unauthorized",
-          "details": "Email not found."
+          "details": [
+            {
+              "field": "email",
+              "replyCode": 4200,
+              "replyMessage": "Wrong email",
+              "value": "not.existant@example.com"
+            }
+          ]
         }
       """
 
@@ -43,7 +50,7 @@ Feature: Authentication
     When I send a POST request to "http://localhost:8000/api/v1/auth/login" with json:
       """
         {
-          "email": "root@example.com",
+          "email": "admin@todo.com",
           "password": "wrong_password"
         }
       """
@@ -53,7 +60,13 @@ Feature: Authentication
         {
           "errorCode": 401,
           "errorMessage": "Unauthorized",
-          "details": "Incorrect password."
+          "details": [
+            {
+              "field": "password",
+              "replyCode": 4201,
+              "replyMessage": "Wrong password"
+            }
+          ]
         }
       """
 

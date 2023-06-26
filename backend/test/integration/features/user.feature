@@ -11,15 +11,23 @@ Feature: User
         [
           {
             "id": uuid(4),
-            "email": "root@example.com",
-            "firstName": "Root",
-            "lastName": ""
+            "email": "admin@todo.com",
+            "firstName": "Admin",
+            "lastName": "",
+            "isAdmin": true,
+            "language": "EN_US",
+            "createdAt": dateString,
+            "updatedAt": dateString
           },
           {
             "id": uuid(4),
-            "email": "john.doe@example.com",
+            "email": "john.doe@todo.com",
             "firstName": "John",
-            "lastName": "Doe"
+            "lastName": "Doe",
+            "isAdmin": false,
+            "language": "DE_DE",
+            "createdAt": dateString,
+            "updatedAt": dateString
           }
         ]
       """
@@ -39,9 +47,13 @@ Feature: User
       """
         {
           "id": uuid(4),
-          "email": "john.doe@example.com",
+          "email": "john.doe@todo.com",
           "firstName": "John",
-          "lastName": "Doe"
+          "lastName": "Doe",
+          "isAdmin": false,
+          "language": "DE_DE",
+          "createdAt": dateString,
+          "updatedAt": dateString
         }
       """
 
@@ -67,6 +79,10 @@ Feature: User
           "id": uuid(4),
           "email": "mymail@bla.de",
           "firstName": "Alice",
-          "lastName": "Musterfrau"
+          "lastName": "Musterfrau",
+          "isAdmin": false,
+          "language": "EN_US",
+          "createdAt": dateString,
+          "updatedAt": dateString
         }
       """
