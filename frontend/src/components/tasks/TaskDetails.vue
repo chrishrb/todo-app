@@ -31,7 +31,7 @@
                   Fällig
                 </p>
                 <p class="mt-1 text-gray-800">
-                  {{ store.task?.dueDate }}
+                  {{ getFancyDateString(store.task?.dueDate, locale)}}
                 </p>
               </div>
             </div>
@@ -55,6 +55,8 @@ import { onMounted, ref, watch, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
+import { getFancyDateString } from '../utils/formatter';
+import { useI18n } from 'vue-i18n';
 
 const store = useTaskStore();
 const router = useRouter();

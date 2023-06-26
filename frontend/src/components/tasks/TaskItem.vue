@@ -33,8 +33,8 @@
 import type { Task } from '@/schemas/task.schema'
 import { useTaskStore } from '@/stores/tasks';
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { getFancyDateString } from '../utils/formatter';
 
 const store = useTaskStore()
 const router = useRouter()
@@ -57,15 +57,6 @@ function getShortenedDescription(desc: string | null): string | null{
   }
 
   return desc;
-}
-
-function getFancyDateString(date: string | undefined, locale: string) {
-  if (!date) {
-    return ""
-  }
-
-  const d = new Date(date)
-  return `${d.toLocaleDateString(locale, { weekday: 'long' })}, ${d.getDate()}.${d.getMonth()}. ${d.getFullYear()} - ${d.getHours().toString().padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`
 }
 
 </script>
