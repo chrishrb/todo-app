@@ -4,5 +4,6 @@ export type Task = {
   userId: string,
   description: string | null,
   dueDate?: string,
-  isChecked: boolean
+  isChecked: boolean,
+  tag: string
 }
