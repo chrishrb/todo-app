@@ -6,6 +6,7 @@ import { validateSafe } from "../exceptions/helpers";
 import asyncHandler from 'express-async-handler'
 import { ForbiddenError } from "../exceptions/errors/login-error";
 import { JwtPayloadSchema } from "../schemas/auth.schema";
+import { TaskReadQuerySchema } from "../schemas/query.schema";
 
 function isUserPermitted(user?: JwtPayloadSchema, taskUserId?: string): boolean {
   if (!user) {
@@ -31,7 +32,7 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .post(authService.verify, asyncHandler(async (req, res) => {
-    const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, req.body.dueDate);
+    const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, req.body.dueDate, req.body.tag);
     await validateSafe(taskDto);
 
     const task = await taskService.createTask(taskDto.userId, taskDto);
@@ -43,16 +44,29 @@ taskRouter.route("/")
    * @tags Tasks - Task endpoint
    * @summary Get all Tasks
    * @security BearerAuth
+   * @param {string} sortBy.query - sortBy - enum: dueDate,isChecked,createdAt,updatedAt
+   * @param {string} orderBy.query - orderBy - enum: asc,desc
+   * @param {string} tag.query - tag
+   * @param {string} isChecked.query - isChecked - enum: false,true
    * @return {array<ReadTaskSchema>} 200 - success response
    * @return {BaseError} 401 - Unauthorized error
    * @return {BaseError} 403 - Forbidden error
    * @return {BaseError} 500 - Internal Server error
    */
-  .get(authService.verify, asyncHandler(async (_, res) => {
+  .get(authService.verify, asyncHandler(async (req, res) => {
     if (res.locals.user?.isAdmin === false) {
       throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have sufficient permissions.'}]);
     }
-    const tasks = await taskService.readAllTasks();
+
+    const queryParams = new TaskReadQuerySchema(
+      req.query.sortBy?.toString(),
+      req.query.orderBy?.toString(),
+      req.query.tag?.toString(),
+      req.query.isChecked?.toString(),
+    )
+    await validateSafe(queryParams)
+
+    const tasks = await taskService.readAllTasks(queryParams);
     res.status(200).json(tasks);
   }));
 
@@ -96,7 +110,7 @@ taskRouter.route("/:taskId")
       throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
 
-    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate, req.body.isChecked);
+    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate, req.body.isChecked, req.body.tag);
     await validateSafe(taskDto);
     const task = await taskService.updateTask(req.params.taskId, taskDto);
 

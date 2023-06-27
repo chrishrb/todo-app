@@ -13,6 +13,9 @@ export class ResponseError {
   static readonly TASK_INVALID_IS_CHECKED = new ResponseError(4008, 'Invalid isChecked')
   static readonly TASK_INVALID_USER_ID = new ResponseError(4009, 'Invalid userId')
 
+  // Tag-Validation
+  static readonly TAG_INVALID_TAGNAME = new ResponseError(4011, 'Invalid Tag String')
+
 
   // Duplicate resource
   static readonly USER_EXISTS = new ResponseError(4107, 'Email already registered')

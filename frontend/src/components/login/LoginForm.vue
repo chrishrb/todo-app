@@ -73,7 +73,7 @@ import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
 const email = ref("admin@todo.com");
-const password = ref("root");
+const password = ref("admin");
 const showPassword = ref(false);
 const error = ref("");
 const router = useRouter();

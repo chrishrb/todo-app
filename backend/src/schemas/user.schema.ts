@@ -157,10 +157,23 @@ export class UpdateUserSchema {
 export class ReadUserSchema extends UserSchema {
   id: string;
   isAdmin: boolean;
+  createdAt: string;
+  updatedAt: string;
 
-  constructor(id: string, email: string, firstName: string, lastName: string, isAdmin: boolean, language: Language | null) {
+  constructor(
+    id: string, 
+    email: string, 
+    firstName: string, 
+    lastName: string, 
+    isAdmin: boolean, 
+    language: Language | null,
+    createdAt: string, 
+    updatedAt: string
+  ) {
     super(email, firstName, lastName, language);
     this.id = id;
     this.isAdmin = isAdmin;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
 }

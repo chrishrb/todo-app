@@ -20,6 +20,9 @@ model User {
   lastName  String
   isAdmin   Boolean @default(false)
   language  Language @default(EN_US)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime   @updatedAt
+
   Tasks     Task[]
 }
 
@@ -29,6 +32,9 @@ model Task {
   isChecked   Boolean   @default(false)
   description String?
   dueDate     DateTime?
+  tag         String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime   @updatedAt
 
   user   User   @relation(fields: [userId], references: [id])
   userId String

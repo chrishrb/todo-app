@@ -20,6 +20,10 @@
    yarn dev
    ```
 
+## Swagger Docs
+
+* The Swagger API Documentation can be seen under the following path: path_to_backend:port/api-docs/ 
+
 ## Code snippets from other sources
 
 * https://github.com/domideimel/error-middleware  (not maintained anymore)
