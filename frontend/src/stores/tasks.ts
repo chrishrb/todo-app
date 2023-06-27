@@ -6,7 +6,8 @@ import { FrontendError } from "@/exceptions/frontend.error";
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    tasks: undefined as Task[] | undefined
+    tasks: undefined as Task[] | undefined,
+    task: undefined as Task | undefined,
   }),
   actions: {
     async getMine() {
@@ -19,7 +20,17 @@ export const useTaskStore = defineStore({
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
-    async toggleChecked(id: any) {
+    async fetchTask(id: string) {
+      return baseApi.get(`/tasks/${id}`)
+        .then((res) => {
+          this.task = res.data;
+          return res.data as Task;
+        })
+        .catch((e) => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+        })
+    },
+    async toggleChecked(id: string) {
       const task = this.tasks!.find(e => e.id === id);
 
       if (!task) {
@@ -33,6 +44,13 @@ export const useTaskStore = defineStore({
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
+    },
+    async setDone() {
+      if (this.task?.isChecked || this.task === undefined){
+        return;
+      }
+
+      return this.toggleChecked(this.task.id);
     },
     async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
       return baseApi.post("me/tasks", { title, description, dueDate })

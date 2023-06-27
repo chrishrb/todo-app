@@ -1,4 +1,5 @@
 import { Language, PrismaClient } from '@prisma/client'
+import * as fs from 'fs';
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc';
 
@@ -6,6 +7,8 @@ dayjs.extend(utc);
 
 const PASSWORD_PLACEHOLDER = '************';
 const prisma = new PrismaClient()
+
+const loremIpsum = fs.readFileSync('prisma/lorem-ipsum-200.txt', 'utf-8');
 
 async function main() {
   if (process.env.ADMIN_PASSWORD == null) {
@@ -40,8 +43,13 @@ async function main() {
               id: '1eb81d39-15ae-4d29-a4f1-dc9cd277e60f',
               title: "Study project for full stack", 
               description: "Finish project", 
-              dueDate: dayjs('2023-07-09 10:00').utc().format(),
+              dueDate: dayjs('2023-07-09 13:00').utc().format(), 
               tag: 'work'
+            },
+            {
+              title: "lorem ipsum",
+              description: loremIpsum,
+              dueDate: dayjs('2023-07-09 10:00').utc().format(),
             }
           ]
         }
@@ -80,6 +88,7 @@ async function main() {
     {...john, ...{ password: PASSWORD_PLACEHOLDER }},
   )
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect()

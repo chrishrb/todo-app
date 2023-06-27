@@ -26,5 +26,9 @@ export default{
     "changeSettings": "Change Settings",
     "settingsSuccess": "Your settings were changed successfully !",
     "home": "home",
-    "changeLanguage": "Change Language"
+    "changeLanguage": "Change Language",
+    "description": "Description",
+    "due": "Due",
+    "done": "Done",
+    "close": "Close",
 }

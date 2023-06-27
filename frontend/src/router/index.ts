@@ -8,6 +8,7 @@ import SettingsSuccessView from '../views/settings/SettingsSuccessView.vue'
 import CalendarView from '../views/calendar/CalendarView.vue'
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user'
+import TaskDetails from '@/components/tasks/TaskDetails.vue'
 
 
 const router = createRouter({
@@ -20,6 +21,13 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       },
+      children: [
+        {
+          path: ':taskId',
+          name: 'taskdetails',
+          component: TaskDetails,
+        }
+      ]
     },
     {
       path: '/login',

@@ -21,6 +21,7 @@ import "../../../node_modules/vue-simple-calendar/dist/css/gcal.css"
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 import { useTaskStore } from "@/stores/tasks";
 import { useUserStore } from "@/stores/user";
+import router from "@/router";
 
 const taskStore = useTaskStore();
 const userStore = useUserStore();
@@ -32,9 +33,8 @@ const setShowDate = (date: Date) => {
   showDate.value = date;
 }
 
-const onClickItem = (calendarItem: Item, windowEvent: any) => {
-  // TODO: open task with modal
-  console.log(calendarItem, windowEvent);
+const onClickItem = async (calendarItem: Item, windowEvent: any) => {
+  await router.push(`/${calendarItem.id}`)
 }
 
 type Item = {
@@ -50,10 +50,10 @@ type Item = {
 onMounted(async () => {
   await taskStore.getMine();
   if (taskStore.tasks) {
-    items.value = taskStore.tasks.map(e => {
+    items.value = taskStore.tasks.filter(e => !!e.dueDate).map(e => {
       return {
         id: e.id,
-        startDate: e.dueDate,
+        startDate: new Date(e.dueDate!),
         title: e.title,
         classes: ['basic-calendar-item'],
         // TODO: change background color based on tag

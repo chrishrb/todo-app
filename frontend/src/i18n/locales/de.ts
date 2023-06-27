@@ -26,5 +26,9 @@ export default{
     "changeSettings": "Einstellungen übernehmen",
     "settingsSuccess": "Ihre Einstellungen wurden erfolgreich gespeichert!",
     "home": "Startseite",
-    "changeLanguage": "Sprache ändern"
+    "changeLanguage": "Sprache ändern",
+    "description": "Beschreibung",
+    "due": "Fälligkeit",
+    "done": "Erledigt",
+    "close": "Schließen",
 }
