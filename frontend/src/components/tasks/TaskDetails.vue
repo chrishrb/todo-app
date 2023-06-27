@@ -5,20 +5,8 @@
         <div ref="modal" class="sm:w-[60%] m-3 sm:mx-auto mt-[10%] flex items-center h-min">
           <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full h-96">
             <div class="flex justify-between items-center py-3 px-4">
-
               <div class="flex justify-between items-center flex-row">
-
-                <button
-                  class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
-                  @click="toggleTask(task.id)"
-                >
-                  <div class="flex w-5 h-5 rounded-full border border-primary-500 "
-                    :class="[{ 'hidden': task.isChecked  }]"
-                  />
-                  <CheckCircleIcon :class="[{ 'hidden': !task.isChecked }]" class="text-primary-600 w-full h-full"/>
-                </button>
-
-                <h1 class="text-gray-800 text-xl ml-2">
+                <h1 class="text-gray-800 text-xl">
                   {{ store.task?.title }}
                 </h1>
               </div>

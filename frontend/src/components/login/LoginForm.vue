@@ -43,7 +43,7 @@
                     </div>
                   </div>
                 </div>
-                <p v-if="error" class="text-xs text-red-600" id="login-error">{{ error }}</p>
+                <p v-if="error" class="text-xs text-red-500" id="login-error">{{ error }}</p>
                 <div class="flex">
                   <router-link to="/register"
                     class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">

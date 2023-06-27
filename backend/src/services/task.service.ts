@@ -29,7 +29,7 @@ export async function createTask(userId: string, taskDto: CreateTaskSchema | Cre
     data: {
       title: taskDto.title,
       description: taskDto.description,
-      dueDate: dayjs.utc(taskDto.dueDate).toISOString(),
+      dueDate: notEmpty(taskDto.dueDate) ? dayjs.utc(taskDto.dueDate).toISOString() : undefined,
       tag: taskDto.tag,
       user: { 
         connect: { 

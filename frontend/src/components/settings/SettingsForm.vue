@@ -73,7 +73,7 @@
                   </div>
                 </div>
 
-                <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
+                <p v-if="error" class="text-xs text-red-500" id="registration-error">{{ error }}</p>
 
                 <!-- End Form Group -->
                 <div class="flex">
