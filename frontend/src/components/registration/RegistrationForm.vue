@@ -16,21 +16,21 @@
                       <div class="relative">
                         <input type="firstName" id="firstName" name="firstName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="firstName">
                       </div>
-                      <p v-if="firstNameEmpty" class="text-xs text-red-600" id="firstName-empty">{{ $t ('fieldEmpty')}}</p>
+                      <p v-if="firstNameEmpty" class="text-xs text-red-500" id="firstName-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <div>
                       <label for="lastName" class="block text-sm mb-2">{{ $t ('lastName')}}</label>
                       <div class="relative">
                         <input type="lastName" id="lastName" name="lastName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="lastName">
                       </div>
-                      <p v-if="lastNameEmpty" class="text-xs text-red-600" id="lastName-empty">{{ $t ('fieldEmpty')}}</p>
+                      <p v-if="lastNameEmpty" class="text-xs text-red-500" id="lastName-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <div>
                       <label for="email" class="block text-sm mb-2">{{ $t ('email')}}</label>
                       <div class="relative">
                         <input type="email" id="email" name="email" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" aria-describedby="email-error" v-model="email">
                       </div>
-                      <p v-if="emailEmpty" class="text-xs text-red-600" id="email-empty">{{ $t ('fieldEmpty')}}</p>
+                      <p v-if="emailEmpty" class="text-xs text-red-500" id="email-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <!-- End Form Group -->
     
@@ -47,7 +47,7 @@
                             <component :is="showPassword ? EyeSlashIcon : EyeIcon" class="w-5 h-5" />
                           </button>
                         </div>
-                        <p v-if="passwordEmpty" class="text-xs text-red-600" id="password-empty">{{ $t ('fieldEmpty')}}</p>
+                        <p v-if="passwordEmpty" class="text-xs text-red-500" id="password-empty">{{ $t ('fieldEmpty')}}</p>
                       </div>
                     </div>
                     <div>
@@ -58,10 +58,10 @@
                         <input v-if="showPassword" type="showPassword" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
                         <input v-else type="Password" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
                       </div>
-                      <p v-if="passwordConfirmEmpty" class="text-xs text-red-600" id="passwordConfirmation-empty">{{ $t ('fieldEmpty')}}</p>
-                      <p v-show="!(passwordsMatch)" class="text-xs text-red-600 mt-2" id="password-error">{{ $t ('passwordsDontMatch')}}</p>
+                      <p v-if="passwordConfirmEmpty" class="text-xs text-red-500" id="passwordConfirmation-empty">{{ $t ('fieldEmpty')}}</p>
+                      <p v-show="!(passwordsMatch)" class="text-xs text-red-500 mt-2" id="password-error">{{ $t ('passwordsDontMatch')}}</p>
                     </div>
-                    <p v-if="error" class="text-xs text-red-600" id="registration-error">{{ error }}</p>
+                    <p v-if="error" class="text-xs text-red-500" id="registration-error">{{ error }}</p>
                     <!-- End Form Group -->
                       <div class="flex">
                         <router-link to="/login" class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">

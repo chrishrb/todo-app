@@ -1,32 +1,32 @@
 <template>
-  <div class="grid grid-rows-2 bg-white border shadow-sm rounded-xl p-4 m-2 hover:border-gray-400">
+  <div class="bg-white border shadow-sm rounded-xl p-4 m-2 hover:border-gray-400">
 
-    <div class="col-span-2 flex h-10">
+    <div class="col-span-2 flex h-7">
       <button id="addDetails"
         @click="showDetails"
       >
         <ChevronRightIcon
-          class="w-5 h-5 transition"
+          class="w-5 h-5 mr-2 transition"
           v-bind:style="{transform: `rotate(${deg}deg)`}"/>
       </button>
 
       <input type="title" id="title" name="title"
-        placeholder="Titel"
-        class="py-1 px-2 block w-full border-gray-300 rounded-md"
+        :placeholder="$t('task.titlePlaceholder')"
+        class="px-2 block w-full border border-gray-300 rounded-md h-full"
         ref="titleInput"
         v-on:keypress.enter="newTask"
         v-model="titleData"
       >
     </div>
 
-    <div v-show="details">
+    <div v-show="details" class="pl-7">
       <textarea type="description" id="description" name="description"
-        class="py-1 px-2 block w-full border-gray-300 rounded-md"
-        placeholder="Beschreibung"
+        class="my-2 py-1 px-2 block w-full border border-gray-300 rounded-md"
+        :placeholder="$t('task.descriptionPlaceholder')"
         ref="descriptionInput"
         v-model="descriptionData"
       />
-      <VueDatePicker v-model="dueDate" text-input inline-with-input auto-apply />
+      <VueDatePicker v-model="dueDate" :placeholder="$t('task.datePlaceholder')" inline-with-input auto-apply min-date="new Date()"/>
     </div>
 
   </div>

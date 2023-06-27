@@ -1,35 +1,27 @@
 <template>
-  <div 
-    class="grid grid-cols-12 bg-white border shadow-sm rounded-xl p-4 m-2 items-center hover:border-gray-400"
-    @click="openModal"
-  >
+  <div
+    class="flex bg-white border shadow-sm rounded-xl p-4 m-1.5 items-center hover:border-gray-400">
 
-    <TaskDetails />
-
-    <div class="flex col-span-10 mt-1">
-      <button
-        class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
+    <TaskDetails/>
+    <div class="w-8">
+      <button class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
         @click.stop="store.toggleChecked(props.item.id)">
-        <div class="flex w-5 h-5 rounded-full border border-primary-500 "
-          :class="[{ 'hidden': props.item.isChecked }]"
-        />
-        <CheckCircleIcon :class="[{ 'hidden': !props.item.isChecked }]" class="text-primary-600 w-full h-full"/>
+        <div class="flex w-5 h-5 rounded-full border border-primary-500 " :class="[{ 'hidden': props.item.isChecked }]" />
+        <CheckCircleIcon :class="[{ 'hidden': !props.item.isChecked }]" class="text-primary-600 w-full h-full" />
       </button>
-
-      <div class="relative pl-2 -top-0.5">{{ item.title }}</div>
     </div>
 
-    <span class="col-span-2">
-      {{ getFancyDateString(item.dueDate, "de-DE") }}
-    </span>
+    <div class="grid grid-cols-1 grow pl-2" @click="openModal">
+      <div class="justify-center">{{ item.title }}</div>
+      <span v-show="item.description"
+        class="block w-full border-gray-300 rounded-md text-gray-500 justify-center">
+        {{ getShortenedDescription(item.description) }}
+      </span>
 
-    <span 
-      v-show="item.description"
-      class="py-1 px-2 block w-full border-gray-300 rounded-md text-gray-500 col-span-7 left-5 relative"
-    >
-      {{ getShortenedDescription(item.description) }}
+    </div>
+    <span class="justify-end" :class="[isTaskDue(item.dueDate) ? 'text-red-500' : '']">
+      {{ getFancyDateString(item.dueDate, i18n.global.locale.value) }}
     </span>
-
   </div>
 </template>
 
@@ -40,6 +32,7 @@ import TaskDetails from '@/components/tasks/TaskDetails.vue'
 import { useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { CheckCircleIcon } from "@heroicons/vue/24/solid"
+import i18n from '@/i18n';
 
 const store = useTaskStore()
 const router = useRouter()
@@ -53,7 +46,14 @@ function openModal() {
   router.push({ name: 'taskdetails', params: { taskId } });
 }
 
-function getShortenedDescription(desc: string | null): string | null{
+function isTaskDue(dueDate: string | undefined): boolean {
+  if (!dueDate) {
+    return false;
+  }
+  return new Date(dueDate) < new Date();
+}
+
+function getShortenedDescription(desc: string | null): string | null {
   if (!desc) {
     return null;
   }
