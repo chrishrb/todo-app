@@ -24,9 +24,10 @@ export const useTaskStore = defineStore({
       return baseApi.get(`/tasks/${id}`)
         .then((res) => {
           this.task = res.data;
+          return res.data as Task;
         })
         .catch((e) => {
-          throw(e)
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
     async toggleChecked(id: string) {

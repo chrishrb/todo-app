@@ -6,12 +6,17 @@
           <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full h-96">
             <div class="flex justify-between items-center py-3 px-4">
 
-              <div class="flex justify-between flex-row">
+              <div class="flex justify-between items-center flex-row">
+
                 <button
-                  class="w-5 h-5 m-1 rounded-full border border-primary-500 cursor-pointer hover:border-primary-800"
-                  :class="[{ 'bg-primary-500': store.task?.isChecked }]"
-                  @click="store.toggleChecked(store.task?.id as string)"
-                />
+                  class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
+                  @click="toggleTask(task.id)"
+                >
+                  <div class="flex w-5 h-5 rounded-full border border-primary-500 "
+                    :class="[{ 'hidden': task.isChecked  }]"
+                  />
+                  <CheckCircleIcon :class="[{ 'hidden': !task.isChecked }]" class="text-primary-600 w-full h-full"/>
+                </button>
 
                 <h1 class="text-gray-800 text-xl ml-2">
                   {{ store.task?.title }}
@@ -63,6 +68,8 @@ import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { useI18n } from 'vue-i18n';
+import { CheckCircleIcon } from "@heroicons/vue/24/solid"
+import type { Task } from '@/schemas/task.schema';
 
 const { locale } = useI18n();
 const store = useTaskStore();
@@ -73,12 +80,15 @@ const isModalOpen = ref(false)
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 
+let task: Task;
+
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
     console.log('TASK', taskId.value)
     return store.fetchTask(taskId.value)
-      .then(() => {
+      .then((res) => {
         isModalOpen.value = true
+        task = res;
       })
   }
 })
@@ -86,8 +96,9 @@ onMounted(() => {
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
     return store.fetchTask(to.params.taskId as string)
-      .then(() => {
+      .then((res) => {
         isModalOpen.value = true
+        task = res;
       })
   }
 })
@@ -104,5 +115,11 @@ function handleDone() {
     .then(() => {
       handleClose();
     })
+}
+
+function toggleTask(id: string) {
+  store.toggleChecked(id);
+  task.isChecked = !task.isChecked;
+  console.log("toggle: ", task)
 }
 </script>
