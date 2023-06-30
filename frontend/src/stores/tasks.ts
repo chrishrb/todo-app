@@ -53,8 +53,8 @@ export const useTaskStore = defineStore({
 
       return this.toggleChecked(this.task.id);
     },
-    async addTask(title: string, description: string | undefined, dueDate: string | undefined) {
-      return baseApi.post("me/tasks", { title, description, dueDate })
+    async addTask(title: string, description: string | undefined, dueDate: string | undefined, tag: string | undefined) {
+      return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
           this.tasks!.push(res.data)
         })

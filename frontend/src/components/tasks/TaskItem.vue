@@ -11,6 +11,14 @@
 
     <button class="grid grid-cols-1 grow pl-6 text-left" @click="openModal">
       <div class="justify-center">{{ item.title }}</div>
+      <div
+                class="px-4 py-2 self-start"
+                v-show="item.tag">
+                <p class="mt-1 text-gray-800">
+                  <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
+                    {{ item.tag}}
+                </p>
+              </div>
       <span v-show="item.description"
         class="block w-full border-gray-300 rounded-md text-gray-500 justify-center">
         {{ getShortenedDescription(item.description) }}
