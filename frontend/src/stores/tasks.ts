@@ -9,11 +9,12 @@ export const useTaskStore = defineStore({
   state: () => ({
     tasks: undefined as Task[] | undefined,
     task: undefined as Task | undefined,
+    tags: undefined as string[] | undefined,
   }),
   actions: {
-    async getMine(isChecked?: boolean) {
+    async getMine(isChecked?: boolean, tagFilter?: string) {
       // TODO: query only for tasks which are in range
-      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked } })
+      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter} })
         .then((res) => {
           this.tasks = res.data;
         })
@@ -61,7 +62,16 @@ export const useTaskStore = defineStore({
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
-    }
+    },
+    async getTags() {
+      return baseApi.get("me/tags")
+        .then((res) => {
+          this.tags = res.data;
+        })
+        .catch((e) => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+        })
+    },
   },
   getters: {
     tasksForCalendar: (state) => {
