@@ -27,6 +27,18 @@
         v-model="descriptionData"
       />
       <VueDatePicker v-model="dueDate" :placeholder="$t('task.datePlaceholder')" inline-with-input auto-apply min-date="new Date()"/>
+
+      <textarea type="tag" id="tag" name="tag"
+          class="my-2 py-1 px-2 block w-full border border-gray-300 rounded-md"
+          :placeholder="$t('task.tagPlaceholder')"
+          ref="tagInput"
+          v-model="tagData"
+        />
+      
+        <button @click="newTask" type="button" class="py-2 px-4 inline-flex justify-center items-center rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
+            {{ $t('task.createTask') }}
+        </button>
+
     </div>
 
   </div>
@@ -53,16 +65,18 @@ const titleInput = ref();
 const deg = ref(0)
 const dueDate = ref()
 const descriptionData = ref();
+const tagData = ref();
 
 onMounted(() => {
   titleInput.value.focus()
 })
 
 const newTask = () => {
-  store.addTask(titleData.value, descriptionData.value, dueDate.value)
+  store.addTask(titleData.value, descriptionData.value, dueDate.value, tagData.value)
   titleData.value = undefined; 
   descriptionData.value = undefined;
   dueDate.value = undefined;
+  tagData.value = undefined;
   emit('closeNewTask');
 }
 

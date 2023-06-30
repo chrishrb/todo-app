@@ -14,6 +14,14 @@
               <XMarkIcon/>
               </button>
             </div>
+            <div
+                class="px-4 py-2 self-start"
+                v-show="store.task?.tag">
+                <p class="mt-1 text-gray-800">
+                  <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
+                    {{ store.task?.tag}}
+                </p>
+              </div>
               <div
                 class="px-4 py-2 self-start"
                 v-show="store.task?.dueDate">
@@ -27,10 +35,10 @@
               </div>
             <div class="flex overflow-y-hidden pr-3 h-full">
               <div class="px-4 py-2 overflow-y-auto w-full">
-              <div class="flex items-center">
-                <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
-                <p class="font-bold"> {{ $t('description') }} </p>
-              </div>
+                <div class="flex items-center">
+                  <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
+                  <p class="font-bold"> {{ $t('description') }} </p>
+                </div>
                 <p class="mt-1 text-gray-800 h-min w-full">
                   {{ store.task?.description }}
                 </p>

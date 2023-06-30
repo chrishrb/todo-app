@@ -35,5 +35,7 @@ export default {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",
     "datePlaceholder": "Date",
+    "tagPlaceholder": "Tag",
+    "createTask": "Create Task",
   }
 }
