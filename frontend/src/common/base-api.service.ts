@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
+import router from "@/router";
 
 const axiosInstance = axios.create({
   baseURL: "/api/v1",
@@ -20,5 +21,18 @@ axiosInstance.interceptors.request.use(
       return Promise.reject(err);
     }
   );
+
+axiosInstance.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    if (err.response.status === 500) {
+      await router.push({name: 'error'});
+    } else {
+      return Promise.reject(err)
+    }
+  }
+);
 
 export default axiosInstance;

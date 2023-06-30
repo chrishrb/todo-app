@@ -1,3 +1,4 @@
+import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
 import axios from "axios";
 
@@ -36,6 +37,8 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(e);
       }
       return axiosInstance.request(err.config);
+    } else if (err.response.status === 500) {
+      await router.push({name: 'error'});
     } else {
       return Promise.reject(err)
     }
