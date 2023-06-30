@@ -1,7 +1,7 @@
 <template>
   <CalendarView 
     :show-date="showDate" 
-    :items="items"
+    :items="isLoading === false ? taskStore.tasksForCalendar : []"
     :show-times="false"
     :starting-day-of-week="1"
     :locale="userStore.getLanguage"
@@ -22,45 +22,25 @@ import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
 import { useTaskStore } from "@/stores/tasks";
 import { useUserStore } from "@/stores/user";
 import router from "@/router";
+import type { CalendarItem } from "@/schemas/calendar-item.schema";
 
 const taskStore = useTaskStore();
 const userStore = useUserStore();
 
+const isLoading = ref(true);
 const showDate = ref(new Date());
-const items = ref([] as Item[]);
 
 const setShowDate = (date: Date) => {
   showDate.value = date;
 }
 
-const onClickItem = async (calendarItem: Item, windowEvent: any) => {
+const onClickItem = async (calendarItem: CalendarItem, windowEvent: any) => {
   await router.push(`/calendar/${calendarItem.id}`)
 }
 
-type Item = {
-  id: string;
-  startDate: Date;
-  endDate?: Date;
-  title?: string;
-  tooltip?: string;
-  classes?: string[];
-  style?: string;
-}
-
 onMounted(async () => {
-  await taskStore.getMine();
-  if (taskStore.tasks) {
-    items.value = taskStore.tasks.filter(e => !!e.dueDate).map(e => {
-      return {
-        id: e.id,
-        startDate: new Date(e.dueDate!),
-        title: e.title,
-        classes: ['basic-calendar-item'],
-        // TODO: change background color based on tag
-        style: 'background-color: #3B82F6;'
-      } as Item;
-    })
-  }
+  await taskStore.getMine(false);
+  isLoading.value = false;
 })
 </script>
 

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import baseApi from '@/common/base-api.service';
 import type { Task } from "@/schemas/task.schema";
 import { FrontendError } from "@/exceptions/frontend.error";
+import type { CalendarItem } from "@/schemas/calendar-item.schema";
 
 export const useTaskStore = defineStore({
   id: "task",
@@ -10,9 +11,9 @@ export const useTaskStore = defineStore({
     task: undefined as Task | undefined,
   }),
   actions: {
-    async getMine() {
+    async getMine(isChecked?: boolean) {
       // TODO: query only for tasks which are in range
-      return baseApi.get("me/tasks")
+      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked } })
         .then((res) => {
           this.tasks = res.data;
         })
@@ -46,7 +47,7 @@ export const useTaskStore = defineStore({
         })
     },
     async setDone() {
-      if (this.task?.isChecked || this.task === undefined){
+      if (this.task?.isChecked || this.task === undefined) {
         return;
       }
 
@@ -60,6 +61,23 @@ export const useTaskStore = defineStore({
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
+    }
+  },
+  getters: {
+    tasksForCalendar: (state) => {
+      if (!state.tasks) {
+        return [];
+      }
+      return state.tasks.filter(e => !!e.dueDate && e.isChecked === false).map(e => {
+        return {
+          id: e.id,
+          startDate: new Date(e.dueDate!),
+          title: e.title,
+          classes: ['basic-calendar-item'],
+          // TODO: change background color based on tag
+          style: 'background-color: #3B82F6;'
+        } as CalendarItem;
+      })
     }
   }
 });
