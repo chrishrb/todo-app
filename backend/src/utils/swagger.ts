@@ -1,6 +1,21 @@
+import fs from 'fs';
+
+function getPackageJsonVersion() {
+  try {
+    const packageFile = fs.readFileSync('./package.json', 'utf8')
+    const packageJson = JSON.parse(packageFile)
+    return packageJson['version'];
+  } catch (err) {
+    // Error getting and parsing package.json
+  }
+  return null;
+}
+
+const version = getPackageJsonVersion()
+
 export const swaggerOptions = {
   info: {
-    version: '1.0.0',
+    version: version ? version : 'unknown',
     title: 'Tasks API',
     description: 'Backend API for the Tasks service.',
     license: {
@@ -22,7 +37,7 @@ export const swaggerOptions = {
   // Expose OpenAPI UI
   exposeSwaggerUI: true,
   // Expose Open API JSON Docs documentation in `apiDocsPath` path.
-  exposeApiDocs: false,
+  exposeApiDocs: true,
   // Open API JSON Docs endpoint.
   apiDocsPath: '/v3/api-docs',
   // Set non-required fields as nullable by default

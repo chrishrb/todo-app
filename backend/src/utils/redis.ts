@@ -20,21 +20,18 @@ class RedisClient {
       this.isConnected = true;
     });
     this.client.on("error", () => {
-      logger.debug('Error: redis disconnected!');
+      logger.error('Error: redis disconnected!');
       this.isConnected = false;
+      throw new Error("Error: redis disconnected")
     });
     this.client.on("end", () => {
-      logger.debug('Error: redis connection ended!');
+      logger.error('Error: redis connection ended!');
       this.isConnected = false;
+      throw new Error("Error: redis disconnected")
     });
 
-    try {
-      await this.client.connect();
-      this.isConnected = true;
-    } catch (e) {
-      logger.error('Error: redis connect exception ', e);
-      return null;
-    }
+    await this.client.connect();
+    this.isConnected = true;
 
     return this.client;
   }

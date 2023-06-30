@@ -11,6 +11,7 @@ import { InternalError } from '../exceptions/errors/internal-error';
 import cookieParser from 'cookie-parser';
 import { taskRouter } from '../routes/task.route';
 import { meRouter } from '../routes/me.route';
+import customActuator from './custom-actuator';
 
 export function createServer(port: number): Server {
   console.log(`
@@ -33,6 +34,7 @@ export function createServer(port: number): Server {
   // middlewares - ordering is important
   app.use(express.json())
   app.use(cookieParser())
+  app.use(customActuator)
   app.use(`${apiRoute}/users`, userRouter)
   app.use(`${apiRoute}/tasks`, taskRouter)
   app.use(`${apiRoute}/me`, meRouter)
