@@ -28,7 +28,7 @@ export default {
   "home": "home",
   "changeLanguage": "Change Language",
   "description": "Description",
-  "due": "Due",
+  "due": "Due on",
   "done": "Done",
   "close": "Close",
   "task": {

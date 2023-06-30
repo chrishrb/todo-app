@@ -28,7 +28,7 @@ export default {
   "home": "Startseite",
   "changeLanguage": "Sprache ändern",
   "description": "Beschreibung",
-  "due": "Fälligkeit",
+  "due": "Fällig am",
   "done": "Erledigt",
   "close": "Schließen",
   "task": {
