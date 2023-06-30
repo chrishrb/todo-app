@@ -16,12 +16,13 @@
             </div>
               <div
                 class="px-4 py-2 self-start"
+                :class="[isTaskDue(store.task?.dueDate) ? 'text-red-500' : '']"
                 v-show="store.task?.dueDate">
               <div class="flex items-center">
                 <CalendarIcon class="h-5 w-5 mr-1"/>
                 <p class="font-bold"> {{ $t('due') }} </p>
               </div>
-                <p class="mt-1 text-gray-800">
+                <p class="mt-1">
                   {{ getFancyDateString(store.task?.dueDate, locale)}}
                 </p>
               </div>
@@ -56,6 +57,7 @@ import { getFancyDateString } from '../utils/formatter';
 import { useI18n } from 'vue-i18n';
 import { XMarkIcon } from "@heroicons/vue/24/solid"
 import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
+import { isTaskDue } from '../utils/helpers';
 
 const { locale } = useI18n();
 const store = useTaskStore();
@@ -89,7 +91,8 @@ onClickOutside(modal, () => {handleClose()})
 
 async function handleClose() {
   isModalOpen.value = false;
-  await router.push({ name: 'home' })
+  const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;
+  await router.push(parentRoute!)
 }
 
 function handleDone() { 

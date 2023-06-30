@@ -69,7 +69,14 @@ const router = createRouter({
       component: CalendarView,
       meta: {
         requiresAuth: true,
-      }
+      },
+      children: [
+        {
+          path: ':taskId',
+          name: 'calendarDetails',
+          component: TaskDetails,
+        }
+      ]
     },
     {
       path: '/settings',

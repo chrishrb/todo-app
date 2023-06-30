@@ -26,7 +26,13 @@
         ref="descriptionInput"
         v-model="descriptionData"
       />
-      <VueDatePicker v-model="dueDate" :placeholder="$t('task.datePlaceholder')" inline-with-input auto-apply min-date="new Date()"/>
+      <VueDatePicker 
+        v-model="dueDate" 
+        :placeholder="$t('task.datePlaceholder')" 
+        :min-date="new Date()"
+        :auto-apply="true"
+        :teleport="true"
+      />
     </div>
 
   </div>

@@ -34,7 +34,7 @@ const setShowDate = (date: Date) => {
 }
 
 const onClickItem = async (calendarItem: Item, windowEvent: any) => {
-  await router.push(`/${calendarItem.id}`)
+  await router.push(`/calendar/${calendarItem.id}`)
 }
 
 type Item = {
@@ -63,3 +63,20 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style>
+.today div {
+  background-color: #3B82F6;
+  border-radius: 100%;
+  height: 29px;
+  width: 29px;
+  color: white;
+}
+.cv-day-number {
+  padding: 0.3em;
+}
+
+.basic-calendar-item {
+  margin-top: 10px;
+}
+</style>

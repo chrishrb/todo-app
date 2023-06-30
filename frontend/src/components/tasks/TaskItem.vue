@@ -30,6 +30,7 @@ import { useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { CheckCircleIcon } from "@heroicons/vue/24/solid"
 import i18n from '@/i18n';
+import { isTaskDue } from '../utils/helpers';
 
 const store = useTaskStore()
 const router = useRouter()
@@ -41,13 +42,6 @@ const props = defineProps<{
 function openModal() {
   const taskId = props.item.id;
   router.push({ name: 'taskdetails', params: { taskId } });
-}
-
-function isTaskDue(dueDate: string | undefined): boolean {
-  if (!dueDate) {
-    return false;
-  }
-  return new Date(dueDate) < new Date();
 }
 
 function getShortenedDescription(desc: string | null): string | null {
