@@ -1,9 +1,7 @@
 <template>
   <div
     class="flex bg-white border shadow-sm rounded-xl p-4 m-1.5 items-center hover:border-gray-400">
-
-    <TaskDetails/>
-    <div class="w-8">
+    <div>
       <button class="flex items-center justify-center w-6 h-6 cursor-pointer hover:border-primary-800"
         @click.stop="store.toggleChecked(props.item.id)">
         <div class="flex w-5 h-5 rounded-full border border-primary-500 " :class="[{ 'hidden': props.item.isChecked }]" />
@@ -11,15 +9,15 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-1 grow pl-2" @click="openModal">
+    <button class="grid grid-cols-1 grow pl-6 text-left" @click="openModal">
       <div class="justify-center">{{ item.title }}</div>
       <span v-show="item.description"
         class="block w-full border-gray-300 rounded-md text-gray-500 justify-center">
         {{ getShortenedDescription(item.description) }}
       </span>
 
-    </div>
-    <span class="justify-end" :class="[isTaskDue(item.dueDate) ? 'text-red-500' : '']">
+    </button>
+    <span class="justify-end min-w-fit pl-6" :class="[isTaskDue(item.dueDate) ? 'text-red-500' : '']">
       {{ getFancyDateString(item.dueDate, i18n.global.locale.value) }}
     </span>
   </div>
@@ -28,7 +26,6 @@
 <script lang="ts" setup>
 import type { Task } from '@/schemas/task.schema'
 import { useTaskStore } from '@/stores/tasks';
-import TaskDetails from '@/components/tasks/TaskDetails.vue'
 import { useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { CheckCircleIcon } from "@heroicons/vue/24/solid"
