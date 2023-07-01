@@ -12,7 +12,6 @@ export const useTaskStore = defineStore({
   }),
   actions: {
     async getMine(isChecked?: boolean) {
-      // TODO: query only for tasks which are in range
       return baseApi.get("me/tasks", { params: { 'isChecked': isChecked } })
         .then((res) => {
           this.tasks = res.data;

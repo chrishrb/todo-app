@@ -1,3 +1,5 @@
+import i18n from "@/i18n";
+
 export type ErrorDetailsSchema = {
   field: string;
   value?: string;
@@ -27,34 +29,20 @@ export class FrontendError extends Error {
   }
 }
 
-// TODO: make i18n ready
 // see backend: src/exceptions/error-details.ts
 function getTextFromErrorCode(errorCode?: number) {
-  switch (errorCode) {
-    case 4001:
-      return "Please enter a valid email address."
-    case 4002:
-      return "Please enter a valid password."
-    case 4003:
-      return "Please enter a valid first name."
-    case 4004:
-      return "Please enter a valid last name."
-    case 4107:
-      return "E-Mail already registered. Please sign in!"
-    case 4200:
-      return "Username not correct."
-    case 4201:
-      return "Password not correct. Please try again!"
-  }
+  const { t, te } = i18n.global
+  return te(`errors.${errorCode}`) ? t(`errors.${errorCode}`) : null;
 }
 
 export function getErrorText(errorDetails?: ErrorDetailsSchema[]) {
+  const { t } = i18n.global
   if (!errorDetails) {
-    return "Something did go wrong."
+    return t('errors.default');
   }
   const text = errorDetails.map(detail => getTextFromErrorCode(detail.replyCode)).join("\n");
   if (!text) {
-    return "Something did go wrong."
+    return t('errors.default');
   }
   return text;
 }
