@@ -4,6 +4,14 @@ import type { Task } from "@/schemas/task.schema";
 import { FrontendError } from "@/exceptions/frontend.error";
 import type { CalendarItem } from "@/schemas/calendar-item.schema";
 
+const COLORS = [
+  'bg-green-500',
+  'bg-red-500',
+  'bg-blue-500',
+  'bg-orange-500',
+  'bg-yellow-500'
+]
+
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
@@ -88,6 +96,19 @@ export const useTaskStore = defineStore({
           style: 'background-color: #3B82F6;'
         } as CalendarItem;
       })
+    },
+    tagsWithColors: (state) => {
+      if (!state.tags) {
+        return {};
+      }
+        const tagColorDict: { [key: string]: string } = {};
+      
+        for (let i = 0; i < state.tags.length; i++) {
+          const index = i % COLORS.length;
+          tagColorDict[state.tags[i]] = COLORS[index];
+        }
+        console.log(tagColorDict)
+        return tagColorDict;
     }
   }
 });

@@ -18,7 +18,7 @@
                 class="px-4 py-2 self-start"
                 v-show="store.task?.tag">
                 <p class="mt-1 text-gray-800">
-                  <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
+                  <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="store.tagsWithColors[tag]"></span>
                     {{ store.task?.tag}}
                 </p>
               </div>
@@ -66,6 +66,7 @@ import { useI18n } from 'vue-i18n';
 import { XMarkIcon } from "@heroicons/vue/24/solid"
 import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
 import { isTaskDue } from '../utils/helpers';
+import { computed } from 'vue';
 
 const { locale } = useI18n();
 const store = useTaskStore();
@@ -75,6 +76,8 @@ const modal = ref(null)
 const isModalOpen = ref(false)
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
+
+const tag = computed(() => store.task?.tag);
 
 
 onMounted(() => {
