@@ -33,11 +33,12 @@
         :auto-apply="true"
         :teleport="true"
       />
-      <div class="py-2">
-        <select class="py-3 px-4 block w-full border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border">
-          <option v-for="color, tag in store.tagsWithColors" :value="tag">{{tag}}</option>
-      </select>
-      </div>
+      <v-combobox
+        label="Tags"
+        class="py-2"
+        v-model="tagData"
+        :items="store.tags">
+      </v-combobox>
 
         <button @click="newTask" type="button" class="py-2 px-4 inline-flex justify-center items-center rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
             {{ $t('task.createTask') }}
@@ -83,6 +84,7 @@ const newTask = () => {
   dueDate.value = undefined;
   tagData.value = undefined;
   emit('closeNewTask');
+  store.getTags();  
 }
 
 const showDetails = () => {
