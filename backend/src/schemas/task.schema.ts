@@ -10,7 +10,6 @@ import { ResponseError } from "../exceptions/response-details";
  * @property {string} description - Description
  * @property {string} dueDate - Due date - date-time
  * @property {string} tag - Tag
- * @property {string} tagColor - Tag Color
  */
 export class CreateTaskSchema {
   @IsUUID(4, {
@@ -75,29 +74,14 @@ export class CreateTaskSchema {
       errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
-  tag: string | null;
-  
-  @IsOptional({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  @IsString({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  tagColor: string | null;
+  tag: string | null; 
 
-  constructor(title: string, userId: string, description: string | null, dueDate: string | null, tag: string | null, tagColor: string | null) {
+  constructor(title: string, userId: string, description: string | null, dueDate: string | null, tag: string | null) {
     this.userId = userId;
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.tag = tag;
-    this.tagColor = tagColor;
   }
 }
 
@@ -167,26 +151,11 @@ export class CreateTaskMeSchema {
   })
   tag: string | null; 
 
-  @IsOptional({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  @IsString({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  tagColor: string | null;
-
-  constructor(title: string, description: string | null, dueDate: string, tag: string | null, tagColor: string | null) {
+  constructor(title: string, description: string | null, dueDate: string, tag: string | null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.tag = tag;
-    this.tagColor = tagColor;
   }
 }
 
@@ -270,28 +239,13 @@ export class UpdateTaskSchema {
     }
   })
   tag: string | null; 
-
-  @IsOptional({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  @IsString({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  tagColor: string | null;
   
-  constructor(title: string | null, description: string | null, dueDate: string | null, isChecked: boolean | null, tag: string | null, tagColor: string | null) {
+  constructor(title: string | null, description: string | null, dueDate: string | null, isChecked: boolean | null, tag: string | null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.isChecked = isChecked;
     this.tag = tag;
-    this.tagColor = tagColor;
   }
 }
 
@@ -315,7 +269,6 @@ export class ReadTaskSchema {
   dueDate: string | null | undefined;
   isChecked: boolean;
   tag: string | null;
-  tagColor: string | null;
   createdAt: string;
   updatedAt: string;
 
@@ -326,8 +279,7 @@ export class ReadTaskSchema {
     description: string | null, 
     dueDate: string | null | undefined, 
     isChecked: boolean, 
-    tag: string | null,
-    tagColor: string | null, 
+    tag: string | null, 
     createdAt: string, 
     updatedAt: string
   ) {
@@ -338,7 +290,6 @@ export class ReadTaskSchema {
     this.dueDate = dueDate,
     this.isChecked = isChecked;
     this.tag = tag;
-    this.tagColor = tagColor;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -357,24 +308,9 @@ export class GetTasksWithSpecifiedTagSchema {
       errorMessage: ResponseError.TAG_INVALID_TAGNAME.errorMessage
     }
   })
-  tag: string;
-  
-  @IsOptional({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  @IsString({
-    context: {
-      errorCode: ResponseError.TAG_INVALID_TAGCOLOR.errorCode,
-      errorMessage: ResponseError.TAG_INVALID_TAGCOLOR.errorMessage
-    }
-  })
-  tagColor: string | null;
+  tag: string; 
 
-  constructor(tag: string, tagColor: string | null) {
+  constructor(tag: string) {
     this.tag = tag;
-    this.tagColor = tagColor;
   }
 }

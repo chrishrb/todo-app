@@ -33,7 +33,6 @@ model Task {
   description String?
   dueDate     DateTime?
   tag         String?
-  tagColor    String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime   @updatedAt
 
