@@ -36,6 +36,6 @@ export default {
     "descriptionPlaceholder": "Beschreibung",
     "datePlaceholder": "Datum",
     "tagPlaceholder": "Etikett",
-    "createTask": "Aufgabe Erstellen",
+    "createTask": "Aufgabe erstellen",
   }
 }
