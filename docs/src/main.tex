@@ -1,0 +1,152 @@
+%! Author = christophherb
+
+
+\documentclass[a4paper, 12pt]{article}
+%TC:incbib
+
+%%%%%%%% CREATE DOCUMENT STRUCTURE %%%%%%%%
+%% Language and font encodings
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}% verbesserter Randausgleichjk
+\usepackage[scaled]{uarial}
+%\usepackage{subfig}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+%% Packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{sectsty}
+\usepackage{apacite}
+\usepackage{float}
+\usepackage{titling}
+\usepackage{blindtext}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xcolor}
+\definecolor{darkgreen}{rgb}{0.0, 0.4, 0.0}
+\definecolor{LightGray}{gray}{0.8}
+\usepackage{verbatim}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{pdfpages}
+
+\setcounter{secnumdepth}{4}
+
+%%%%%%%% Functions %%%%%%%%
+%% Count Characters
+\newcommand{\charactercount}[1]{
+    \immediate\write18{
+        expr `texcount -1 -sum -merge #1.tex` + `texcount -1 -sum -merge -char #1.tex` - 1
+        > build/.chars.txt
+    } 
+    \input{build/.chars.txt}
+}
+
+%% Count Words
+\newcommand{\quickwordcount}[1]{%
+    \immediate\write18{
+      texcount -1 -sum -merge -q #1.tex > build/.#1-words.sum 
+    }
+    \input{build/.#1-words.sum}%
+}
+
+
+%%%%%%%% Variables %%%%%%%%
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 							% horizontal line and its thickness
+
+
+%%%%%%%% DOCUMENT %%%%%%%%
+%%%% Title Page
+\begin{document}
+    \begin{titlepage}
+        \center
+        %\vspace*{2.0cm}
+        \includegraphics[width=0.45\textwidth]{../images/hsa_logo}\\[0.5cm] 	% University logo
+        \includegraphics[width=0.3\textwidth]{../images/logo}\\[1.5cm] 	% University logo
+
+        \HRule \\[0.2cm]
+        {
+          \huge \bfseries todo\\
+          \large Dokumentation der Anwendung\\[0.5cm]
+          \large Full-Stack-Webanwendungen\\
+          \large Sommersemester 2023
+        }\\[0.2cm]								% Assignment
+        \HRule \\[2cm]
+
+        \begin{flushleft}
+          \large
+          Lucas Schiessl\\
+          lucas.schiessl@hs-augsburg.de\\
+          Informatik\\[0.5cm]
+
+          Hannes Ziereis\\
+          hannes.ziereis@hs-augsburg.de\\
+          Informatik\\[0.5cm]
+
+          Christoph Herb\\
+          christoph.herb@hs-augsburg.de\\
+          Informatik\\[2cm]
+
+          \charactercount{main} Zeichen (mit Leerzeichen)\\
+        \end{flushleft}
+        %{\large \today}\\[5cm]
+        \vfill
+    \end{titlepage}
+
+%%\begin{abstract}
+%%Your abstract.
+%%\end{abstract}
+\tableofcontents
+
+%%%% SECTIONS
+%% Section 1
+\newpage
+    \section{Allgemein}
+    \subsection{Beschreibung}
+    * paar infos über die Anwendung
+    * cooles features
+
+    \subsection{Organisation}
+    * auf gitlab issues zeigen (anhang)
+    * feature based entwicklung erwähnen
+
+    \section{Frontend}
+    \subsection{Design}
+    * figma design
+
+    \subsection{Funktionen}
+    * kernfeatures
+
+    \section{Backend}
+    \subsection{Aufbau}
+    \subsection{Funktionen}
+    * features
+
+    \subsection{Tests}
+    * cucumber tests erwähnen
+
+    \section{Datenbank}
+    * ER diagramm
+
+    \newpage
+    \section{Anhang}
+    \subsection{GitLab Issues}
+    \input{gitlab_issue_table}
+
+    \includepdf[pages=1,scale=.85,pagecommand={\subsection{API Dokumentation}}]{../appendix/swagger_docs.pdf}
+    \includepdf[pages=2-,scale=.85,pagecommand={}]{../appendix/swagger_docs.pdf}
+
+    % \begin{figure}[H]
+    %     \includegraphics[width=\textwidth]{images/organigram}
+    %     \caption{Organigramm Team Pyramid 2021}\label{fig:figure}
+    % \end{figure}
+
+\end{document}
