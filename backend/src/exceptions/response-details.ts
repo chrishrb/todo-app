@@ -15,6 +15,7 @@ export class ResponseError {
 
   // Tag-Validation
   static readonly TAG_INVALID_TAGNAME = new ResponseError(4011, 'Invalid Tag String')
+  static readonly TAG_INVALID_TAGCOLOR = new ResponseError(4012, 'Invalid Tag Color String')
 
 
   // Duplicate resource

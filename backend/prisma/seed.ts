@@ -37,6 +37,7 @@ async function main() {
               description: "You need typescript in your future, so learn it now", 
               dueDate: null,
               tag: 'study',
+              tagColor: 'red',
               isChecked: true,
             },
             { 
@@ -44,7 +45,8 @@ async function main() {
               title: "Study project for full stack", 
               description: "Finish project", 
               dueDate: dayjs('2023-07-09 13:00').utc().format(), 
-              tag: 'work'
+              tag: 'work',
+              tagColor: 'blue',
             },
             {
               title: "lorem ipsum",

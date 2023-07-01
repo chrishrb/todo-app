@@ -31,6 +31,7 @@ export async function createTask(userId: string, taskDto: CreateTaskSchema | Cre
       description: taskDto.description,
       dueDate: notEmpty(taskDto.dueDate) ? dayjs.utc(taskDto.dueDate).toISOString() : undefined,
       tag: taskDto.tag,
+      tagColor: taskDto.tagColor,
       user: { 
         connect: { 
           id: userId,
@@ -47,6 +48,7 @@ export async function createTask(userId: string, taskDto: CreateTaskSchema | Cre
     task.dueDate ? dayjs.utc(task.dueDate).toISOString() : undefined,
     task.isChecked,
     task.tag,
+    task.tagColor,
     dayjs.utc(task.createdAt).toISOString(),
     dayjs.utc(task.updatedAt).toISOString(),
   );
@@ -63,6 +65,7 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
       dueDate: notEmpty(taskDto.dueDate) ? dayjs.utc(taskDto.dueDate).toDate() : undefined,
       isChecked: taskDto.isChecked != null ? taskDto.isChecked : undefined,
       tag: taskDto.tag !== undefined ? taskDto.tag : undefined,
+      tagColor: taskDto.tagColor !== undefined ? taskDto.tagColor : undefined,
     }
   });
 
@@ -74,6 +77,7 @@ export async function updateTask(taskId: string, taskDto: UpdateTaskSchema) {
     task.dueDate ? dayjs.utc(task.dueDate).toISOString() : undefined,
     task.isChecked,
     task.tag,
+    task.tagColor,
     dayjs.utc(task.createdAt).toISOString(),
     dayjs.utc(task.updatedAt).toISOString(),
   );
@@ -98,6 +102,7 @@ export async function readTask(taskId: string): Promise<ReadTaskSchema> {
     task.dueDate ? dayjs.utc(task.dueDate).toISOString() : undefined,
     task.isChecked,
     task.tag,
+    task.tagColor,
     dayjs.utc(task.createdAt).toISOString(),
     dayjs.utc(task.updatedAt).toISOString(),
   );
@@ -122,6 +127,7 @@ export async function readAllTasks(queryParams: TaskReadQuerySchema): Promise<Re
       task.dueDate ? dayjs.utc(task.dueDate).toISOString() : undefined,
       task.isChecked,
       task.tag,
+      task.tagColor,
       dayjs.utc(task.createdAt).toISOString(),
       dayjs.utc(task.updatedAt).toISOString(),
     )
@@ -149,6 +155,7 @@ export async function readAllTasksByUser(userId: string, queryParams: TaskReadQu
       task.dueDate ? dayjs.utc(task.dueDate).toISOString() : undefined,
       task.isChecked,
       task.tag,
+      task.tagColor,
       dayjs(task.createdAt).toISOString(),
       dayjs(task.updatedAt).toISOString(),
     )
@@ -181,6 +188,7 @@ export async function toggleTask(taskId: string, currentIsChecked: boolean): Pro
     taskNow.dueDate ? dayjs.utc(taskNow.dueDate).toISOString() : undefined,
     taskNow.isChecked,
     taskNow.tag,
+    taskNow.tagColor,
     dayjs.utc(taskNow.createdAt).toISOString(),
     dayjs.utc(taskNow.updatedAt).toISOString(),
   );

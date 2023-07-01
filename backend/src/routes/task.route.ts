@@ -32,7 +32,7 @@ taskRouter.route("/")
    * @return {BaseError} 500 - Internal Server error
    */
   .post(authService.verify, asyncHandler(async (req, res) => {
-    const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, req.body.dueDate, req.body.tag);
+    const taskDto = new CreateTaskSchema(req.body.title, req.body.userId, req.body.description, req.body.dueDate, req.body.tag, req.body.tagColor);
     await validateSafe(taskDto);
 
     const task = await taskService.createTask(taskDto.userId, taskDto);
@@ -110,7 +110,7 @@ taskRouter.route("/:taskId")
       throw new ForbiddenError([{field: 'id', value: res.locals.user.userId, replyMessage: 'User does not have permissions for this resource.'}]);
     }
 
-    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate, req.body.isChecked, req.body.tag);
+    const taskDto = new UpdateTaskSchema(req.body.title, req.body.description, req.body.dueDate, req.body.isChecked, req.body.tag, req.body.tagColor);
     await validateSafe(taskDto);
     const task = await taskService.updateTask(req.params.taskId, taskDto);
 
