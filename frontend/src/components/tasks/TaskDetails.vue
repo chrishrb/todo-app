@@ -14,6 +14,18 @@
               <XMarkIcon/>
               </button>
             </div>
+            <div
+                class="px-4 py-2 self-start"
+                v-show="store.task?.tag">
+                <div class="flex items-center">
+                  <TagIcon class="h-5 w-5 mr-1"/>
+                  <p class="font-bold"> {{ $t('tag') }} </p>
+                </div>
+                <p class="mt-1 text-gray-800">
+                  <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="store.colorOfTag(tag)"></span>
+                    {{ store.task?.tag}}
+                </p>
+              </div>
               <div
                 class="px-4 py-2 self-start"
                 :class="[isTaskDue(store.task?.dueDate) ? 'text-red-500' : '']"
@@ -28,10 +40,10 @@
               </div>
             <div class="flex overflow-y-hidden pr-3 h-full">
               <div class="px-4 py-2 overflow-y-auto w-full">
-              <div class="flex items-center">
-                <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
-                <p class="font-bold"> {{ $t('description') }} </p>
-              </div>
+                <div class="flex items-center">
+                  <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
+                  <p class="font-bold"> {{ $t('description') }} </p>
+                </div>
                 <p class="mt-1 text-gray-800 h-min w-full">
                   {{ store.task?.description }}
                 </p>
@@ -56,8 +68,9 @@ import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { useI18n } from 'vue-i18n';
 import { XMarkIcon } from "@heroicons/vue/24/solid"
-import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
+import { ChatBubbleLeftRightIcon, CalendarIcon, TagIcon } from "@heroicons/vue/24/outline"
 import { isTaskDue } from '../utils/helpers';
+import { computed } from 'vue';
 
 const { locale } = useI18n();
 const store = useTaskStore();
@@ -67,6 +80,8 @@ const modal = ref(null)
 const isModalOpen = ref(false)
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
+
+const tag = computed(() => store.task?.tag);
 
 
 onMounted(() => {
@@ -90,9 +105,12 @@ onBeforeRouteUpdate(async (to, from) => {
 onClickOutside(modal, () => {handleClose()})
 
 async function handleClose() {
+  if (isModalOpen.value === false) {
+    return;
+  }
   isModalOpen.value = false;
   const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;
-  await router.push(parentRoute!)
+  await router.replace(parentRoute!)
 }
 
 function handleDone() { 

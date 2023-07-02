@@ -51,3 +51,4 @@ yarn lint
 ## Resources
 * dockerfile for production: https://medium.com/bb-tutorials-and-thoughts/how-to-serve-vue-js-application-with-nginx-and-docker-d8a872a02ea8
 * nginx config: https://www.appsyoda.com/blog/deploying-vuejs-app-using-nginx/
+* vuetify components, Version 3: https://vuetifyjs.com/en/

@@ -10,7 +10,10 @@
     </div>
 
     <button class="grid grid-cols-1 grow pl-6 text-left" @click="openModal">
-      <div class="justify-center">{{ item.title }}</div>
+      <div class="justify-center">
+        {{ item.title }}
+        <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="store.colorOfTag(item.tag)"></span>
+      </div>
       <span v-show="item.description"
         class="block w-full border-gray-300 rounded-md text-gray-500 justify-center">
         {{ getShortenedDescription(item.description) }}
@@ -41,7 +44,12 @@ const props = defineProps<{
 
 function openModal() {
   const taskId = props.item.id;
-  router.push({ name: 'taskdetails', params: { taskId } });
+
+  if (router.currentRoute.value.params.tag) {
+    router.push({ name: 'tag-taskdetails', params: { taskId } });
+  } else {
+    router.push({ name: 'taskdetails', params: { taskId } });
+  }
 }
 
 function getShortenedDescription(desc: string | null): string | null {

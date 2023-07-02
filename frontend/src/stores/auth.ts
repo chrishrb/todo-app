@@ -27,7 +27,9 @@ export const useAuthStore = defineStore({
 
       try {
         await baseApi.get("/auth/logout")
-      } catch (_) { }
+      } catch (_) {
+        // Don't crash if the logout endpoint does not work
+      }
 
       localStorage.removeItem('jwt')
       this.jwt = null

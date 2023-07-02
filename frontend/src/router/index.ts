@@ -24,9 +24,21 @@ const router = createRouter({
       },
       children: [
         {
-          path: ':taskId',
+          path: '/task/:taskId',
           name: 'taskdetails',
           component: TaskDetails,
+        },
+        {
+          path: '/tag/:tag',
+          name: 'tag',
+          component: HomeView,
+          children: [
+            {
+              path: '/tag/:tag/task/:taskId',
+              name: 'tag-taskdetails',
+              component: TaskDetails,
+            },
+          ]
         }
       ]
     },
