@@ -29,6 +29,7 @@ export default {
   "changeLanguage": "Sprache ändern",
   "description": "Beschreibung",
   "due": "Fällig am",
+  "tag": "Etikett",
   "done": "Erledigt",
   "close": "Schließen",
   "task": {

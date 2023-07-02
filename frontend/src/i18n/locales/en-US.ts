@@ -29,6 +29,7 @@ export default {
   "changeLanguage": "Change Language",
   "description": "Description",
   "due": "Due on",
+  "tag": "Tag",
   "done": "Done",
   "close": "Close",
   "task": {

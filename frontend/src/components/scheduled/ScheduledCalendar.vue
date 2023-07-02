@@ -34,12 +34,12 @@ const setShowDate = (date: Date) => {
   showDate.value = date;
 }
 
-const onClickItem = async (calendarItem: CalendarItem, windowEvent: any) => {
+const onClickItem = async (calendarItem: CalendarItem) => {
   await router.push(`/calendar/${calendarItem.id}`)
 }
 
 onMounted(async () => {
-  await taskStore.getMine(false);
+  await taskStore.getMine();
   isLoading.value = false;
 })
 </script>

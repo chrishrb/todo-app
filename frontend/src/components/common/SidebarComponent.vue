@@ -7,10 +7,10 @@
 
     <nav class="pb-5 pl-5 pr-5 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
       <ul class="space-y-1.5">
-        <router-link to="/" v-slot="{ href, isActive }" custom>
+        <router-link to="/" v-slot="{ href, navigate, isActive }" custom>
           <li class="hs-accordion" :class="[isActive && 'active']">
             <a class="hs-accordion-toggle flex items-center gap-x-3.5 py-2 px-2.5 hs-accordion-active:text-blue-600 hs-accordion-active:hover:bg-transparent text-base text-slate-700 rounded-md hover:text-primary-600"
-              :href="href" @click="taskStore.getMine(undefined, undefined)">
+              :href="href" @click="navigate">
               <QueueListIcon class="w-5 h-5" />
               {{ $t('todayTasks') }}
 
@@ -20,14 +20,18 @@
 
             <div class="w-full overflow-hidden px-5 transition-[height] duration-300">
               <ul class="pl-2 border-l-2">
-                <div v-for="(color, tag) in taskStore.tagsWithColors">
-                  <li>
-                    <button @click="taskStore.getMine(undefined, tag)" class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md">
-                      <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="color"></span>
-                      {{ tag }}
-                  </button>
-                </li>
-              </div>
+                <div v-for="(tag, key) in taskStore.tagsWithColors" :key="key">
+                  <router-link :to="{ name: 'tag', params: { 'tag': tag.name } }" v-slot="{ navigate, isActive }" custom>
+                    <li>
+                      <button @click="navigate"
+                        class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md">
+                        <span class="w-2.5 h-2.5 inline-block rounded-full mr-2 outline-2 outline-offset-1 outline-primary-600" :class="[isActive && 'outline', tag.color]"
+                          />
+                        {{ tag.name }}
+                      </button>
+                    </li>
+                  </router-link>
+                </div>
               </ul>
             </div>
           </li>

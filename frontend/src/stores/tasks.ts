@@ -3,6 +3,7 @@ import baseApi from '@/common/base-api.service';
 import type { Task } from "@/schemas/task.schema";
 import { FrontendError } from "@/exceptions/frontend.error";
 import type { CalendarItem } from "@/schemas/calendar-item.schema";
+import type { Tag } from "@/schemas/tag.schema";
 
 const COLORS = [
   'bg-green-500',
@@ -22,7 +23,7 @@ export const useTaskStore = defineStore({
   actions: {
     async getMine(isChecked?: boolean, tagFilter?: string) {
       // TODO: query only for tasks which are in range
-      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter} })
+      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter } })
         .then((res) => {
           this.tasks = res.data;
         })
@@ -82,33 +83,38 @@ export const useTaskStore = defineStore({
     },
   },
   getters: {
-    tasksForCalendar: (state) => {
-      if (!state.tasks) {
+    tasksForCalendar(): CalendarItem[] {
+      if (!this.tasks) {
         return [];
       }
-      return state.tasks.filter(e => !!e.dueDate && e.isChecked === false).map(e => {
+      return this.tasks.filter(e => !!e.dueDate).map(e => {
+        const color = this.colorOfTag(e.tag);
         return {
           id: e.id,
           startDate: new Date(e.dueDate!),
           title: e.title,
-          classes: ['basic-calendar-item'],
-          // TODO: change background color based on tag
-          style: 'background-color: #3B82F6;'
+          classes: ['basic-calendar-item', color ? color : 'bg-primary-500', e.isChecked ? 'line-through' : ''],
         } as CalendarItem;
       })
     },
     tagsWithColors: (state) => {
       if (!state.tags) {
-        return {};
+        return [];
       }
-        const tagColorDict: { [key: string]: string } = {};
-      
-        for (let i = 0; i < state.tags.length; i++) {
-          const index = i % COLORS.length;
-          tagColorDict[state.tags[i]] = COLORS[index];
+      const tagsWithColorsList: Tag[] = [];
+      for (let i = 0; i < state.tags.length; i++) {
+        const index = i % COLORS.length;
+        tagsWithColorsList.push({name: state.tags[i], color: COLORS[index]})
+      }
+      return tagsWithColorsList;
+    },
+    colorOfTag() {
+      return (tag: string | undefined) => {
+        if (!tag) {
+          return;
         }
-        console.log(tagColorDict)
-        return tagColorDict;
+        return this.tagsWithColors.find(o => o.name === tag)?.color
+      };
     }
   }
 });
