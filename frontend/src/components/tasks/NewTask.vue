@@ -26,12 +26,13 @@
         ref="descriptionInput"
         v-model="descriptionData"
       />
-      <VueDatePicker 
-        v-model="dueDate" 
-        :placeholder="$t('task.datePlaceholder')" 
-        :min-date="new Date()"
+      <VueDatePicker
+        v-model="dueDate"
+        :placeholder="$t('task.datePlaceholder')"
+        inline-with-input
         :auto-apply="true"
-        :teleport="true"
+        :min-date="new Date()"
+        :start-time="DEFAULT_TIME"
       />
     </div>
 
@@ -53,6 +54,8 @@ const emit = defineEmits<{
 
 // show switches
 const details = ref(false);
+
+const DEFAULT_TIME = ref({ hours: 0, minutes: 0});
 
 const titleData = ref();
 const titleInput = ref();
