@@ -38,5 +38,20 @@ export default {
     "datePlaceholder": "Datum",
     "tagPlaceholder": "Etikett",
     "createTask": "Aufgabe erstellen",
-  }
+  },
+  "errors": {
+    "4001": "Bitte geben Sie eine gültige E-Mail Adresse ein.",
+    "4002": "Bitte geben Sie ein gültiges Passwort ein.",
+    "4003": "Bitte geben Sie einen gültigen Vorname ein.",
+    "4004": "Bitte geben Sie einen gültigen Nachname ein.",
+    "4107": "E-Mail Adresse bereits vorhanden. Bitte loggen Sie sich ein.",
+    "4200": "E-Mail Adresse wurde nicht gefunden.",
+    "4201": "Passwort nicht korrekt. Bitte versuchen Sie es nochmal!",
+    "default": "Es ist etwas schief gelaufen.",
+  },
+  "errorPage": {
+    "header": "Es ist ein unerwarteter Fehler aufgetreten!",
+    "subHeader": "Bitte kontaktieren Sie die IT, falls der Fehler wiederholt auftritt.",
+    "button": "Erneut versuchen",
+  },
 }

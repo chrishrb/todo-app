@@ -9,6 +9,7 @@ import CalendarView from '../views/calendar/CalendarView.vue'
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user'
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
+import ErrorView from '../views/error/ErrorView.vue'
 
 
 const router = createRouter({
@@ -97,6 +98,11 @@ const router = createRouter({
       meta: {
         requiresAuth: true,
       }
+    },
+    {
+      path: '/error',
+      name: 'error',
+      component: ErrorView,
     }
   ]
 })
