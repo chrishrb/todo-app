@@ -9,7 +9,7 @@
         />
       </div>
       <div class="inline-flex justify-between items-center">
-        <button @click="props.closeEdit" class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm">
+        <button @click="emit('closeModal')" class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm">
           <span class="sr-only">{{ $t('close') }}</span>
           <XMarkIcon/>
         </button>

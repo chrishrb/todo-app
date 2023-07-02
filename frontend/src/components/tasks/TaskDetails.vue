@@ -5,7 +5,8 @@
 
         <TaskEditForm
           :task="task!"
-          :close-edit="handleClose"
+          :close-edit="closeEdit"
+          v-on:close-modal="handleClose"
           v-on:save-edit="handleSave"
           v-if="isEditing"
         />
