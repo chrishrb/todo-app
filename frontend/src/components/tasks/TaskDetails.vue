@@ -44,7 +44,7 @@
                   <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
                   <p class="font-bold"> {{ $t('description') }} </p>
                 </div>
-                <p class="mt-1 text-gray-800 h-min w-full">
+                <p class="whitespace-pre-line mt-1 text-gray-800 h-min w-full">
                   {{ store.task?.description }}
                 </p>
               </div>

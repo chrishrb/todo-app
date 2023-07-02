@@ -15,7 +15,7 @@
         <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="store.colorOfTag(item.tag)"></span>
       </div>
       <span v-show="item.description"
-        class="block w-full border-gray-300 rounded-md text-gray-500 justify-center">
+        class="block whitespace-pre-line w-full border-gray-300 rounded-md text-gray-500 justify-center">
         {{ getShortenedDescription(item.description) }}
       </span>
 
