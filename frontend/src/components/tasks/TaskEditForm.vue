@@ -26,6 +26,7 @@
       </div>
       <VueDatePicker
         class="mt-1"
+        :locale="userStore.getLanguage"
         v-model="taskDraft.dueDate"
         inline-with-input
         :auto-apply="true"
@@ -64,13 +65,16 @@
 <script setup lang="ts">
 import { ref, watch, watchEffect } from 'vue';
 import { useTaskStore } from '@/stores/tasks';
+import { useUserStore } from '@/stores/user';
 import {XMarkIcon } from "@heroicons/vue/24/outline";
 import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
 import type { Task } from '@/schemas/task.schema';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { hasAnyChanges } from '../utils/helpers';
 
 const store = useTaskStore();
+const userStore = useUserStore();
 
 const isSaveDisabled = ref(true);
 
@@ -82,15 +86,12 @@ const props = defineProps<{
 const taskDraft = ref(JSON.parse(JSON.stringify(props.task)) as Task);
 
 const emit = defineEmits<{
-  (event: 'cancleEdit'): void,
   (event: 'saveEdit', task: Task): void,
   (event: 'closeEdit'): void
 }>();
 
 watch(taskDraft.value, () => {
-  // if (hasAnyChanges(props.task, taskDraft)) {
-    isSaveDisabled.value = false;
-  // }
+  isSaveDisabled.value = !hasAnyChanges(props.task, taskDraft.value)
 });
 
 function save() {
@@ -104,13 +105,5 @@ function cancel() {
   //TODO clear localstorage draft
   props.closeEdit();
 }
-
-// function hasDiff() {
-//   console.log("DIFF: ", props.task)
-//   console.log(taskDraft.value)
-//   const d = props.task != taskDraft.value;
-//   console.log(d)
-//   return d;
-// }
 
 </script>

@@ -1,6 +1,28 @@
-export function isTaskDue(dueDate: string | undefined): boolean {
+import type { Task } from "@/schemas/task.schema";
+import dayjs from 'dayjs'
+
+export function isTaskDue(dueDate: Date | undefined): boolean {
   if (!dueDate) {
     return false;
   }
   return new Date(dueDate) < new Date();
 }
+
+export function hasAnyChanges(task: Task, editedTask: Task) {
+  console.log("test")
+  const hasChanges = !(
+    task.title === editedTask.title &&
+    task.description === editedTask.description &&
+    isSameDate(task.dueDate,editedTask.dueDate)
+  )
+
+  console.log("CHANG: ", hasChanges)
+  console.log(task)
+  console.log(editedTask)
+
+  return hasChanges;
+}
+
+const isSameDate = (a: Date | undefined, b: Date | undefined) => a === undefined && b === undefined
+  ? true
+  : (a ? dayjs(a) : null)?.isSame(b, 'minute');
