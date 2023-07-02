@@ -15,10 +15,9 @@
         </button>
       </div>
     </div>
-    <!-- TODO conditional -->
     <div
       class="px-4 py-2 self-start"
-      :class="[false ? 'text-red-500' : '']"
+      :class="[isTaskDue(taskDraft.dueDate) ? 'text-red-500' : '']"
     >
       <div class="flex items-center">
         <CalendarIcon class="h-5 w-5 mr-1"/>
@@ -26,7 +25,6 @@
       </div>
       <VueDatePicker
         class="mt-1"
-        :locale="userStore.getLanguage"
         v-model="taskDraft.dueDate"
         inline-with-input
         :auto-apply="true"
@@ -65,16 +63,14 @@
 <script setup lang="ts">
 import { ref, watch, watchEffect } from 'vue';
 import { useTaskStore } from '@/stores/tasks';
-import { useUserStore } from '@/stores/user';
 import {XMarkIcon } from "@heroicons/vue/24/outline";
 import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
 import type { Task } from '@/schemas/task.schema';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import { hasAnyChanges } from '../utils/helpers';
+import { hasAnyChanges, isTaskDue } from '../utils/helpers';
 
 const store = useTaskStore();
-const userStore = useUserStore();
 
 const isSaveDisabled = ref(true);
 
@@ -87,7 +83,7 @@ const taskDraft = ref(JSON.parse(JSON.stringify(props.task)) as Task);
 
 const emit = defineEmits<{
   (event: 'saveEdit', task: Task): void,
-  (event: 'closeEdit'): void
+  (event: 'closeModal'): void
 }>();
 
 watch(taskDraft.value, () => {
