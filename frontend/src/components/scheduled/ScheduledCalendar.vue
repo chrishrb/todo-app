@@ -53,7 +53,8 @@ onMounted(async () => {
   color: white;
 }
 .cv-day-number {
-  padding: 0.3em;
+  padding-left: 8.7px;
+  padding-top: 6.0px;
 }
 
 .basic-calendar-item {
