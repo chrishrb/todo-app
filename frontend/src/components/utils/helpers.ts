@@ -16,10 +16,6 @@ export function hasAnyChanges(task: Task, editedTask: Task) {
     isSameDate(task.dueDate,editedTask.dueDate)
   )
 
-  console.log("CHANG: ", hasChanges)
-  console.log(task)
-  console.log(editedTask)
-
   return hasChanges;
 }
 
