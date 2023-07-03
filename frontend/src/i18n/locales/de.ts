@@ -31,6 +31,8 @@ export default {
   "due": "Fällig am",
   "done": "Erledigt",
   "close": "Schließen",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
   "task": {
     "titlePlaceholder": "Titel",
     "descriptionPlaceholder": "Beschreibung",

@@ -31,6 +31,8 @@ export default {
   "due": "Due on",
   "done": "Done",
   "close": "Close",
+  "save": "Save",
+  "cancel": "Cancel",
   "task": {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",
