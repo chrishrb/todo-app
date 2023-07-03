@@ -21,7 +21,8 @@
       </VueDatePicker>
       <div class="py-2">
         <Combobox v-model="tagData" nullable :disabled="route.params.tag != null">
-            <div class="relative w-full cursor-default bg-white text-left sm:text-sm">
+          <div class="relative">
+            <div class="relative overflow-hidden w-full cursor-default bg-white text-left sm:text-sm">
               <ComboboxInput class="w-full px-2 focus:outline-4 rounded-md py-2 pr-10 border border-gray-300 text-sm leading-5 text-gray-900 h-10"
                 :placeholder="$t('task.tagPlaceholder')" @change="query = $event.target.value" />
               <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -36,6 +37,14 @@
                   class="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
+                <ComboboxOption v-if="queryTag" :value="queryTag" v-slot="{active}">
+                  <li class="relative cursor-default select-none py-2 pl-10 pr-4" :class="{
+                    'bg-primary-500 text-white': active,
+                    'text-gray-900': !active,
+                  }">
+                    Create "{{ query }}"
+                  </li>
+                </ComboboxOption>
 
                 <ComboboxOption v-for="option in filteredOptions" as="template" :key="option" :value="option"
                   v-slot="{ selected, active }">
@@ -54,6 +63,7 @@
                 </ComboboxOption>
               </ComboboxOptions>
             </TransitionRoot>
+            </div>
         </Combobox>
       </div>
       <button @click="newTask" type="button"
@@ -102,6 +112,10 @@ const descriptionData = ref();
 const tagData = ref();
 const query = ref('')
 
+const queryTag = computed(() => {
+  return (query.value === '' || store.tags?.includes(query.value)) ? null : query.value
+})
+
 const filteredOptions = computed(() =>
   query.value === ''
     ? store.tags
@@ -121,13 +135,14 @@ watch(route, () => {
 });
 
 const newTask = () => {
-  store.addTask(titleData.value, descriptionData.value, dueDate.value, tagData.value)
-  titleData.value = undefined;
-  descriptionData.value = undefined;
-  dueDate.value = undefined;
-  tagData.value = undefined;
-  emit('closeNewTask');
-  store.getTags();
+  store.addTask(titleData.value, descriptionData.value, dueDate.value, tagData.value).then(() => {
+    titleData.value = undefined;
+    descriptionData.value = undefined;
+    dueDate.value = undefined;
+    query.value = '';
+    tagData.value = null;
+    emit('closeNewTask');
+  })
 }
 
 const showDetails = () => {

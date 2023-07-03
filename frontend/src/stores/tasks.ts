@@ -65,7 +65,10 @@ export const useTaskStore = defineStore({
     async addTask(title: string, description: string | undefined, dueDate: string | undefined, tag: string | undefined) {
       return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
-          this.tasks!.push(res.data)
+          this.tasks?.push(res.data)
+          if (this.tags?.indexOf(res.data.tag) === -1) {
+            this.tags?.push(res.data.tag)
+          }
         })
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
