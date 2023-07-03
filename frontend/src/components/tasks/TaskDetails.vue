@@ -30,6 +30,18 @@
               </button>
             </div>
           </div>
+            <div
+                class="px-4 py-2 self-start"
+                v-show="taskStore.task?.tag">
+                <div class="flex items-center">
+                  <TagIcon class="h-5 w-5 mr-1"/>
+                  <p class="font-bold"> {{ $t('tag') }} </p>
+                </div>
+                <p class="mt-1 text-gray-800">
+                  <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="taskStore.colorOfTag(tag)"></span>
+                    {{ taskStore.task?.tag}}
+                </p>
+              </div>
           <div
             class="px-4 py-2 self-start"
             :class="[isTaskDue(taskStore.task?.dueDate) ? 'text-red-500' : '']"
@@ -48,9 +60,9 @@
                 <ChatBubbleLeftRightIcon class="h-5 w-5 mr-1"/>
                 <p class="font-bold"> {{ $t('description') }} </p>
               </div>
-              <span class="mt-1 text-gray-800 h-min w-full">
+              <p class="whitespace-pre-line mt-1 text-gray-800 h-min w-full">
                 {{ task?.description }}
-              </span>
+              </p>
             </div>
           </div>
           <div class="flex justify-end items-center py-2 px-4 border-t">
@@ -72,11 +84,12 @@ import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { useI18n } from 'vue-i18n';
 import { XMarkIcon } from "@heroicons/vue/24/solid"
-import { ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon} from "@heroicons/vue/24/outline"
+import { ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon, TagIcon} from "@heroicons/vue/24/outline"
 import { isTaskDue } from '../utils/helpers';
 import TaskEditForm from '@/components/tasks/TaskEditForm.vue';
 import type { Task } from '@/schemas/task.schema';
 import store from 'storejs';
+import { computed } from 'vue';
 
 const { locale } = useI18n();
 const taskStore = useTaskStore();
@@ -89,6 +102,8 @@ const isModalOpen = ref(false)
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 const task = ref(taskStore.task);
+
+const tag = computed(() => taskStore.task?.tag);
 
 onMounted(() => {
   if (store.has(`__draft_${taskId}`)) {
@@ -117,9 +132,12 @@ onBeforeRouteUpdate(async (to, from) => {
 onClickOutside(modal, () => {handleClose()})
 
 async function handleClose() {
+  if (isModalOpen.value === false) {
+    return;
+  }
   isModalOpen.value = false;
   const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;
-  await router.push(parentRoute!)
+  await router.replace(parentRoute!)
 }
 
 function handleSave(newTask: Task) {

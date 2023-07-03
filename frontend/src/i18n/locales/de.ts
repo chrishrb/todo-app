@@ -29,6 +29,7 @@ export default {
   "changeLanguage": "Sprache ändern",
   "description": "Beschreibung",
   "due": "Fällig am",
+  "tag": "Etikett",
   "done": "Erledigt",
   "close": "Schließen",
   "save": "Speichern",
@@ -37,6 +38,8 @@ export default {
     "titlePlaceholder": "Titel",
     "descriptionPlaceholder": "Beschreibung",
     "datePlaceholder": "Datum",
+    "tagPlaceholder": "Etikett",
+    "createTask": "Aufgabe erstellen",
   },
   "errors": {
     "4001": "Bitte geben Sie eine gültige E-Mail Adresse ein.",

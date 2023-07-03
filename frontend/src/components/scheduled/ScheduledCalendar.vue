@@ -34,12 +34,12 @@ const setShowDate = (date: Date) => {
   showDate.value = date;
 }
 
-const onClickItem = async (calendarItem: CalendarItem, windowEvent: any) => {
+const onClickItem = async (calendarItem: CalendarItem) => {
   await router.push(`/calendar/${calendarItem.id}`)
 }
 
 onMounted(async () => {
-  await taskStore.getMine(false);
+  await taskStore.getMine();
   isLoading.value = false;
 })
 </script>
@@ -53,7 +53,8 @@ onMounted(async () => {
   color: white;
 }
 .cv-day-number {
-  padding: 0.3em;
+  padding-left: 8.7px;
+  padding-top: 6.0px;
 }
 
 .basic-calendar-item {

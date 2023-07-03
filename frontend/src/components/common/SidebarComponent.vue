@@ -20,27 +20,18 @@
 
             <div class="w-full overflow-hidden px-5 transition-[height] duration-300">
               <ul class="pl-2 border-l-2">
-                <li>
-                  <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md"
-                    href="javascript:;">
-                    <span class="w-2.5 h-2.5 inline-block bg-red-500 rounded-full mr-2"></span>
-                    {{ $t('personal') }}
-                  </a>
-                </li>
-                <li>
-                  <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md"
-                    href="javascript:;">
-                    <span class="w-2.5 h-2.5 inline-block bg-green-500 rounded-full mr-2"></span>
-                    {{ $t('work') }}
-                  </a>
-                </li>
-                <li>
-                  <a class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md"
-                    href="javascript:;">
-                    <span class="w-2.5 h-2.5 inline-block border-orange-500 border-2 rounded-full mr-2"></span>
-                    {{ $t('study') }}
-                  </a>
-                </li>
+                <div v-for="(tag, key) in taskStore.tagsWithColors" :key="key">
+                  <router-link :to="{ name: 'tag', params: { 'tag': tag.name } }" v-slot="{ navigate, isActive }" custom>
+                    <li>
+                      <button @click="navigate"
+                        class="flex items-center gap-x-1.5 text-base px-2 py-2 text-slate-700 rounded-md">
+                        <span class="w-2.5 h-2.5 inline-block rounded-full mr-2 outline-2 outline-offset-1 outline-primary-600" :class="[isActive && 'outline', tag.color]"
+                          />
+                        {{ tag.name }}
+                      </button>
+                    </li>
+                  </router-link>
+                </div>
               </ul>
             </div>
           </li>
@@ -95,16 +86,23 @@
 import { computed } from 'vue';
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user';
+import { useTaskStore } from '@/stores/tasks'
 import { QueueListIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon, Cog8ToothIcon, ArrowLeftOnRectangleIcon } from "@heroicons/vue/24/outline"
 import LogoComponent from './LogoComponent.vue';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const taskStore = useTaskStore();
 
 const profile = computed(() => userStore.profile);
 
 const logout = () => {
   authStore.logout()
 };
+
+onMounted(() => {
+  taskStore.getTags()
+})
 
 </script>

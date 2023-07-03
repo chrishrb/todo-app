@@ -29,6 +29,7 @@ export default {
   "changeLanguage": "Change Language",
   "description": "Description",
   "due": "Due on",
+  "tag": "Tag",
   "done": "Done",
   "close": "Close",
   "save": "Save",
@@ -37,6 +38,8 @@ export default {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",
     "datePlaceholder": "Date",
+    "tagPlaceholder": "Tag",
+    "createTask": "Create task",
   },
   "errors": {
     "4001": "Please enter a valid email address.",

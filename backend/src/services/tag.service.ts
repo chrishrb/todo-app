@@ -13,6 +13,11 @@ export async function getTags(userId: string) {
             select: {
               tag: true
             },
+            where: {
+              tag: {
+                not: null
+              }
+            },
             distinct: ["tag"]
           }
         }
