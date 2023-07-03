@@ -5,9 +5,9 @@
 
         <TaskEditForm
           :task="task!"
-          :close-edit="closeEdit"
-          v-on:close-modal="handleClose"
-          v-on:save-edit="handleSave"
+          @close-modal="handleClose"
+          @save-edit="handleSave"
+          @close-edit="isEditing = false"
           v-if="isEditing"
         />
         <div v-else class="flex flex-col bg-white border shadow-sm rounded-xl w-full h-[30rem]">
@@ -32,8 +32,8 @@
           </div>
           <div
             class="px-4 py-2 self-start"
-            :class="[isTaskDue(store.task?.dueDate) ? 'text-red-500' : '']"
-            v-show="store.task?.dueDate">
+            :class="[isTaskDue(taskStore.task?.dueDate) ? 'text-red-500' : '']"
+            v-show="taskStore.task?.dueDate">
             <div class="flex items-center">
               <CalendarIcon class="h-5 w-5 mr-1"/>
               <p class="font-bold"> {{ $t('due') }} </p>
@@ -76,9 +76,10 @@ import { ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon} from "@heroico
 import { isTaskDue } from '../utils/helpers';
 import TaskEditForm from '@/components/tasks/TaskEditForm.vue';
 import type { Task } from '@/schemas/task.schema';
+import store from 'storejs';
 
 const { locale } = useI18n();
-const store = useTaskStore();
+const taskStore = useTaskStore();
 const router = useRouter();
 
 const isEditing = ref(false);
@@ -87,11 +88,15 @@ const modal = ref(null)
 const isModalOpen = ref(false)
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
-const task = ref(store.task);
+const task = ref(taskStore.task);
 
 onMounted(() => {
+  if (store.has(`__draft_${taskId}`)) {
+    isEditing.value = true;
+  }
+
   if (taskId.value && !isModalOpen.value) {
-    return store.fetchTask(taskId.value)
+    return taskStore.fetchTask(taskId.value)
       .then((res) => {
         task.value = res;
         isModalOpen.value = true
@@ -101,7 +106,7 @@ onMounted(() => {
 
 onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
-    return store.fetchTask(to.params.taskId as string)
+    return taskStore.fetchTask(to.params.taskId as string)
       .then((res) => {
         task.value = res;
         isModalOpen.value = true
@@ -113,7 +118,6 @@ onClickOutside(modal, () => {handleClose()})
 
 async function handleClose() {
   isModalOpen.value = false;
-  isEditing.value = false
   const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;
   await router.push(parentRoute!)
 }
@@ -125,14 +129,10 @@ function handleSave(newTask: Task) {
 }
 
 function handleDone() { 
-  store.setDone()
+  taskStore.setDone()
     .then(() => {
       handleClose();
     })
-}
-
-function closeEdit() {
-  isEditing.value = false;
 }
 
 </script>

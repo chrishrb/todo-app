@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full h-[30rem]">
     <div class="flex justify-between items-center py-3 px-4">
       <div class="flex justify-between items-center flex-row">
@@ -61,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useTaskStore } from '@/stores/tasks';
 import {XMarkIcon } from "@heroicons/vue/24/outline";
 import { ChatBubbleLeftRightIcon, CalendarIcon } from "@heroicons/vue/24/outline"
@@ -69,37 +67,45 @@ import type { Task } from '@/schemas/task.schema';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { hasAnyChanges, isTaskDue } from '../utils/helpers';
+import store from 'storejs';
 
-const store = useTaskStore();
+const taskStore = useTaskStore();
 
 const isSaveDisabled = ref(true);
 
 const props = defineProps<{
   task: Task,
-  closeEdit: Function
 }>();
 
 const taskDraft = ref(JSON.parse(JSON.stringify(props.task)) as Task);
 
 const emit = defineEmits<{
   (event: 'saveEdit', task: Task): void,
-  (event: 'closeModal'): void
+  (event: 'closeModal'): void,
+  (event: 'closeEdit'): void
 }>();
+
+onMounted(() => {
+  isSaveDisabled.value = !store.has(`__draft_${props.task.id}`)
+  if (store.has(`__draft_${props.task.id}`)) {
+    taskDraft.value = store.get(`__draft_${props.task.id}`);
+  }
+})
 
 watch(taskDraft.value, () => {
   isSaveDisabled.value = !hasAnyChanges(props.task, taskDraft.value)
+  store.set(`__draft_${props.task.id}`, taskDraft.value)
 });
 
 function save() {
-  console.log("DRAFT: ", taskDraft)
-  store.updateTask(props.task.id, taskDraft.value);
+  taskStore.updateTask(props.task.id, taskDraft.value);
+  store.remove(`__draft_${props.task.id}`);
   emit('saveEdit', taskDraft.value);
-  props.closeEdit();
 }
 
 function cancel() {
-  //TODO clear localstorage draft
-  props.closeEdit();
+  store.remove(`__draft_${props.task.id}`);
+  emit('closeEdit');
 }
 
 </script>
