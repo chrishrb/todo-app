@@ -83,8 +83,19 @@ export const useTaskStore = defineStore({
 
       return baseApi.put(`tasks/${newTask.id}`, newTask)
         .then((res) => {
-          oldTask = res.data
-          return res.data
+          oldTask!.title = res.data.title;
+          oldTask!.description = res.data.description;
+          oldTask!.dueDate = res.data.dueDate;
+          oldTask!.isChecked = res.data.isChecked;
+          oldTask!.tag = res.data.tag;
+
+          this.task = oldTask;
+
+          if (this.tags?.indexOf(res.data.tag) === -1) {
+            this.tags?.push(res.data.tag)
+          }
+
+          return oldTask!;
         })
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details);

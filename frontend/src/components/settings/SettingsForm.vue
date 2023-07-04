@@ -150,7 +150,6 @@ const updateUser = async () => {
     error.value = "";
     router.push({name: 'settingsSuccess'});
   } catch (e: any) {
-    console.log(e)
     error.value = getErrorText(e.details);
   }
 };
