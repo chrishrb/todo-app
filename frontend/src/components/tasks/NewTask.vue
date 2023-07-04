@@ -17,7 +17,7 @@
         :placeholder="$t('task.descriptionPlaceholder')" ref="descriptionInput" v-model="descriptionData" />
       <VueDatePicker v-model="dueDate" input-class-name="text-sm placeholder-gray-500 h-10 rounded-md px-2" class
         :placeholder="$t('task.datePlaceholder')" :min-date="new Date()" :auto-apply="true" :teleport="true"
-        :hide-input-icon="true" :clearable="true">
+        :hide-input-icon="true" :clearable="true" :start-time="DEFAULT_TIME">
       </VueDatePicker>
       <div class="py-2">
         <Combobox v-model="tagData" nullable :disabled="route.params.tag != null">
@@ -70,9 +70,7 @@
         class="py-2 px-4 inline-flex justify-center items-center rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm">
         {{ $t('task.createTask') }}
       </button>
-
     </div>
-
   </div>
 </template>
 
@@ -103,6 +101,8 @@ const emit = defineEmits<{
 
 // show switches
 const details = ref(false);
+
+const DEFAULT_TIME = ref({ hours: 0, minutes: 0});
 
 const titleData = ref();
 const titleInput = ref();

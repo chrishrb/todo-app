@@ -32,6 +32,8 @@ export default {
   "tag": "Tag",
   "done": "Done",
   "close": "Close",
+  "save": "Save",
+  "cancel": "Cancel",
   "task": {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",

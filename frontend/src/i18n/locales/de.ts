@@ -32,6 +32,8 @@ export default {
   "tag": "Etikett",
   "done": "Erledigt",
   "close": "Schließen",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
   "task": {
     "titlePlaceholder": "Titel",
     "descriptionPlaceholder": "Beschreibung",

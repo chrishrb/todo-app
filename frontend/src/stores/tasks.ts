@@ -52,7 +52,7 @@ export const useTaskStore = defineStore({
           task.isChecked = res.data.isChecked
         })
         .catch((e) => {
-          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details);
         })
     },
     async setDone() {
@@ -71,7 +71,23 @@ export const useTaskStore = defineStore({
           }
         })
         .catch((e) => {
-          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details);
+        })
+    },
+    async updateTask(id: string, newTask: Task): Promise<Task> {
+      let oldTask = this.tasks!.find(e => e.id === id);
+
+      if (!oldTask) {
+        throw new FrontendError(500, `task ${id} not found.`);
+      }
+
+      return baseApi.put(`tasks/${newTask.id}`, newTask)
+        .then((res) => {
+          oldTask = res.data
+          return res.data
+        })
+        .catch((e) => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details);
         })
     },
     async getTags() {

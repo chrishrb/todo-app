@@ -1,4 +1,4 @@
-export function getFancyDateString(date: string | undefined, locale: string) {
+export function getFancyDateString(date: Date | undefined, locale: string) {
   if (!date) {
     return ""
   }
