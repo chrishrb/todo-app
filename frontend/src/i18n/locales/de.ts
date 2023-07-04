@@ -33,8 +33,7 @@ export default {
   "done": "Erledigt",
   "close": "Schließen",
   "save": "Speichern",
-  "cancel": "Abbrechen",
-  "delete": "Löschen",
+  "confirm": "Bestätigen",
   "task": {
     "titlePlaceholder": "Titel",
     "descriptionPlaceholder": "Beschreibung",

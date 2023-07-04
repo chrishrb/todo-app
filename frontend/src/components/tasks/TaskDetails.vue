@@ -17,31 +17,20 @@
                 {{ taskStore.task?.title }}
               </h1>
             </div>
-            <div
-              v-if="confirmDelete"
-              class="inline-flex justify-between items-center"
-            >
-              <button
-                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
-                @click="confirmDelete = false"
-              >
-                {{ $t('cancel') }}
-              </button>
-              <button
-                class="bg-red-700 hover:bg-red-600 text-gray-800 font-bold py-2 px-4 rounded-r"
-                @click="deleteTask"
-              >
-                {{ $t('delete') }}
-              </button>
+            <div class="inline-flex justify-between items-center">
 
-            </div>
-            <div v-else class="inline-flex justify-between items-center">
-              <button
-                class="mr-2 inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm"
-                @click="confirmDelete = true"
-              >
-                <TrashIcon class="w-6 h-6"/>
-              </button>
+              <div class="mr-2 hs-tooltip inline-block [--trigger:click] [--placement:bottom]">
+                <div class="cursor-pointer hs-tooltip-toggle block text-center text-gray-500 hover:text-gray-400 focus:outline-none">
+                  <TrashIcon class="w-6 h-6"/>
+                    <button
+                      class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-2 px-4 justify-center items-center rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm"
+                      role="button"
+                      @click="deleteTask"
+                    >
+                    {{ $t('confirm') }}
+                  </button>
+                </div>
+              </div>
               <button
                 class="mr-2 inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm"
                 @click.stop="isEditing = true"
@@ -121,8 +110,6 @@ const router = useRouter();
 const modal = ref(null);
 const isModalOpen = ref(false);
 const isEditing = ref(false);
-
-const confirmDelete = ref(false);
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 
