@@ -128,7 +128,7 @@ import {
   TransitionRoot
 } from '@headlessui/vue'
 import store from 'storejs';
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 
 const taskStore = useTaskStore();
 
