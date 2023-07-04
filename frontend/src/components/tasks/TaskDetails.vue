@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, watch, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
@@ -106,10 +106,6 @@ const task = ref(taskStore.task);
 const tag = computed(() => taskStore.task?.tag);
 
 onMounted(() => {
-  if (store.has(`__draft_${taskId}`)) {
-    isEditing.value = true;
-  }
-
   if (taskId.value && !isModalOpen.value) {
     return taskStore.fetchTask(taskId.value)
       .then((res) => {
@@ -125,6 +121,11 @@ onBeforeRouteUpdate(async (to, from) => {
       .then((res) => {
         task.value = res;
         isModalOpen.value = true
+        if (store.has(`__draft_${res.id}`)) {
+          isEditing.value = true;
+        } else {
+          isEditing.value = false;
+        }
       })
   }
 })
@@ -136,12 +137,12 @@ async function handleClose() {
     return;
   }
   isModalOpen.value = false;
+  isEditing.value = false;
   const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;
   await router.replace(parentRoute!)
 }
 
 function handleSave(newTask: Task) {
-  console.log("save", newTask)
   task.value = newTask;
   isEditing.value = false;
 }
