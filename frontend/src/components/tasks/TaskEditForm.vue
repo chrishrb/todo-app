@@ -141,7 +141,7 @@ const props = defineProps<{
 const taskDraft = ref(JSON.parse(JSON.stringify(props.task)) as Task);
 
 const emit = defineEmits<{
-  (event: 'saveEdit', task: Task): void,
+  (event: 'saveEdit'): void,
   (event: 'closeModal'): void,
   (event: 'closeEdit'): void
 }>();
@@ -161,7 +161,7 @@ watch(taskDraft.value, () => {
 function save() {
   taskStore.updateTask(props.task.id, taskDraft.value).then(() => {
     store.remove(`__draft_${props.task.id}`);
-    emit('saveEdit', taskDraft.value);
+    emit('saveEdit');
   })
 }
 

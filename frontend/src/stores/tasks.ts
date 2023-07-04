@@ -66,7 +66,7 @@ export const useTaskStore = defineStore({
       return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
           this.tasks?.push(res.data)
-          if (this.tags?.indexOf(res.data.tag) === -1) {
+          if (tag && this.tags?.indexOf(res.data.tag) === -1) {
             this.tags?.push(res.data.tag)
           }
         })
@@ -91,7 +91,7 @@ export const useTaskStore = defineStore({
 
           this.task = oldTask;
 
-          if (this.tags?.indexOf(res.data.tag) === -1) {
+          if (oldTask?.tag && this.tags?.indexOf(res.data.tag) === -1) {
             this.tags?.push(res.data.tag)
           }
 

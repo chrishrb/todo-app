@@ -32,6 +32,4 @@ onMounted(() => {
 watch(route, () => {
   store.getMine(undefined, route.params.tag as string)
 });
-
-
 </script>
