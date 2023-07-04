@@ -34,6 +34,7 @@ export default {
   "close": "Schließen",
   "save": "Speichern",
   "cancel": "Abbrechen",
+  "delete": "Löschen",
   "task": {
     "titlePlaceholder": "Titel",
     "descriptionPlaceholder": "Beschreibung",

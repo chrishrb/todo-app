@@ -34,6 +34,7 @@ export default {
   "close": "Close",
   "save": "Save",
   "cancel": "Cancel",
+  "delete": "Delete",
   "task": {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",

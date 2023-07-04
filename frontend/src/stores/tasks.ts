@@ -99,6 +99,13 @@ export const useTaskStore = defineStore({
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
+    async deleteTask(taskId: string) {
+      return baseApi.delete(`tasks/${taskId}`)
+        .then()
+        .catch((e) => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+        })
+    },
   },
   getters: {
     tasksForCalendar(): CalendarItem[] {

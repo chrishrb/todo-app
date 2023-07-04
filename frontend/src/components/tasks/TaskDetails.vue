@@ -17,7 +17,31 @@
                 {{ task?.title }}
               </h1>
             </div>
-            <div class="inline-flex justify-between items-center">
+            <div
+              v-if="confirmDelete"
+              class="inline-flex justify-between items-center"
+            >
+              <button
+                class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+                @click="confirmDelete = false"
+              >
+                {{ $t('cancel') }}
+              </button>
+              <button
+                class="bg-red-700 hover:bg-red-600 text-gray-800 font-bold py-2 px-4 rounded-r"
+                @click="deleteTask"
+              >
+                {{ $t('delete') }}
+              </button>
+
+            </div>
+            <div v-else class="inline-flex justify-between items-center">
+              <button
+                class="mr-2 inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm"
+                @click="confirmDelete = true"
+              >
+                <TrashIcon class="w-6 h-6"/>
+              </button>
               <button
                 class="mr-2 inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition-all text-sm"
                 @click.stop="isEditing = true"
@@ -77,28 +101,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTaskStore } from '@/stores/tasks';
 import { onBeforeRouteUpdate, useRouter } from 'vue-router';
 import { getFancyDateString } from '../utils/formatter';
 import { useI18n } from 'vue-i18n';
 import { XMarkIcon } from "@heroicons/vue/24/solid"
-import { ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon, TagIcon} from "@heroicons/vue/24/outline"
+import { TrashIcon, ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon, TagIcon} from "@heroicons/vue/24/outline"
 import { isTaskDue } from '../utils/helpers';
 import TaskEditForm from '@/components/tasks/TaskEditForm.vue';
 import type { Task } from '@/schemas/task.schema';
 import store from 'storejs';
 import { computed } from 'vue';
+import 'tw-elements';
 
 const { locale } = useI18n();
 const taskStore = useTaskStore();
 const router = useRouter();
 
+
+const modal = ref(null);
+const isModalOpen = ref(false);
 const isEditing = ref(false);
 
-const modal = ref(null)
-const isModalOpen = ref(false)
+const confirmDelete = ref(false);
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
 const task = ref(taskStore.task);
@@ -152,6 +179,11 @@ function handleDone() {
     .then(() => {
       handleClose();
     })
+}
+
+function deleteTask() {
+  taskStore.deleteTask(task.value!.id)
+  handleClose()
 }
 
 </script>
