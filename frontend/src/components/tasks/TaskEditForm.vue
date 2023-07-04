@@ -19,7 +19,7 @@
         <TagIcon class="h-5 w-5 mr-1"/>
         <p class="font-bold"> {{ $t('tag') }} </p>
       </div>
-      <Combobox v-model="taskDraft.tag" nullable>
+      <Combobox v-model="taskDraft.tag" nullable class="mt-1">
         <div class="relative">
           <div class="relative overflow-hidden w-full cursor-default bg-white text-left sm:text-sm">
             <ComboboxInput class="w-full px-2 focus:outline-4 rounded-md py-2 pr-10 border border-gray-300 text-sm leading-5 text-gray-900 h-10"
