@@ -37,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"johni\"\n}",
+							"raw": "{\n    \"email\": \"john.doe@todo.com\",\n    \"password\": \"johni\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -86,7 +86,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"root@example.com\",\n    \"password\": \"root\"\n}",
+							"raw": "{\n    \"email\": \"admin@todo.com\",\n    \"password\": \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,6 +161,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Verify",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"verify"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -227,7 +254,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "      {\n        \"title\": \"Add cucumber tests\",\n        \"description\": \"Example description\"\n      }\n",
+							"raw": "      {\n        \"title\": \"Another tests\",\n        \"description\": \"Example description\",\n        \"dueDate\": \"2023-06-21 08:40:00\",\n        \"tag\": \"study\"\n      }\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,6 +269,24 @@
 							"path": [
 								"me",
 								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get me tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/me/tags",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"me",
+								"tags"
 							]
 						}
 					},
@@ -305,13 +350,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/tasks/{{task}}",
+							"raw": "{{baseUrl}}/tasks/129b6589-4404-4efe-9d8c-3b4c46a1ad1d",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks",
-								"{{task}}"
+								"129b6589-4404-4efe-9d8c-3b4c46a1ad1d"
 							]
 						}
 					},
@@ -324,7 +369,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"title\": \"Changed title\"\n}",
+							"raw": "{\n  \"title\": \"Changed title 1\",\n  \"dueDate\": \"2023-06-26 20:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -332,13 +377,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/tasks/{{task}}",
+							"raw": "{{baseUrl}}/tasks/129b6589-4404-4efe-9d8c-3b4c46a1ad1d",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks",
-								"{{task}}"
+								"129b6589-4404-4efe-9d8c-3b4c46a1ad1d"
 							]
 						}
 					},
@@ -350,13 +395,13 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/tasks/{{task}}/toggle",
+							"raw": "{{baseUrl}}/tasks/129b6589-4404-4efe-9d8c-3b4c46a1ad1d/toggle",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks",
-								"{{task}}",
+								"129b6589-4404-4efe-9d8c-3b4c46a1ad1d",
 								"toggle"
 							]
 						}
@@ -369,13 +414,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/tasks/{{task}}",
+							"raw": "{{baseUrl}}/tasks/129b6589-4404-4efe-9d8c-3b4c46a1ad1d",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks",
-								"{{task}}"
+								"129b6589-4404-4efe-9d8c-3b4c46a1ad1d"
 							]
 						}
 					},
@@ -458,13 +503,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/{{user}}",
+							"raw": "{{baseUrl}}/users/5a288c41-83a0-4046-9c63-38a117e4b61a",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"{{user}}"
+								"5a288c41-83a0-4046-9c63-38a117e4b61a"
 							]
 						}
 					},
@@ -495,13 +540,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/{{user}}",
+							"raw": "{{baseUrl}}/users/5a288c41-83a0-4046-9c63-38a117e4b61a",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"{{user}}"
+								"5a288c41-83a0-4046-9c63-38a117e4b61a"
 							]
 						}
 					},
@@ -523,13 +568,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/{{user}}",
+							"raw": "{{baseUrl}}/users/5a288c41-83a0-4046-9c63-38a117e4b61a",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"users",
-								"{{user}}"
+								"5a288c41-83a0-4046-9c63-38a117e4b61a"
 							]
 						}
 					},
