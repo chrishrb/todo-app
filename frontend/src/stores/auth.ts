@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import baseApi from '@/common/base-api.service'
+import authApi from '@/common/auth-api.service'
 import router from "@/router";
 import { FrontendError } from '@/exceptions/frontend.error';
 import { mapStringToLocale } from '@/common/language.service';
@@ -26,7 +27,7 @@ export const useAuthStore = defineStore({
       const userStore = useUserStore();
 
       try {
-        await baseApi.get("/auth/logout")
+        await authApi.get("/auth/logout")
       } catch (_) {
         // Don't crash if the logout endpoint does not work
       }
