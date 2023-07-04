@@ -9,7 +9,6 @@ export function isTaskDue(dueDate: Date | undefined): boolean {
 }
 
 export function hasAnyChanges(task: Task, editedTask: Task) {
-  console.log("test")
   const hasChanges = !(
     task.title === editedTask.title &&
     task.description === editedTask.description &&
