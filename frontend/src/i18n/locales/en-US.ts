@@ -33,7 +33,7 @@ export default {
   "done": "Done",
   "close": "Close",
   "save": "Save",
-  "cancel": "Cancel",
+  "confirm": "Confirm",
   "task": {
     "titlePlaceholder": "Title",
     "descriptionPlaceholder": "Description",

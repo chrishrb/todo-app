@@ -16,7 +16,7 @@ const COLORS = [
 export const useTaskStore = defineStore({
   id: "task",
   state: () => ({
-    tasks: undefined as Task[] | undefined,
+    tasksWithDeleted: undefined as (Task | undefined)[] | undefined,
     task: undefined as Task | undefined,
     tags: undefined as string[] | undefined,
   }),
@@ -24,7 +24,7 @@ export const useTaskStore = defineStore({
     async getMine(isChecked?: boolean, tagFilter?: string) {
       return baseApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter } })
         .then((res) => {
-          this.tasks = res.data;
+          this.tasksWithDeleted = res.data;
         })
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
@@ -65,7 +65,7 @@ export const useTaskStore = defineStore({
     async addTask(title: string, description: string | undefined, dueDate: string | undefined, tag: string | undefined) {
       return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
-          this.tasks?.push(res.data)
+          this.tasksWithDeleted?.push(res.data)
           if (tag && this.tags?.indexOf(res.data.tag) === -1) {
             this.tags?.push(res.data.tag)
           }
@@ -110,19 +110,37 @@ export const useTaskStore = defineStore({
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
+    async deleteTask(id: string | undefined) {
+      let idInList = this.tasks!.findIndex(e => e?.id === id);
+
+      if (id == null || idInList == null) {
+        throw new FrontendError(500, `task ${id} not found.`);
+      }
+
+      return baseApi.delete(`tasks/${id}`)
+        .then(() => {
+          this.tasksWithDeleted![idInList] = undefined;
+        })
+        .catch((e) => {
+          throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
+        })
+    },
   },
   getters: {
+    tasks: (state): Task[] | undefined => {
+      return state.tasksWithDeleted?.filter(e => e !== undefined) as Task[];
+    },
     tasksForCalendar(): CalendarItem[] {
       if (!this.tasks) {
         return [];
       }
-      return this.tasks.filter(e => !!e.dueDate).map(e => {
-        const color = this.colorOfTag(e.tag);
+      return this.tasks.filter(e => !!e?.dueDate).map(e => {
+        const color = this.colorOfTag(e?.tag);
         return {
-          id: e.id,
-          startDate: new Date(e.dueDate!),
-          title: e.title,
-          classes: ['basic-calendar-item', color ? color : 'bg-primary-500', e.isChecked ? 'line-through' : ''],
+          id: e?.id,
+          startDate: new Date(e?.dueDate!),
+          title: e?.title,
+          classes: ['basic-calendar-item', color ? color : 'bg-primary-500', e?.isChecked ? 'line-through' : ''],
         } as CalendarItem;
       })
     },
