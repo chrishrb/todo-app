@@ -12,7 +12,8 @@ export function hasAnyChanges(task: Task, editedTask: Task) {
   const hasChanges = !(
     task.title === editedTask.title &&
     task.description === editedTask.description &&
-    isSameDate(task.dueDate,editedTask.dueDate)
+    isSameDate(task.dueDate,editedTask.dueDate) &&
+    task.tag === editedTask.tag
   )
 
   return hasChanges;

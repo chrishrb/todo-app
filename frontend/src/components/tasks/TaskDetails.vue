@@ -4,7 +4,7 @@
       <div ref="modal" class="sm:w-[60%] m-3 sm:mx-auto mt-[10%] flex items-center h-min">
 
         <TaskEditForm
-          :task="task!"
+          :task="taskStore.task!"
           @close-modal="handleClose"
           @save-edit="handleSave"
           @close-edit="isEditing = false"
@@ -14,7 +14,7 @@
           <div class="flex justify-between items-center py-3 px-4">
             <div class="flex justify-between items-center flex-row">
               <h1 class="text-2xl text-primary-600">
-                {{ task?.title }}
+                {{ taskStore.task?.title }}
               </h1>
             </div>
             <div
@@ -62,7 +62,7 @@
                   <p class="font-bold"> {{ $t('tag') }} </p>
                 </div>
                 <p class="mt-1 text-gray-800">
-                  <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="taskStore.colorOfTag(tag)"></span>
+                  <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="taskStore.colorOfTag(taskStore.task?.tag)"></span>
                     {{ taskStore.task?.tag}}
                 </p>
               </div>
@@ -75,7 +75,7 @@
               <p class="font-bold"> {{ $t('due') }} </p>
             </div>
             <p class="mt-1">
-              {{ getFancyDateString(task?.dueDate, locale)}}
+              {{ getFancyDateString(taskStore.task?.dueDate, locale)}}
             </p>
           </div>
           <div class="flex overflow-y-hidden pr-3 h-full">
@@ -85,7 +85,7 @@
                 <p class="font-bold"> {{ $t('description') }} </p>
               </div>
               <p class="whitespace-pre-line mt-1 text-gray-800 h-min w-full">
-                {{ task?.description }}
+                {{ taskStore.task?.description }}
               </p>
             </div>
           </div>
@@ -111,10 +111,7 @@ import { XMarkIcon } from "@heroicons/vue/24/solid"
 import { TrashIcon, ChatBubbleLeftRightIcon, CalendarIcon, PencilSquareIcon, TagIcon} from "@heroicons/vue/24/outline"
 import { isTaskDue } from '../utils/helpers';
 import TaskEditForm from '@/components/tasks/TaskEditForm.vue';
-import type { Task } from '@/schemas/task.schema';
 import store from 'storejs';
-import { computed } from 'vue';
-import 'tw-elements';
 
 const { locale } = useI18n();
 const taskStore = useTaskStore();
@@ -128,15 +125,11 @@ const isEditing = ref(false);
 const confirmDelete = ref(false);
 
 const taskId = ref(router.currentRoute.value.params.taskId) as Ref<string>;
-const task = ref(taskStore.task);
-
-const tag = computed(() => taskStore.task?.tag);
 
 onMounted(() => {
   if (taskId.value && !isModalOpen.value) {
     return taskStore.fetchTask(taskId.value)
-      .then((res) => {
-        task.value = res;
+      .then(() => {
         isModalOpen.value = true
       })
   }
@@ -146,7 +139,6 @@ onBeforeRouteUpdate(async (to, from) => {
   if (to.params.taskId !== from.params.taskId && to.params.taskId) {
     return taskStore.fetchTask(to.params.taskId as string)
       .then((res) => {
-        task.value = res;
         isModalOpen.value = true
         if (store.has(`__draft_${res.id}`)) {
           isEditing.value = true;
@@ -169,8 +161,7 @@ async function handleClose() {
   await router.replace(parentRoute!)
 }
 
-function handleSave(newTask: Task) {
-  task.value = newTask;
+function handleSave() {
   isEditing.value = false;
 }
 
@@ -182,7 +173,7 @@ function handleDone() {
 }
 
 function deleteTask() {
-  taskStore.deleteTask(task.value!.id)
+  taskStore.deleteTask(taskStore.task?.id)
   handleClose()
 }
 

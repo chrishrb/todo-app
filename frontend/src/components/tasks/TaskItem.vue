@@ -52,7 +52,7 @@ function openModal() {
   }
 }
 
-function getShortenedDescription(desc: string | null): string | null {
+function getShortenedDescription(desc: string | undefined): string | null {
   if (!desc) {
     return null;
   }

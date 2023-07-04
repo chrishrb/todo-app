@@ -66,7 +66,7 @@ export const useTaskStore = defineStore({
       return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
           this.tasks?.push(res.data)
-          if (this.tags?.indexOf(res.data.tag) === -1) {
+          if (tag && this.tags?.indexOf(res.data.tag) === -1) {
             this.tags?.push(res.data.tag)
           }
         })
@@ -83,8 +83,19 @@ export const useTaskStore = defineStore({
 
       return baseApi.put(`tasks/${newTask.id}`, newTask)
         .then((res) => {
-          oldTask = res.data
-          return res.data
+          oldTask!.title = res.data.title;
+          oldTask!.description = res.data.description;
+          oldTask!.dueDate = res.data.dueDate;
+          oldTask!.isChecked = res.data.isChecked;
+          oldTask!.tag = res.data.tag;
+
+          this.task = oldTask;
+
+          if (oldTask?.tag && this.tags?.indexOf(res.data.tag) === -1) {
+            this.tags?.push(res.data.tag)
+          }
+
+          return oldTask!;
         })
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details);
@@ -99,8 +110,11 @@ export const useTaskStore = defineStore({
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
         })
     },
-    async deleteTask(taskId: string) {
-      return baseApi.delete(`tasks/${taskId}`)
+    async deleteTask(id: string | undefined) {
+      if (!id) {
+        throw new FrontendError(500, `task ${id} not found.`);
+      }
+      return baseApi.delete(`tasks/${id}`)
         .then()
         .catch((e) => {
           throw new FrontendError(e.response.data.errorCode, e.response.data.errorMessage, e.response.data.details)
