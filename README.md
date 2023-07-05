@@ -54,7 +54,6 @@ Execute the following command to create the necessary environment variables:
 * **Frontend:** http://localhost
 * **Backend:** http://localhost/api/v1
 * **Adminer:** http://localhost:8081
-* **Swagger-Documentation:** http://localhost/api-docs
 
 ## Decisions 
 

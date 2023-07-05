@@ -60,7 +60,7 @@ services:
       - internal
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)'
+      - 'traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api/v1`)'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
       - 'traefik.http.routers.backend.entrypoints=web'
 
