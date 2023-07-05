@@ -184,6 +184,10 @@
     Task, öffnet sich eine Detail Ansicht als Modal Fenster. In dieser werden alle Attribute des Tasks angezeigt. Zudem
     hat der Nutzer die Möglichkeit den Task zu löschen, oder zu bearbeiten.
 
+    Wenn das Modal während des Bearbeiten geschlossen wird, entweder durch den X-Button oder durch klicken außerhalb des
+    Modals, bleiben die vorgenommen Änderungen erhalten und können bei erneutem öffnen des Tasks weiter bearbeitet
+    werden. Die Persistierung der Änderungen findet im localStorage des Browsers statt.
+
     Ein neuer Task kann durch das unterste Item der Task Liste angelegt werden. Dafür wird mindestens ein Titel
     benötigt, alle anderen Attribute können durch das Ausklappen des Items eingetragen werden.
 
