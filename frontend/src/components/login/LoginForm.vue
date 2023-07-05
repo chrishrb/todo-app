@@ -26,6 +26,8 @@
                 <div>
                   <div class="flex justify-between items-center">
                     <label for="password" class="block text-sm mb-2">{{ $t('password') }}</label>
+                    <a class="text-sm text-blue-600 decoration-2 hover:underline font-medium"
+                      href="../examples/html/recover-account.html">{{ $t('forgotPassword') }}</a>
                   </div>
                   <div class="relative">
                     <input v-if="showPassword" type="showPassword" id="password" name="password"
