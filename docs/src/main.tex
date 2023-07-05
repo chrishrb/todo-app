@@ -199,7 +199,24 @@
 
     \section{Backend}
     \subsection{Funktionen}
-    * features
+
+    Das Backend ist in TypeScript implementiert und verwendet das Prisma ORM für den Datenbankzugriff.
+
+    Im Backend gibt es verschiedene Service-Module wie user.service.ts und task.service.ts, die die Logik für die
+    Benutzerverwaltung und die Aufgabenverwaltung enthalten. Der user.service.ts ermöglicht das Erstellen, Lesen,
+    Aktualisieren und Löschen von Benutzerdaten. Der task.service.ts ermöglicht das Erstellen, Lesen, Aktualisieren und
+    Löschen von Aufgaben. Beide Services arbeiten eng mit der Prisma-Datenbank zusammen, um die Daten persistent zu
+    speichern.
+
+    Die Routenmodule wie user.route.ts und task.route.ts definieren die API-Endpunkte für die Benutzerverwaltung und die
+    Aufgabenverwaltung. Diese Endpunkte sind durch Sicherheitsmechanismen wie JWT-Authentifizierung geschützt. Die
+    Routenmodule rufen die entsprechenden Funktionen aus den Service-Modulen auf und geben die Ergebnisse als JSON an die
+    Client-Anwendung zurück.
+
+    Das Backend verwendet auch verschiedene Hilfsmodule wie helpers.ts, um Validierungen und andere allgemeine Aufgaben zu
+    unterstützen. Es gibt auch Exception-Module, die spezifische Fehlerklassen wie NotFoundError oder ValidationError
+    enthalten, um Fehler in der API-Behandlung zu verwalten und entsprechende HTTP-Statuscodes und Fehlerantworten zu
+    generieren.
 
     \subsection{Tests}
     * cucumber tests erwähnen
