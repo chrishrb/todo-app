@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import authApi from '@/common/auth-api.service';
+import baseApi from '@/common/base-api.service';
 import type { Task } from "@/schemas/task.schema";
 import { FrontendError } from "@/exceptions/frontend.error";
 import type { CalendarItem } from "@/schemas/calendar-item.schema";
@@ -22,7 +22,7 @@ export const useTaskStore = defineStore({
   }),
   actions: {
     async getMine(isChecked?: boolean, tagFilter?: string) {
-      return authApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter } })
+      return baseApi.get("me/tasks", { params: { 'isChecked': isChecked, 'tag': tagFilter } })
         .then((res) => {
           this.tasksWithDeleted = res.data;
         })
@@ -31,7 +31,7 @@ export const useTaskStore = defineStore({
         })
     },
     async fetchTask(id: string) {
-      return authApi.get(`/tasks/${id}`)
+      return baseApi.get(`/tasks/${id}`)
         .then((res) => {
           this.task = res.data;
           return res.data as Task;
@@ -47,7 +47,7 @@ export const useTaskStore = defineStore({
         throw new FrontendError(500, `task ${id} not found.`)
       }
 
-      return authApi.patch(`/tasks/${id}/toggle`)
+      return baseApi.patch(`/tasks/${id}/toggle`)
         .then((res) => {
           task.isChecked = res.data.isChecked
         })
@@ -63,7 +63,7 @@ export const useTaskStore = defineStore({
       return this.toggleChecked(this.task.id);
     },
     async addTask(title: string, description: string | undefined, dueDate: string | undefined, tag: string | undefined) {
-      return authApi.post("me/tasks", { title, description, dueDate, tag })
+      return baseApi.post("me/tasks", { title, description, dueDate, tag })
         .then((res) => {
           this.tasksWithDeleted?.push(res.data)
           if (tag && this.tags?.indexOf(res.data.tag) === -1) {
@@ -81,7 +81,7 @@ export const useTaskStore = defineStore({
         throw new FrontendError(500, `task ${id} not found.`);
       }
 
-      return authApi.put(`tasks/${newTask.id}`, newTask)
+      return baseApi.put(`tasks/${newTask.id}`, newTask)
         .then((res) => {
           oldTask!.title = res.data.title;
           oldTask!.description = res.data.description;
@@ -102,7 +102,7 @@ export const useTaskStore = defineStore({
         })
     },
     async getTags() {
-      return authApi.get("me/tags")
+      return baseApi.get("me/tags")
         .then((res) => {
           this.tags = res.data;
         })
@@ -117,7 +117,7 @@ export const useTaskStore = defineStore({
         throw new FrontendError(500, `task ${id} not found.`);
       }
 
-      return authApi.delete(`tasks/${id}`)
+      return baseApi.delete(`tasks/${id}`)
         .then(() => {
           this.tasksWithDeleted![idInList] = undefined;
         })
