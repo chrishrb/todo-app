@@ -75,7 +75,7 @@ export const useTaskStore = defineStore({
         })
     },
     async updateTask(id: string, newTask: Task): Promise<Task> {
-      let oldTask = this.tasks!.find(e => e.id === id);
+      const oldTask = this.tasks!.find(e => e.id === id);
 
       if (!oldTask) {
         throw new FrontendError(500, `task ${id} not found.`);
@@ -111,7 +111,7 @@ export const useTaskStore = defineStore({
         })
     },
     async deleteTask(id: string | undefined) {
-      let idInList = this.tasks!.findIndex(e => e?.id === id);
+      const idInList = this.tasks!.findIndex(e => e?.id === id);
 
       if (id == null || idInList == null) {
         throw new FrontendError(500, `task ${id} not found.`);

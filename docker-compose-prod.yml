@@ -8,9 +8,14 @@ services:
       - '--providers.docker=true'
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
+    labels:
+      - 'traefik.docker.network=web'
     ports:
       - '80:80'
       - '8082:8080'
+    depends_on:
+      - frontend
+      - backend
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     networks:
@@ -31,8 +36,7 @@ services:
     depends_on:
       - backend
     networks:
-        - internal
-        - web
+      - web
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.frontend.rule=Host(`localhost`)'
@@ -52,16 +56,16 @@ services:
       - db
       - redis
     networks:
-        - internal
-        - web
+      - web
+      - internal
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api`)'
-      - 'traefik.http.routers.backend.entrypoints=web'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.backend.entrypoints=web'
 
   db:
-    image: postgres:latest
+    image: postgres:14
     restart: always
     environment:
       - POSTGRES_USER

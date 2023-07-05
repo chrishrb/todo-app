@@ -19,7 +19,7 @@
             </div>
             <div class="inline-flex justify-between items-center">
 
-              <div class="mr-2 hs-tooltip inline-block [--trigger:click] [--placement:bottom]">
+              <div class="mr-2 hs-tooltip inline-block [--trigger:click] [--placement:bottom]" id="tooltip">
                 <div class="cursor-pointer hs-tooltip-toggle block text-center text-gray-500 hover:text-gray-400 focus:outline-none">
                   <TrashIcon class="w-6 h-6"/>
                     <button
@@ -142,6 +142,14 @@ async function handleClose() {
   if (isModalOpen.value === false) {
     return;
   }
+
+  // close the delete menu if it's open
+  try {
+    (window as any).HSTooltip.hide(document.querySelector('#tooltip'));
+  } catch(_) {
+    // when hot reloading then this doesn‘t work
+  }
+
   isModalOpen.value = false;
   isEditing.value = false;
   const parentRoute = router.currentRoute.value.matched.length >= 2 ? router.currentRoute.value.matched.slice(-2).shift() : router.currentRoute.value;

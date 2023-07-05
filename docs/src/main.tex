@@ -37,6 +37,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{pdfpages}
+\usepackage[outputdir=build]{minted}
 
 \setcounter{secnumdepth}{4}
 
@@ -144,7 +145,40 @@
     \end{figure}
 
     \subsection{Funktionen}
-    * kernfeatures
+    Das Frontend kann untergliedert werden in folgende Teilbereiche:
+
+    \begin{itemize}
+        \item Login und Registrierung
+        \item Taskübersicht
+        \item Navigationsleiste
+    \end{itemize}
+
+    Für das Login wurde mit Pinia ein Auth Store und ein User Store angelegt. Der Auth Store wird dabei für Login und Logout, sowie das Speichern und Refreshen des Authentication Tokens verwendet.
+    Der User Store wird verwendet um den aktuellen Benutzer abzufragen, einen neuen Nutzer anzulegen oder zu updaten.
+    
+    Über die Login Seite hat der Nutzer die Möglichkeit sich in der Anwendung anzumelden. Zudem kann durch Klick auf {\it Registration} ein neuer Nutzer angelegt werden. Ist der Nutzer nicht authentifiziert wird
+    er immer zur Login Seite redirected. Das Passwortfeld in der Login- und Registrierungsmaske wurde um einen Button ergänzt, der es dem Nutzer erlaubt das Passwort im Klartext anzuzeigen, falls gewünscht.
+    Ist der Login erfolgreich, wird der Nutzer auf die Home View weitergleitet und ein Authentication Token im lokal Storage gespeichert.
+
+    Ein neuer Benutzer kann über die Registrierungsseite angelegt werden. Dabei müssen Vor- und Nachname, Email Adresse und Passwort angegeben, sowie das Passwort bestätigt werden. Ist ein Feld leer oder nicht korrekt ausgefüllt
+    wird eine entsprechende Fehlermeldung darunter angezeigt. Wird der Nutzer erfolgreich angelegt, wird der Nutzer auf eine Registration Success Seite weitergeleitet. Anschließend kann man sich einloggen.
+
+    Auf der Main Page befindet sich links die Navigationsleiste und rechts die Tasks des aktuell eingeloggten Nutzers. Auf der Navigationsleiste kann der Nutzer zwischen einer Listen und einer Kalender Ansicht der Tasks wählen.
+    Zudem können die Tasks nach den ihnen zugewiesenen Tags gefiltert werden. Am unteren Rand der Navbar wird der Name, die Email Adresse und die Initialen des aktuell eingeloggten Nutzers angezeigt.
+    Die Initialen könnten in einer zukünftigen Version durch ein Profilbild ersetzt werden.
+    Über dieser Anzeige hat der Nutzer die Möglichkeit sich wieder auszuloggen, oder die Einstellungen zu ändern.
+
+    Die Settings Seite bietet dem Benutzer die Möglichkeit seinen Namen und sein Passwort, sowie die Sprache der App zu ändern. Die Texte der App wurden mit dem i18n Plugin für Vue implementiert, so dass zusätzliche Sprachen einfach
+    hinzugefügt werden können. Aktuell unterstützt werden Deutsch und Englisch.
+
+    Auf der rechten Seite der Main Page befinden sich die Tasks in einer Liste. In der Liste werden der Titel und falls vorhanden eine verkürzte Beschreibung, der Tag und das Fälligkeitsdatum der Aufgabe angezeigt.
+    Klickt man auf einen Task, öffnet sich eine Detail Ansicht als Modal Fenster. In dieser werden alle Attribute des Tasks angezeigt. Zudem hat der Nutzer die Möglichkeit den Task zu löschen, oder zu bearbeiten.
+
+    Ein neuer Task kann durch das unterste Item der Task Liste angelegt werden. Dafür wird mindestens ein Titel benötigt, alle anderen Attribute können durch das Ausklappen des Items eingetragen werden.
+
+    Klickt man auf {\it Scheduled Tasks} wird die Task Liste durch eine Kalender Ansicht ersetzt. Hier werden allerdings nur die Tasks angezeigt, die ein Fälligkeitsdatum als Attribut besitzen. Falls der Task zudem einen zugewiesenen Tag hat, wird der Task in der entsprechenden Farbe angezeigt.
+    Auch in der Kalender Ansicht kann durch Klick auf den Task das Task Detail Modal geöffnet werden.
+
 
     \section{Backend}
     \subsection{Funktionen}
@@ -154,7 +188,131 @@
     * cucumber tests erwähnen
 
     \section{Datenbank}
-    * ER diagramm
+    \begin{figure}[H]
+        \center\includegraphics[width=0.7\textwidth]{../images/database}
+        \caption{Datenbank Diagramm}\label{fig:figure}
+    \end{figure}
+
+    \newpage
+    \section{Quellen}
+    \subsection{Code-Teile von Dritten}
+    \subsubsection{Frontend}
+\begin{itemize}
+  \item dockerfile for production: https://medium.com/bb-tutorials-and-thoughts/how-to-serve-vue-js-application-with-nginx-and-docker-d8a872a02ea8
+  \item nginx config: https://www.appsyoda.com/blog/deploying-vuejs-app-using-nginx/
+  \item combobox styled: https://headlessui.com/react/combobox
+\end{itemize}
+
+    \subsubsection{Backend}
+
+\begin{itemize}
+  \item https://github.com/domideimel/error-middleware  (not maintained anymore)
+  \item help from here: https://www.elliotdenolf.com/blog/cucumberjs-with-typescript
+  \item redis singleton client: https://stackoverflow.com/questions/54240635/how-to-make-express-js-app-connect-redis-only-1-time-when-the-app-start-without
+  \item how to emulate object enums: https://stackoverflow.com/questions/41179474/use-object-literal-as-typescript-enum-values
+  \item prisma middleware for hashing passwords: https://stackoverflow.com/questions/69233726/cannot-hash-the-users-password-with-prisma-middleware-in-nestjs-on-create-user
+\end{itemize}
+
+    \newpage
+    \subsection{Bibliotheken}
+    \subsubsection{Frontend}
+
+    \begin{minted}[frame=none,
+               framesep=3mm,
+               linenos=true,
+               xleftmargin=21pt,
+               tabsize=4]{js}
+"dependencies": {
+  "@headlessui/tailwindcss": "^0.1.3",
+  "@headlessui/vue": "^1.7.14",
+  "@heroicons/vue": "^2.0.17",
+  "@preline/overlay": "^1.4.0",
+  "@vuepic/vue-datepicker": "^5.2.0",
+  "@vueuse/core": "^10.1.2",
+  "autoprefixer": "^10.4.14",
+  "axios": "^1.3.4",
+  "pinia": "^2.0.33",
+  "postcss": "^8.4.21",
+  "preline": "^1.7.0",
+  "storejs": "^2.0.5",
+  "tailwindcss": "^3.2.7",
+  "vue": "^3.2.47",
+  "vue-final-modal": "^4.4.2",
+  "vue-i18n": "9",
+  "vue-router": "^4.1.6",
+  "vue-simple-calendar": "^6.3.1"
+},
+"devDependencies": {
+  "@rushstack/eslint-patch": "^1.2.0",
+  "@types/jsdom": "^21.1.0",
+  "@types/node": "^18.14.2",
+  "@vitejs/plugin-vue": "^4.0.0",
+  "@vue/eslint-config-typescript": "^11.0.2",
+  "@vue/test-utils": "^2.3.0",
+  "@vue/tsconfig": "^0.1.3",
+  "autoprefixer": "^10.4.14",
+  "cypress": "^12.7.0",
+  "eslint": "^8.34.0",
+  "eslint-plugin-cypress": "^2.12.1",
+  "eslint-plugin-vue": "^9.9.0",
+  "jsdom": "^21.1.0",
+  "npm-run-all": "^4.1.5",
+  "postcss": "^8.4.21",
+  "start-server-and-test": "^2.0.0",
+  "tailwindcss": "^3.2.7",
+  "typescript": "~4.8.4",
+  "vite": "^4.1.4",
+  "vitest": "^0.29.1",
+  "vue-tsc": "^1.2.0"
+}
+    \end{minted}
+    \subsubsection{Backend}
+    \begin{minted}[frame=none,
+               framesep=3mm,
+               linenos=true,
+               xleftmargin=21pt,
+               tabsize=4]{js}
+"dependencies": {
+  "@prisma/client": "^4.11.0",
+  "class-validator": "^0.14.0",
+  "cookie-parser": "^1.4.6",
+  "datejs": "^1.0.0-rc3",
+  "dayjs": "^1.11.8",
+  "dotenv-cli": "^7.1.0",
+  "express": "^4.18.2",
+  "express-actuator": "^1.8.4",
+  "express-async-handler": "^1.2.0",
+  "express-jsdoc-swagger": "^1.8.0",
+  "express-promise-router": "^4.1.1",
+  "jsonwebtoken": "^9.0.0",
+  "ms": "^2.1.3",
+  "prisma": "^4.11.0",
+  "redis": "^4.6.6",
+  "tslog": "^4.8.2"
+},
+"devDependencies": {
+  "@cucumber/cucumber": "^9.0.1",
+  "@types/chai": "^4.3.5",
+  "@types/chai-json-pattern": "^1.1.0",
+  "@types/cookie-parser": "^1.4.3",
+  "@types/cucumber": "^7.0.0",
+  "@types/datejs": "^0.0.33",
+  "@types/express": "^4.17.17",
+  "@types/express-actuator": "^1.8.0",
+  "@types/jsonwebtoken": "^9.0.1",
+  "@types/ms": "^0.7.31",
+  "@types/node": "^18.15.5",
+  "@types/swagger-ui-express": "^4.1.3",
+  "axios": "^1.3.4",
+  "chai": "^4.3.7",
+  "chai-json-pattern": "^1.1.0",
+  "cucumber-html-reporter": "^6.0.0",
+  "cucumber-tsflow": "^4.0.0-rc.11",
+  "nodemon": "^2.0.21",
+  "ts-node": "^10.9.1",
+  "typescript": "^5.0.2"
+}
+    \end{minted}
 
     \newpage
     \section{Anhang}
