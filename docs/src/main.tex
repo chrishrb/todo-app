@@ -144,7 +144,40 @@
     \end{figure}
 
     \subsection{Funktionen}
-    * kernfeatures
+    Das Frontend kann untergliedert werden in folgende Teilbereiche:
+
+    \begin{itemize}
+        \item Login und Registrierung
+        \item Taskübersicht
+        \item Navigationsleiste
+    \end{itemize}
+
+    Für das Login wurde mit Pinia ein Auth Store und ein User Store angelegt. Der Auth Store wird dabei für Login und Logout, sowie das Speichern und Refreshen des Authentication Tokens verwendet.
+    Der User Store wird verwendet um den aktuellen Benutzer abzufragen, einen neuen Nutzer anzulegen oder zu updaten.
+    
+    Über die Login Seite hat der Nutzer die Möglichkeit sich in der Anwendung anzumelden. Zudem kann durch Klick auf "Registration" ein neuer Nutzer angelegt werden". Ist der Nutzer nicht authentifiziert wird
+    er immer zur Login Seite redirected. Das Passwortfeld in der Login- und Registrierungsmaske wurde um einen Button ergänzt, der es dem Nutzer erlaubt das Passwort im Klartext anzuzeigen, falls gewünscht.
+    Ist der Login erfolgreich, wird der Nutzer auf die Home View weitergleitet und ein Authentication Token im lokal Storage gespeichert.
+
+    Ein neuer Benutzer kann über die Registrierungsseite angelegt werden. Dabei müssen Vor- und Nachname, Email Adresse und Passwort angegeben, sowie das Passwort bestätigt werden. Ist ein Feld leer oder nicht korrekt ausgefüllt
+    wird eine entsprechende Fehlermeldung darunter angezeigt. Wird der Nutzer erfolgreich angelegt, wird der Nutzer auf eine Registration Success Seite weitergeleitet. Anschließend kann man sich einloggen.
+
+    Auf der Main Page befindet sich links die Navigationsleiste und rechts die Tasks des aktuell eingeloggten Nutzers. Auf der Navigationsleiste kann der Nutzer zwischen einer Listen und einer Kalender Ansicht der Tasks wählen.
+    Zudem können die Tasks nach den ihnen zugewiesenen Tags gefiltert werden. Am unteren Rand der Navbar wird der Name, die Email Adresse und die Initialen des aktuell eingeloggten Nutzers angezeigt.
+    Die Initialen könnten in einer zukünftigen Version durch ein Profilbild ersetzt werden.
+    Über dieser Anzeige hat der Nutzer die Möglichkeit sich wieder auszuloggen, oder die Einstellungen zu ändern.
+
+    Die Settings Seite bietet dem Benutzer die Möglichkeit seinen Namen und sein Passwort, sowie die Sprache der App zu ändern. Die Texte der App wurden mit dem i18n Plugin für Vue implementiert, so dass zusätzliche Sprachen einfach
+    hinzugefügt werden können. Aktuell unterstützt werden Deutsch und Englisch. Die default Sprache wird aus dem Browser des Nutzers ausgelesen.
+
+    Auf der rechten Seite der Main Page befinden sich die Tasks in einer Liste. In der Liste werden der Titel und falls vorhanden eine verkürzte Beschreibung, der Tag und das Fälligkeitsdatum der Aufgabe angezeigt.
+    Klickt man auf einen Task, öffnet sich eine Detail Ansicht als Modal Fenster. In dieser werden alle Attribute des Tasks angezeigt. Zudem hat der Nutzer die Möglichkeit den Task zu löschen, oder zu bearbeiten.
+
+    Ein neuer Task kann durch das unterste Item der Task Liste angelegt werden. Dafür wird mindestens ein Titel benötigt, alle anderen Attribute können durch das Ausklappen des Items eingetragen werden.
+
+    Klickt man auf "Scheduled Tasks" wird die Task Liste durch eine Kalender Ansicht ersetzt. Hier werden allerdings nur die Tasks angezeigt, die ein Fälligkeitsdatum als Attribut besitzen. Falls der Task zudem einen zugewiesenen Tag hat, wird der Task in der entsprechenden Farbe angezeigt.
+    Auch in der Kalender Ansicht kann durch Klick auf den Task das Task Detail Modal geöffnet werden.
+
 
     \section{Backend}
     \subsection{Funktionen}
