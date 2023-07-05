@@ -76,13 +76,13 @@
                 <p v-if="error" class="text-xs text-red-500" id="registration-error">{{ error }}</p>
 
                 <!-- End Form Group -->
-                <div class="flex">
+                <div class="grid grid-cols-2">
                   <router-link to="/"
-                    class="flex-grow py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
+                    class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border font-semibold bg-gray-100 text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:bg-gray-100 focus:ring-offset-2 transition-all text-sm">
                     <button type="button">{{ $t('back') }}</button>
                   </router-link>
                   <button type="submit"
-                    class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">{{
+                    class="ml-2 py-3 px-4 justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm ">{{
                       $t('changeSettings') }}</button>
                 </div>
               </div>

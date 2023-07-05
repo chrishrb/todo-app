@@ -57,4 +57,8 @@ export default {
     "subHeader": "Bitte kontaktieren Sie die IT, falls der Fehler wiederholt auftritt.",
     "button": "Erneut versuchen",
   },
+  "notFoundPage": {
+    "header": "Seite wurde nicht gefunden!",
+    "button": "Zur Startseite",
+  },
 }

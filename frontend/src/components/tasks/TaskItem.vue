@@ -10,17 +10,18 @@
     </div>
 
     <button class="grid grid-cols-1 grow pl-6 text-left" @click="openModal">
-      <div class="justify-center">
+      <div class="justify-center" :class="[{ 'line-through': props.item.isChecked }]" >
         {{ item.title }}
         <span class="w-2.5 h-2.5 inline-block rounded-full mr-2" :class="store.colorOfTag(item.tag)"></span>
       </div>
       <span v-show="item.description"
-        class="block whitespace-pre-line w-full border-gray-300 rounded-md text-gray-500 justify-center">
+        class="block whitespace-pre-line w-full border-gray-300 rounded-md text-gray-500 justify-center" 
+        :class="[{ 'line-through decoration-gray-500': props.item.isChecked }]">
         {{ getShortenedDescription(item.description) }}
       </span>
 
     </button>
-    <span class="justify-end min-w-fit pl-6" :class="[isTaskDue(item.dueDate) ? 'text-red-500' : '']">
+    <span class="justify-end min-w-fit pl-6" :class="[{'text-red-500': isTaskDue(item.dueDate) && !props.item.isChecked}, { 'line-through decoration-gray-500': props.item.isChecked }]">
       {{ getFancyDateString(item.dueDate, i18n.global.locale.value) }}
     </span>
   </div>

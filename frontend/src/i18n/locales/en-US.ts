@@ -57,4 +57,8 @@ export default {
     "subHeader": "Please contact IT if the error occurs repeatedly.",
     "button": "Try again",
   },
+  "notFoundPage": {
+    "header": "Page not found!",
+    "button": "To the home page",
+  },
 }

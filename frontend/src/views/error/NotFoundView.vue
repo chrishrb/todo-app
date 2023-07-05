@@ -5,17 +5,14 @@
     <main class="w-full max-w-xl mx-auto p-6">
       <div class="mt-7">
         <div class="grid p-4 sm:p-7 place-items-center">
-          <ExclamationTriangleIcon class="w-9 h-9 text-red-500 items-center"/>
-          <h1 class="text-xl pb-6 text-red-500 font-bold">
-            {{ $t('errorPage.header') }}
+          <ExclamationTriangleIcon class="w-9 h-9 text-gray-600 items-center"/>
+          <h1 class="text-xl pb-6 text-gray-600 font-bold">
+            {{ $t('notFoundPage.header') }}
           </h1>
-          <p class="text-sm text-gray-600">
-            {{ $t('errorPage.subHeader') }}
-          </p>
           <button 
-            class="flex-grow mt-8 ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm "
+            class="flex-grow ml-2 py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm "
             @click="$router.push({name: 'home'})">
-            {{ $t('errorPage.button') }}
+            {{ $t('notFoundPage.button') }}
           </button>
         </div>
       </div>
@@ -24,6 +21,7 @@
 
     <LanguageSelect />
 </template>
+
 <script lang="ts" setup>
 import { ExclamationTriangleIcon } from "@heroicons/vue/24/outline"
 import LogoComponent from "@/components/common/LogoComponent.vue";

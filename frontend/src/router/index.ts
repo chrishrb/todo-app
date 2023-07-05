@@ -10,6 +10,7 @@ import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from '@/stores/user'
 import TaskDetails from '@/components/tasks/TaskDetails.vue'
 import ErrorView from '../views/error/ErrorView.vue'
+import NotFoundView from '../views/error/NotFoundView.vue'
 
 
 const router = createRouter({
@@ -103,6 +104,10 @@ const router = createRouter({
       path: '/error',
       name: 'error',
       component: ErrorView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView,
     }
   ]
 })

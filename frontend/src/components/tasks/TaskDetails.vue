@@ -57,7 +57,7 @@
               </div>
           <div
             class="px-4 py-2 self-start"
-            :class="[isTaskDue(taskStore.task?.dueDate) ? 'text-red-500' : '']"
+            :class="[{'text-red-500': isTaskDue(taskStore.task?.dueDate) && !taskStore.task?.isChecked}]"
             v-show="taskStore.task?.dueDate">
             <div class="flex items-center">
               <CalendarIcon class="h-5 w-5 mr-1"/>
@@ -168,7 +168,9 @@ function handleDone() {
 }
 
 function deleteTask() {
-  taskStore.deleteTask(taskStore.task?.id)
+  taskStore.deleteTask(taskStore.task?.id).then(() => {
+    taskStore.getTags();
+  })
   handleClose()
 }
 
