@@ -219,7 +219,32 @@
     generieren.
 
     \subsection{Tests}
-    * cucumber tests erwähnen
+
+    Die Verwendung von Cucumber.js ermöglicht es, Tests in einer natürlichen Sprache zu schreiben, die für alle Projektbeteiligten leicht
+    verständlich ist. Die Testszenarien werden in sogenannten Feature-Dateien definiert, während die Schritte in den Step-Definitionen
+    implementiert werden.
+
+    Die Feature-Datei (task.feature) enthält beschreibende Szenarien, die die verschiedenen Anwendungsfälle für Tasks abdecken. Jedes Szenario
+    besteht aus einem Titel, einer Beschreibung und einer Liste von Schritten. Die Schritte beschreiben
+    den Zustand, die Aktion und die erwartete Überprüfung für jeden Schritt.
+
+    Die Step-Definitionen (api_steps.ts) enthalten die Implementierung der Schritte aus den Feature-Dateien. Hier wird die Testlogik für jeden
+    Schritt definiert, einschließlich der Interaktion mit dem zu testenden System (z.B. HTTP-Anfragen senden) und der Überprüfung des erwarteten
+    Verhaltens (z. B. Überprüfen des Statuscodes und des Antwortformats).
+
+    Die ApiSteps-Klasse enthält Methoden, die mit den Annotationen @given, @when und @then markiert sind, um die entsprechenden Schritte
+    abzudecken. In den Methoden werden die Aktionen und Überprüfungen ausgeführt, um den Testfall zu validieren.
+
+    Die Task-Tests folgen einem BDD-Ansatz (Behavior-Driven Development), bei dem die Testszenarien aus der Sicht des Endbenutzers formuliert
+    werden. Die Szenarien beschreiben typische Abläufe wie das Erstellen, Aktualisieren, Löschen und Abrufen von Tasks. Die Step-Definitionen
+    stellen sicher, dass diese Szenarien automatisch getestet werden können.
+
+    In {\tt user.feature} und {\tt auth.feature} sind, ähnlich wie in {\tt task.feature} die Tests für den User- und Authentifizierungsteil des Backends definiert.
+
+    Während der Ausführung der Tests wird Cucumber.js die Feature-Dateien und die zugehörigen Step-Definitionen analysieren. Für jeden Schritt
+    in einem Szenario wird die entsprechende Methode in den Step-Definitionen aufgerufen, um die Aktion auszuführen und die Überprüfungen
+    durchzuführen. Die Testergebnisse werden dann zusammengefasst und ausgegeben, um zu zeigen, welche Szenarien erfolgreich waren und welche
+    fehlgeschlagen sind.
 
     \section{Datenbank}
     \begin{figure}[H]
