@@ -9,7 +9,7 @@ services:
       - '--providers.docker.exposedbydefault=false'
       - '--entrypoints.web.address=:80'
     labels:
-      - 'traefik.docker.network=web'
+      - 'traefik.docker.network=todo_web'
     ports:
       - '80:80'
       - '8082:8080'
@@ -63,6 +63,7 @@ services:
       - 'traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api/v1`)'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
       - 'traefik.http.routers.backend.entrypoints=web'
+      - 'traefik.docker.network=todo_web'
 
   db:
     image: postgres:14
@@ -76,7 +77,7 @@ services:
         - internal
 
   redis:
-    image: 'bitnami/redis:latest'
+    image: 'bitnami/redis:6.2'
     environment:
       - REDIS_PASSWORD=${PROD_REDIS_PASSWORD}
     networks:
@@ -88,4 +89,6 @@ volumes:
 
 networks:
   web:
+    name: todo_web
   internal:
+    name: todo_internal
