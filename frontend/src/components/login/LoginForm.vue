@@ -70,9 +70,8 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline"
 import { getErrorText } from '@/exceptions/frontend.error';
 
 const authStore = useAuthStore();
-// TODO: remove default credentials
-const email = ref("admin@todo.com");
-const password = ref("admin");
+const email = ref();
+const password = ref();
 const showPassword = ref(false);
 const error = ref("");
 const router = useRouter();
