@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="#">
-    <img src="docs/images/logo.png" alt="Logo" height="80">
+    <img src="frontend/docs/images/logo.png" alt="Logo" height="80">
   </a>
 
   <h3 align="center">ToDo List</h3>
