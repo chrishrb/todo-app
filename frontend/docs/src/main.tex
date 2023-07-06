@@ -112,12 +112,19 @@
 \newpage
     \section{Allgemein}
     \subsection{Beschreibung}
-    * paar infos über die Anwendung
-    * cooles features
+    Ziel dieser Arbeit war es, eine Applikation für das Verwalten von Todos zu implementieren. Der Nutzer soll sich in der Webanwendung zuerst 
+    registrieren und dann über einen Login anmelden können. Nach der Anmeldung kann der User dann neue Tasks hinzufügen, vorhandene editieren
+    und lösche sowie sich eine Gesamtübersicht aller geplanten Tasks im Kalender anzeigen lassen. Die Daten des Users können zudem
+    in einem eigenen Fenster bearbeitet werden. Weitere Informationen dazu sind im Frontend, Backend und Datenbank-Teil dieser Anwendung
+    beschrieben.
 
     \subsection{Organisation}
-    * auf gitlab issues zeigen (anhang)
-    * feature based entwicklung erwähnen
+    Für die Organisation und Verwaltung des Quellcodes wurde GitLab benutzt. Dieses bietet neben der Quellcodeverwaltung auch die 
+    Möglichkeit noch offene Aufgaben zu verwalten (Issues), CI/CD-Pipelines zu erstellen (CI/CD) und Container-Images zu speichern (Packages \& Registry).
+    Zu Beginn des Projektes wurden Issues für die einzelnen Kernfunktionen erstellt und priorisiert. 
+    Im Laufe des Projektes wurden dann für Fehler und zusätzliche Funktionen weitere Issues hinzugefügt und nacheinander abgearbeitet.
+    So war zu jeder Zeit sichtbar, welche Aufgaben bereits abgearbeitet wurden und welche noch offen sind. 
+    Eine Übersicht aller Issues und deren zugeteilte Person findet man im Anhang~\ref{issues}.
 
     \subsection{Aufbau}
 
@@ -228,7 +235,7 @@
     besteht aus einem Titel, einer Beschreibung und einer Liste von Schritten. Die Schritte beschreiben
     den Zustand, die Aktion und die erwartete Überprüfung für jeden Schritt.
 
-    Die Step-Definitionen (api_steps.ts) enthalten die Implementierung der Schritte aus den Feature-Dateien. Hier wird die Testlogik für jeden
+    Die Step-Definitionen (api\_steps.ts) enthalten die Implementierung der Schritte aus den Feature-Dateien. Hier wird die Testlogik für jeden
     Schritt definiert, einschließlich der Interaktion mit dem zu testenden System (z.B. HTTP-Anfragen senden) und der Überprüfung des erwarteten
     Verhaltens (z. B. Überprüfen des Statuscodes und des Antwortformats).
 
@@ -241,10 +248,52 @@
 
     In {\tt user.feature} und {\tt auth.feature} sind, ähnlich wie in {\tt task.feature} die Tests für den User- und Authentifizierungsteil des Backends definiert.
 
+    \begin{figure}[H]
+    \begin{minted}
+    [
+    baselinestretch=1.2,
+    fontsize=\footnotesize,
+    ]{cucumber}
+@auth
+Feature: Authentication
+  Login user, verify user, refresh token
+
+  Scenario: Login user (correct email/password)
+    Given the Content-Type is 'application/json'
+    When I send a POST request to "http://localhost:8000/api/v1/auth/login" with json:
+      """
+        {
+          "email": "admin@todo.com",
+          "password": "admin"
+        }
+      """
+    Then the response code should be 200
+    And the response body should be json:
+      """
+        {
+          "tokenType": "Bearer",
+          "accessToken": String
+        }
+      """
+    \end{minted}
+    \caption{Beispiel eines Cucumber Integration Tests}\label{fig:figure}
+    \end{figure}
+
     Während der Ausführung der Tests wird Cucumber.js die Feature-Dateien und die zugehörigen Step-Definitionen analysieren. Für jeden Schritt
     in einem Szenario wird die entsprechende Methode in den Step-Definitionen aufgerufen, um die Aktion auszuführen und die Überprüfungen
     durchzuführen. Die Testergebnisse werden dann zusammengefasst und ausgegeben, um zu zeigen, welche Szenarien erfolgreich waren und welche
-    fehlgeschlagen sind.
+    fehlgeschlagen sind. Die Tests können mit folgendem Befehl gestartet werden.
+
+    \begin{minted}[
+    baselinestretch=1.2,
+    fontsize=\footnotesize,
+    ]{bash}
+# Start dependencies
+docker-compose up -d
+
+# Execute tests
+yarn test:integration
+    \end{minted}
 
     \section{Datenbank}
     \begin{figure}[H]
@@ -377,9 +426,11 @@
     \section{Anhang}
     \subsection{GitLab Issues}
     \input{gitlab_issue_table}
+    \label{issues}
 
     \includepdf[pages=1,scale=.85,pagecommand={\subsection{API Dokumentation}}]{../appendix/swagger_docs.pdf}
     \includepdf[pages=2-,scale=.85,pagecommand={}]{../appendix/swagger_docs.pdf}
+
 
     % \begin{figure}[H]
     %     \includegraphics[width=\textwidth]{images/organigram}

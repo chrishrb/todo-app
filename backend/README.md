@@ -20,6 +20,12 @@
    yarn dev
    ```
 
+## Tests
+
+```
+yarn test:integration
+```
+
 ## Swagger Docs
 
 * The Swagger API Documentation can be seen under the following path: path_to_backend:port/api-docs/ 
