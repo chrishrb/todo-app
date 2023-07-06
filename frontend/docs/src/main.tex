@@ -223,7 +223,9 @@
     Das Backend verwendet auch verschiedene Hilfsmodule wie helpers.ts, um Validierungen und andere allgemeine Aufgaben zu
     unterstützen. Es gibt auch Exception-Module, die spezifische Fehlerklassen wie NotFoundError oder ValidationError
     enthalten, um Fehler in der API-Behandlung zu verwalten und entsprechende HTTP-Statuscodes und Fehlerantworten zu
-    generieren.
+    generieren. Die komplette API des Backends wurde außerdem mithilfe von Swagger dokumentiert und kann nach dem Start
+    im DEV Modus über die URL http://localhost:3000/api-docs aufgerufen werden. Außerdem wurde die Dokumentation als
+    PDF exportiert und kann im Anhang~\ref{api} dieser Dokumentation gefunden werden.
 
     \subsection{Tests}
 
@@ -247,6 +249,22 @@
     stellen sicher, dass diese Szenarien automatisch getestet werden können.
 
     In {\tt user.feature} und {\tt auth.feature} sind, ähnlich wie in {\tt task.feature} die Tests für den User- und Authentifizierungsteil des Backends definiert.
+
+    Während der Ausführung der Tests wird Cucumber.js die Feature-Dateien und die zugehörigen Step-Definitionen analysieren. Für jeden Schritt
+    in einem Szenario wird die entsprechende Methode in den Step-Definitionen aufgerufen, um die Aktion auszuführen und die Überprüfungen
+    durchzuführen. Die Testergebnisse werden dann zusammengefasst und ausgegeben, um zu zeigen, welche Szenarien erfolgreich waren und welche
+    fehlgeschlagen sind. Die Tests können mit folgendem Befehl gestartet werden.
+
+    \begin{minted}[
+    baselinestretch=1.2,
+    fontsize=\footnotesize,
+    ]{bash}
+# Start dependencies
+docker-compose up -d
+
+# Execute tests
+yarn test:integration
+    \end{minted}
 
     \begin{figure}[H]
     \begin{minted}
@@ -279,21 +297,6 @@ Feature: Authentication
     \caption{Beispiel eines Cucumber Integration Tests}\label{fig:figure}
     \end{figure}
 
-    Während der Ausführung der Tests wird Cucumber.js die Feature-Dateien und die zugehörigen Step-Definitionen analysieren. Für jeden Schritt
-    in einem Szenario wird die entsprechende Methode in den Step-Definitionen aufgerufen, um die Aktion auszuführen und die Überprüfungen
-    durchzuführen. Die Testergebnisse werden dann zusammengefasst und ausgegeben, um zu zeigen, welche Szenarien erfolgreich waren und welche
-    fehlgeschlagen sind. Die Tests können mit folgendem Befehl gestartet werden.
-
-    \begin{minted}[
-    baselinestretch=1.2,
-    fontsize=\footnotesize,
-    ]{bash}
-# Start dependencies
-docker-compose up -d
-
-# Execute tests
-yarn test:integration
-    \end{minted}
 
     \section{Datenbank}
     \begin{figure}[H]
@@ -430,11 +433,16 @@ yarn test:integration
 
     \includepdf[pages=1,scale=.85,pagecommand={\subsection{API Dokumentation}}]{../appendix/swagger_docs.pdf}
     \includepdf[pages=2-,scale=.85,pagecommand={}]{../appendix/swagger_docs.pdf}
+    \label{api}
 
 
     % \begin{figure}[H]
     %     \includegraphics[width=\textwidth]{images/organigram}
     %     \caption{Organigramm Team Pyramid 2021}\label{fig:figure}
     % \end{figure}
+
+    \newpage
+
+\includepdf[pages=1,pagecommand={\subsection{Erstellungserklärung}}]{../documents/erstellungserklaerung_fullstack_todo_app}
 
 \end{document}
