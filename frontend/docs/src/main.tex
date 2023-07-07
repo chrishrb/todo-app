@@ -299,6 +299,10 @@ Feature: Authentication
 
 
     \section{Datenbank}
+    Als Datenbank wurde eine Postgresql DB verwendet. Da für den Datenbankzugriff Prisma ORM verwendet wurde, sind die Tabellen
+    in der backend/prisma/schema.prisma Datei definiert. Um Testdaten in die Datenbank zu schreiben wird die Datei backend/prisma/seed.ts einmalig
+    beim Hochfahren der Datenbank ausgeführt. Die Tabellen und ihre Relationen können in der folgenden Grafik eingesehen werden:
+    
     \begin{figure}[H]
         \center\includegraphics[width=0.7\textwidth]{../images/database}
         \caption{Datenbank Diagramm}\label{fig:figure}
