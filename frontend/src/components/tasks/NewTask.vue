@@ -140,7 +140,7 @@ const newTask = () => {
     descriptionData.value = undefined;
     dueDate.value = undefined;
     query.value = '';
-    tagData.value = route.params.tag;
+    tagData.value = route.params.tag ? route.params.tag : null;
     emit('closeNewTask');
   })
 }
