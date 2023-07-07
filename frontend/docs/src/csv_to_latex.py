@@ -1,6 +1,6 @@
 import pandas as pd
 
-csv_table = pd.read_csv("../appendix/todo_gitlab_issues.csv")
+csv_table = pd.read_csv("../documents/todo_gitlab_issues.csv")
 subset = csv_table[['Title', 'Assignee']]
 
 with open("gitlab_issue_table.tex", 'w') as f:

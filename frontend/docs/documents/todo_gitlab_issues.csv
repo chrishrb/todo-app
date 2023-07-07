@@ -11,30 +11,9 @@ Title,Description,Issue ID,URL,State,Author,Author Username,Assignee,Assignee Us
 * add docker-compose.yml with postgres container",3,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/3,Closed,Christoph Herb,cherb,Lucas Schießl,schieslu,No,No,,2023-03-28 13:05:50,2023-04-24 08:19:42,2023-04-24 08:19:42,,,,0,0
 [BE] Add refresh endpoint,* allow to refresh the token or send new token on every request,4,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/4,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-03-28 13:06:41,2023-06-04 16:36:54,2023-05-30 09:38:21,,,,0,0
 [BE] Add getting started documentation,"",5,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/5,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-03-28 13:06:58,2023-06-04 17:19:48,2023-06-04 17:19:30,,,,0,0
-[DOC] Create documentation,"* Eine kurze, aber aussagekräftige Beschreibung des Projektes.
-* Verwendeten Technologie-Stack (i. Allg. Vue, Express, Postgres)
-* Einen Überblick, wer für welche Komponenten verantwortlich war. Falls jemand an anderen Komponenten mitgearbeitet hat, soll dies ebenfalls dokumentiert werden (mit einer groben Übersicht, wie die Arbeit aufgeteilt wurde).
-* Komponentenspezifische Diagramme:
-  * Datenbankmodell (wenn eine Datenbank implementiert wurde)
-  * Grafik zu `docker-compose.yml`?
-  * REST-API (wenn ein REST-Server implementiert wurde) -> vielleicht mit swagger
-  * Seitenstruktur des Frontends (z. B. Figma-Export)
-* Einen Screencast der Komponenten der Anwendung in Aktion:
-  * Datenbank mittels pgadmin oder Adminer (wenn vorhanden)
-  * REST-Server mittels Postman o. Ä. (wenn vorhanden) -> mit cucumber integration tests
-  * Frontend mittels Browser
-* Eine Erstellungserklärung, die auch Auskunft über die verwendete Elemente gibt:
-  * Postgres (Docker), anderes DBMS
-  * ORM (Prisma)
-  * Express (TS), NestJS
-  * Vue (Composition API (Setup), Composition API, Options API)
-  * Router
-  * Pinja
-  * tailwindcss + preline
-  * cucumber
-  * class-validator
-  * tslog
-  * sonstige PLugins/Libraries",6,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/6,Open,Christoph Herb,cherb,"","",No,No,,2023-03-28 13:33:18,2023-06-08 12:09:18,,,,,0,0
+[DOC] Create documentation,"* Dokumentation erstellen
+* swagger to pdf
+* gitlab issues",6,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/6,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-03-28 13:33:18,2023-07-01 10:03:32,2023-07-01 10:03:32,,,,0,0
 [FE] Create Figma Design,* see https://www.figma.com/file/uR6cUEFsI8nIOi2psY1Nmw/todo?node-id=5-18175&t=QvubrtMOyAcvPeSx-0,7,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/7,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-03-28 14:38:30,2023-04-14 12:55:02,2023-04-14 11:17:19,,,,0,0
 [BE] Create Database model,"",8,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/8,Closed,Christoph Herb,cherb,Hannes Ziereis,zierh,No,No,,2023-03-28 14:38:45,2023-06-04 16:40:30,2023-06-04 16:40:30,,,,0,0
 [BE] Implement swagger docs or create REST-API diagram manually,"",9,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/9,Closed,Christoph Herb,cherb,Lucas Schießl,schieslu,No,No,,2023-03-28 14:39:16,2023-04-18 17:36:40,2023-04-18 17:36:40,,,,0,0
@@ -106,9 +85,48 @@ done in #36",35,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-li
 * fix some minor async issues in `tasks.ts`
 * add calendar page to sidebar
 * animate sidebar correct",45,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/45,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-06-14 22:57:15,2023-06-14 22:59:47,2023-06-14 22:59:47,,,,0,0
-[FE] Show Tag in overview and details modal,"",46,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/46,Open,Hannes Ziereis,zierh,"","",No,No,,2023-06-27 12:55:30,2023-06-30 12:25:59,,,,,0,0
+[FE] Show Tag in overview and details modal,"",46,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/46,Closed,Hannes Ziereis,zierh,Lucas Schießl,schieslu,No,No,,2023-06-27 12:55:30,2023-07-02 17:38:57,2023-07-02 17:38:57,,,,0,0
 [FE] BUG - Modals opens two times,"",47,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/47,Closed,Hannes Ziereis,zierh,Christoph Herb,cherb,No,No,,2023-06-27 12:56:39,2023-06-30 11:20:31,2023-06-30 11:20:16,,,,0,0
 [FE] Detailed View - Done status doesn't update,"",48,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/48,Closed,Hannes Ziereis,zierh,Christoph Herb,cherb,No,No,,2023-06-27 12:57:30,2023-06-30 11:20:28,2023-06-30 11:20:19,,,,0,0
 [FE] Fix styling of task list,"",49,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/49,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-06-27 15:21:47,2023-06-27 15:22:20,2023-06-27 15:22:20,,,,0,0
-[FE]  Edit Task in Detail modal,"",50,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/50,Open,Hannes Ziereis,zierh,Hannes Ziereis,zierh,No,No,,2023-06-29 17:04:11,2023-06-29 17:04:24,,,,,0,0
+[FE]  Edit Task in Detail modal,"",50,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/50,Closed,Hannes Ziereis,zierh,Hannes Ziereis,zierh,No,No,,2023-06-29 17:04:11,2023-07-04 14:00:34,2023-07-04 14:00:33,,,,0,0
 [FE] Improve modal,"",51,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/51,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-06-30 11:18:17,2023-06-30 11:20:04,2023-06-30 11:20:04,,,,0,0
+[DOC] Write documentation for backend,"* Funktionen
+* kurz etwas über cucumber tests
+* Übersicht über verwendete Packages
+* REST-API Dokumentation",52,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/52,Open,Christoph Herb,cherb,Hannes Ziereis,zierh,No,No,,2023-07-01 09:53:42,2023-07-04 15:43:14,,,,,0,0
+[DOC] Write documentation for frontend,"* Seitenstruktur des Frontends (z. B. Figma-Export)
+* Funktionen
+* Übersicht über verwendete Packages",53,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/53,Open,Christoph Herb,cherb,Lucas Schießl,schieslu,No,No,,2023-07-01 09:53:51,2023-07-04 17:17:38,,,,,0,0
+[DOC] Write documentation for database,* ER diagram,54,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/54,Open,Christoph Herb,cherb,Lucas Schießl,schieslu,No,No,,2023-07-01 09:54:13,2023-07-04 17:17:42,,,,,0,0
+[DOC] Write general documentation,"* kurze Beschreibung des Projekts
+* Übersicht über Komponenten mit Komponentendiagramm (Frontend, Backend, Redis, Postgres, Reverse-Proxy)
+* Organisation mit GitLab
+* Directory structure
+* Eine Erstellungserklärung, die auch Auskunft über die verwendete Elemente gibt:
+  * Postgres (Docker), anderes DBMS
+  * ORM (Prisma)
+  * Express (TS), NestJS
+  * Vue (Composition API (Setup), Composition API, Options API)
+  * Router
+  * Pinja
+  * tailwindcss + preline
+  * cucumber
+  * class-validator
+  * tslog
+  * sonstige PLugins/Libraries",55,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/55,Open,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-07-01 09:55:03,2023-07-06 19:15:14,,,,,0,0
+[DOC] Screencast,"* Datenbank mittels pgadmin oder Adminer (wenn vorhanden)
+* REST-Server mittels Postman o. Ä. @zierh 
+* Frontend mittels Browser @schieslu",56,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/56,Open,Christoph Herb,cherb,Lucas Schießl,schieslu,No,No,,2023-07-01 09:57:10,2023-07-06 19:33:09,,,,,0,0
+"[FE,BE] Finalize application","'- [ ] resolve open TODOs in frontend and backend
+- [ ] run linter in frontend
+- [ ] build and run docker-compose-prod.yml
+- [ ] test everything with deployment
+- [ ] create git tag 
+- [ ] add Herr Kowarschick as maintainer",57,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/57,Open,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-07-01 18:13:19,2023-07-06 19:33:02,,,,,0,0
+[BUG] Line breaks in description are not rendered,"",58,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/58,Closed,Hannes Ziereis,zierh,Christoph Herb,cherb,No,No,,2023-07-02 16:24:33,2023-07-07 11:53:43,2023-07-02 17:45:35,,,,0,0
+[FE]  update tags,"",60,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/60,Closed,Hannes Ziereis,zierh,Christoph Herb,cherb,No,No,,2023-07-04 14:01:30,2023-07-04 18:12:36,2023-07-04 18:12:36,,,,0,0
+[FE] delete tasks,"",61,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/61,Closed,Hannes Ziereis,zierh,Hannes Ziereis,zierh,No,No,,2023-07-04 14:01:49,2023-07-04 17:14:04,2023-07-04 17:14:03,,,,0,0
+[FE] remove forgot Password from Logn,"",62,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/62,Closed,Lucas Schießl,schieslu,Lucas Schießl,schieslu,No,No,,2023-07-04 18:29:24,2023-07-07 11:55:07,2023-07-05 13:37:10,,,,0,0
+[DOC] Update postman collection,"",63,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/63,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-07-04 18:30:07,2023-07-04 18:30:45,2023-07-04 18:30:45,,,,0,0
+[DOC] Add infos about sources and code parts of others,"",64,https://gitlab.multimedia.hs-augsburg.de/full-stack-web/to-do-list/-/issues/64,Closed,Christoph Herb,cherb,Christoph Herb,cherb,No,No,,2023-07-05 13:40:54,2023-07-05 13:40:57,2023-07-05 13:40:57,,,,0,0
