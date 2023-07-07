@@ -26,6 +26,13 @@ Execute the following command to create the necessary environment variables:
 2. Start `backend` (see [README](backend/))
 3. Start `frontend` (see [README](frontend/))
 
+### Credentials for Login
+
+| email           | password  |
+|-----------------|-----------|
+| admin@todo.com  | admin     |
+| john@todo.com   | johni     |
+
 ### Links
 
 * **Frontend:** http://localhost:5173
@@ -47,6 +54,10 @@ Execute the following command to create the necessary environment variables:
    # (only first time: seed database with initial data)
    docker compose exec -it backend /usr/local/bin/npm run db:seed
    ```
+
+### Credentials for Login
+
+After [preparing your environment](#prepare-environment), see [.env](./.env).
 
 ### Links
 

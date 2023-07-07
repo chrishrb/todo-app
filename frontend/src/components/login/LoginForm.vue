@@ -15,7 +15,7 @@
                 <div>
                   <label for="email" class="block text-sm mb-2">{{ $t('email') }}</label>
                   <div class="relative">
-                    <input type="email" id="email" name="email"
+                    <input type="email" id="email" name="email" :placeholder="$t('email')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border"
                       required aria-describedby="email-error" v-model="email">
                   </div>
@@ -31,7 +31,7 @@
                     <input v-if="showPassword" type="showPassword" id="password" name="password"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       required aria-describedby="password-error" v-model="password">
-                    <input v-else type="Password" id="password" name="password"
+                    <input v-else type="Password" id="password" name="password" :placeholder="$t('password')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       required aria-describedby="password-error" v-model="password">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3">
