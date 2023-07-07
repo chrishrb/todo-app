@@ -7,7 +7,7 @@ export default {
   "settings": "Einstellungen",
   "logout": "Ausloggen",
   "signIn": "Anmelden",
-  "email": "Email",
+  "email": "E-Mail-Adresse",
   "password": "Passwort",
   "forgotPassword": "Passwort vergessen?",
   "register": "Registrieren",

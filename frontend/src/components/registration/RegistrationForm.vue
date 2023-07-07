@@ -14,21 +14,21 @@
                     <div>
                       <label for="firstName" class="block text-sm mb-2">{{ $t ('firstName')}}</label>
                       <div class="relative">
-                        <input type="firstName" id="firstName" name="firstName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="firstName">
+                        <input type="firstName" id="firstName" name="firstName" :placeholder="$t('firstName')" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="firstName">
                       </div>
                       <p v-if="firstNameEmpty" class="text-xs text-red-500" id="firstName-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <div>
                       <label for="lastName" class="block text-sm mb-2">{{ $t ('lastName')}}</label>
                       <div class="relative">
-                        <input type="lastName" id="lastName" name="lastName" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="lastName">
+                        <input type="lastName" id="lastName" name="lastName" :placeholder="$t('lastName')" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" v-model="lastName">
                       </div>
                       <p v-if="lastNameEmpty" class="text-xs text-red-500" id="lastName-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
                     <div>
                       <label for="email" class="block text-sm mb-2">{{ $t ('email')}}</label>
                       <div class="relative">
-                        <input type="email" id="email" name="email" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" aria-describedby="email-error" v-model="email">
+                        <input type="email" id="email" name="email" :placeholder="$t('email')" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border" aria-describedby="email-error" v-model="email">
                       </div>
                       <p v-if="emailEmpty" class="text-xs text-red-500" id="email-empty">{{ $t ('fieldEmpty')}}</p>
                     </div>
@@ -40,8 +40,8 @@
                         <label for="password" class="block text-sm mb-2">{{ $t ('password')}}</label>
                       </div>
                       <div class="relative">
-                        <input v-if="showPassword" type="showPassword" id="password" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
-                        <input v-else type="Password" id="password" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
+                        <input v-if="showPassword" type="showPassword" id="password" :placeholder="$t('password')" name="password" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
+                        <input v-else type="Password" id="password" name="password" :placeholder="$t('password')" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="password">
                         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                           <button type="button" class="focus:outline-none" @click="toggleShow">
                             <component :is="showPassword ? EyeSlashIcon : EyeIcon" class="w-5 h-5" />
@@ -55,8 +55,8 @@
                         <label for="passwordConfirmation" class="block text-sm mb-2">{{ $t ('passwordConfirmation')}}</label>
                       </div>
                       <div class="relative">
-                        <input v-if="showPassword" type="showPassword" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
-                        <input v-else type="Password" id="passwordConfirmation" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
+                        <input v-if="showPassword" type="showPassword" id="passwordConfirmation" :placeholder="$t('password')" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
+                        <input v-else type="Password" id="passwordConfirmation" :placeholder="$t('password')" name="passwordConfirmation" class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border " aria-describedby="password-error" v-model="confirmedPassword">
                       </div>
                       <p v-if="passwordConfirmEmpty" class="text-xs text-red-500" id="passwordConfirmation-empty">{{ $t ('fieldEmpty')}}</p>
                       <p v-show="!(passwordsMatch)" class="text-xs text-red-500 mt-2" id="password-error">{{ $t ('passwordsDontMatch')}}</p>
