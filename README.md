@@ -28,10 +28,10 @@ Execute the following command to create the necessary environment variables:
 
 ### Credentials for Login
 
-| email           | password  |
-|-----------------|-----------|
-| admin@todo.com  | admin     |
-| john@todo.com   | johni     |
+| email             | password  |
+|-------------------|-----------|
+| admin@todo.com    | admin     |
+| john.doe@todo.com | johni     |
 
 ### Links
 
