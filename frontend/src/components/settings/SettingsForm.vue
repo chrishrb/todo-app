@@ -14,7 +14,7 @@
                 <div>
                   <label for="firstName" class="block text-sm mb-2">{{ $t('changeFirstName') }}</label>
                   <div class="relative">
-                    <input type="firstName" id="firstName" name="firstName"
+                    <input type="firstName" id="firstName" name="firstName" :placeholder="t('changeFirstName')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border"
                       v-model="firstName">
                   </div>
@@ -22,7 +22,7 @@
                 <div>
                   <label for="lastName" class="block text-sm mb-2">{{ $t('changeLastName') }}</label>
                   <div class="relative">
-                    <input type="lastName" id="lastName" name="lastName"
+                    <input type="lastName" id="lastName" name="lastName" :placeholder="t('changeLastName')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border"
                       v-model="lastName">
                   </div>
@@ -35,10 +35,10 @@
                     <label for="password" class="block text-sm mb-2">{{ $t('changePassword') }}</label>
                   </div>
                   <div class="relative">
-                    <input v-if="showPassword" type="showPassword" id="password" name="password"
+                    <input v-if="showPassword" type="showPassword" id="password" name="password" :placeholder="t('changePassword')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       aria-describedby="password-error" v-model="password">
-                    <input v-else type="Password" id="password" name="password"
+                    <input v-else type="Password" id="password" name="password" :placeholder="t('changePassword')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       aria-describedby="password-error" v-model="password">
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -53,10 +53,10 @@
                     <label for="passwordConfirmation" class="block text-sm mb-2">{{ $t('passwordConfirmation') }}</label>
                   </div>
                   <div class="relative">
-                    <input v-if="showPassword" type="showPassword" id="passwordConfirmation" name="passwordConfirmation"
+                    <input v-if="showPassword" type="showPassword" id="passwordConfirmation" name="passwordConfirmation" :placeholder="t('passwordConfirmation')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       aria-describedby="password-error" v-model="confirmedPassword">
-                    <input v-else type="Password" id="passwordConfirmation" name="passwordConfirmation"
+                    <input v-else type="Password" id="passwordConfirmation" name="passwordConfirmation" :placeholder="t('passwordConfirmation')"
                       class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 border "
                       aria-describedby="password-error" v-model="confirmedPassword">
                   </div>
