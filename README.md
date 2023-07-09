@@ -66,7 +66,6 @@ After [preparing your environment](#prepare-environment), see [.env](./.env).
 
 ### Links
 
-* **Traefik Dashboard:** http://localhost:8082
 * **Frontend:** http://localhost
 * **Backend:** http://localhost/api/v1
 * **Adminer:** http://localhost:8081
