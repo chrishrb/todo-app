@@ -1,5 +1,5 @@
 export default {
-  "todayTasks": "Heutige Aufgaben",
+  "todayTasks": "Aufgaben",
   "personal": "Persönlich",
   "work": "Arbeit",
   "study": "Lernen",
