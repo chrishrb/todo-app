@@ -57,6 +57,11 @@ Execute the following command to create the necessary environment variables:
 
 ### Credentials for Login
 
+| email             | password                    |
+|-------------------|-----------------------------|
+| admin@todo.com    | see .env -> ADMIN_PASSWORD  |
+| john.doe@todo.com | see .env -> USER_PASSWORD   |
+
 After [preparing your environment](#prepare-environment), see [.env](./.env).
 
 ### Links
