@@ -300,6 +300,7 @@ Feature: Authentication
 
 
     \section{Datenbank}
+    \subsection{Postgresql}
     Als Datenbank wurde eine Postgresql DB verwendet. Da für den Datenbankzugriff Prisma ORM verwendet wurde, sind die Tabellen
     in der backend/prisma/schema.prisma Datei definiert. Um Testdaten in die Datenbank zu schreiben wird die Datei backend/prisma/seed.ts einmalig
     beim Hochfahren der Datenbank ausgeführt. Die Tabellen und ihre Relationen können in der folgenden Grafik eingesehen werden:
@@ -308,6 +309,14 @@ Feature: Authentication
         \center\includegraphics[width=0.7\textwidth]{../images/database}
         \caption{Datenbank Diagramm}\label{fig:figure}
     \end{figure}
+
+    \subsection{Redis}
+    Für die Speicherung der abgelaufenen Token wurde eine Redis Datenbank verwendet. Redis ist eine Key-Value Datenbank, das heißt alle Daten sind als
+    Key-Value-Paare in der Datenbank gespeichert. In unserem Use-Case, dem Abspeichern von abgelaufenen Tokens nach dem Logout, wird das Token als
+    Key gespeichert. Nach jedem {\it verify} des Tokens wird also zusätzlich abgefragt, ob das Token sich in der Blacklist-Datenbank befindet.
+    Redis hat den Vorteil, dass es sehr leichtgewichtig und schnell ist. Zudem hat es die Funktion, dass Values nach einer bestimmten Zeit automatisch
+    aus dem Speicher gelöscht werden können. So können in unserem Fall Token, die abgelaufen sind, aus dem Blacklist-Store entfernt werden, wodurch die
+    Datenbank nie sehr groß wird und somit Speicherplatz und Latenzzeit eingespart werden kann.
 
     \newpage
     \section{Quellen}
