@@ -12,6 +12,10 @@
   </p>
 </div>
 
+## Documentation
+
+see [documentation.pdf](./docs/documentation.pdf)
+
 ## Prepare environment
 
 Execute the following command to create the necessary environment variables:
