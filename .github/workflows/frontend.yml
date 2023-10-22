@@ -1,0 +1,26 @@
+on:
+  push:
+    paths:
+      - frontend/**
+      - .github/workflows/**
+
+jobs:
+  build-and-push-docker-image:
+    name: Build Docker image and push to repositories
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image
+        with:
+          image: ghcr.io/chrishrb/todo-frontend
+          registry: ghcr.io
+          directory: ./frontend/
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
