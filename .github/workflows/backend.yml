@@ -1,9 +1,9 @@
-name: Build and push frontend
+name: Build and push backend
 
 on:
   push:
     paths:
-      - frontend/**
+      - backend/**
       - .github/workflows/**
 
 jobs:
@@ -21,9 +21,9 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image
         with:
-          image: ghcr.io/chrishrb/todo-frontend
+          image: ghcr.io/chrishrb/todo-backend
           registry: ghcr.io
-          directory: ./frontend/
-          dockerfile: ./frontend/Dockerfile
+          directory: ./backend/
+          dockerfile: ./backend/Dockerfile
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
