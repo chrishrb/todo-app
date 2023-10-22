@@ -1,3 +1,5 @@
+name: Build and push frontend
+
 on:
   push:
     paths:
@@ -22,5 +24,6 @@ jobs:
           image: ghcr.io/chrishrb/todo-frontend
           registry: ghcr.io
           directory: ./frontend/
+          dockerfile: ./frontend/Dockerfile
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
