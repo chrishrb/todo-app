@@ -16,6 +16,10 @@
 
 see [documentation.pdf](./docs/documentation.pdf)
 
+## Kubernetes deployment with ArgoCD
+
+see [todo-deployment](https://github.com/chrishrb/todo-deployment)
+
 ## Prepare environment
 
 Execute the following command to create the necessary environment variables:
