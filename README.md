@@ -56,7 +56,7 @@ Execute the following command to create the necessary environment variables:
    docker compose -f docker-compose-prod.yml up -d
 
    # (only first time: seed database with initial data)
-   docker compose exec -it backend /usr/local/bin/npm run db:seed
+   docker compose exec -it backend /bin/sh /app/migrate.sh
    ```
 
 ### Credentials for Login
