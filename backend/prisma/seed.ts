@@ -18,8 +18,10 @@ async function main() {
     throw new Error("Environment variable USER_PASSWORD not defined.")
   }
 
-  const root = await prisma.user.create({
-    data:
+  const root = await prisma.user.upsert({
+    where: { id: 'cc1fcd35-3688-4ac6-b3af-ead6498544f1' },
+    update: {},
+    create:
     {
       id: 'cc1fcd35-3688-4ac6-b3af-ead6498544f1',
       email: 'admin@todo.com',
@@ -57,8 +59,10 @@ async function main() {
     },
   });
 
-  const john = await prisma.user.create({
-    data:
+  const john = await prisma.user.upsert({
+    where: { id: '5a288c41-83a0-4046-9c63-38a117e4b61a' },
+    update: {},
+    create:
     {
       id: '5a288c41-83a0-4046-9c63-38a117e4b61a',
       email: 'john.doe@todo.com',
